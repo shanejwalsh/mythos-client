@@ -1,27 +1,18 @@
-import React, { Component, Fragment } from 'react'
-import API from '../adapters/API'
+import React, { Component } from 'react'
 import CharacterCard from '../components/CharacterCard'
+import { Card, Container } from 'semantic-ui-react'
 
 class CharacterContainer extends Component {
-  state = {
-    allCharacters: []
-  }
-
-  componentDidMount = () =>
-    API.getAllCharacters().then(allCharacters =>
-      this.setState({ allCharacters })
-    )
-
   render() {
     return (
-      <Fragment>
-        <h1>All Characters:</h1>
-        {this.state.allCharacters.map(character => (
-          <CharacterCard key={character.id} {...character} />
-        ))}
-      </Fragment>
+      <Container>
+        <Card.Group itemsPerRow={4}>
+          {this.props.characters.map(character => (
+            <CharacterCard key={character.id} {...character} />
+          ))}
+        </Card.Group>
+      </Container>
     )
   }
 }
-
 export default CharacterContainer
