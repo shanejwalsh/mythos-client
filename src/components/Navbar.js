@@ -6,7 +6,6 @@ import {
   Container,
   Button,
   Menu,
-  Responsive,
   Segment,
   Visibility,
   Header
@@ -64,58 +63,56 @@ class Navbar extends Component {
     const { fixed } = this.state
 
     return (
-      <Responsive getWidth={this.getWidth}>
-        <Visibility
-          once={false}
-          onBottomPassed={this.showFixedMenu}
-          onBottomPassedReverse={this.hideFixedMenu}
+      <Visibility
+        once={false}
+        onBottomPassed={this.showFixedMenu}
+        onBottomPassedReverse={this.hideFixedMenu}
+      >
+        <Segment
+          inverted
+          textAlign='center'
+          style={{ height: '100vh', padding: '1em 0em' }}
+          vertical
         >
-          <Segment
-            inverted
-            textAlign='center'
-            style={{ height: '100vh', padding: '1em 0em' }}
-            vertical
+          <Menu
+            fixed={fixed ? 'top' : null}
+            inverted={!fixed}
+            pointing={!fixed}
+            secondary={!fixed}
+            size='large'
           >
-            <Menu
-              fixed={fixed ? 'top' : null}
-              inverted={!fixed}
-              pointing={!fixed}
-              secondary={!fixed}
-              size='large'
-            >
-              <Container>
-                <Menu.Item active>
-                  <NavLink to='/' exact>
-                    About
-                  </NavLink>
-                </Menu.Item>
-                <Menu.Item>
-                  <NavLink to='/characters' exact>
-                    Charcter Library
-                  </NavLink>
-                </Menu.Item>
-                <Menu.Item>
-                  <NavLink to='/account' exact>
-                    My Account
-                  </NavLink>
-                </Menu.Item>
+            <Container>
+              <Menu.Item active>
+                <NavLink to='/' exact>
+                  About
+                </NavLink>
+              </Menu.Item>
+              <Menu.Item>
+                <NavLink to='/characters' exact>
+                  Charcter Library
+                </NavLink>
+              </Menu.Item>
+              <Menu.Item>
+                <NavLink to='/account' exact>
+                  My Account
+                </NavLink>
+              </Menu.Item>
 
-                <Menu.Item position='right'>
-                  <Button inverted={!fixed}>Log in</Button>
-                  <Button
-                    inverted={!fixed}
-                    primary={fixed}
-                    style={{ marginLeft: '0.5em' }}
-                  >
-                    Sign Up
-                  </Button>
-                </Menu.Item>
-              </Container>
-            </Menu>
-            {this.headerText()}
-          </Segment>
-        </Visibility>
-      </Responsive>
+              <Menu.Item position='right'>
+                <Button inverted={!fixed}>Log in</Button>
+                <Button
+                  inverted={!fixed}
+                  primary={fixed}
+                  style={{ marginLeft: '0.5em' }}
+                >
+                  Sign Up
+                </Button>
+              </Menu.Item>
+            </Container>
+          </Menu>
+          {this.headerText()}
+        </Segment>
+      </Visibility>
     )
   }
 }
