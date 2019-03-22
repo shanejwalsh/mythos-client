@@ -5,7 +5,7 @@ import CharacterAvatar from '../components/CharacterAvatar'
 import { Container } from 'semantic-ui-react'
 
 class CharacterDetailsContainer extends Component {
-  state = { character: {} }
+  state = { character: null }
 
   componentDidMount = () =>
     API.getCharacterById(this.props.id).then(character =>
@@ -15,15 +15,17 @@ class CharacterDetailsContainer extends Component {
   render() {
     return (
       <Container>
-        <div className='ui stackable two column grid'>
-          <div className='six wide column'>
-            {/* Seed & Gender is random for now as placeholder */}
-            <CharacterAvatar character={this.state.character} />
+        {this.state.character && (
+          <div className='ui stackable two column grid'>
+            <div className='six wide column'>
+              {/* Seed & Gender is random for now as placeholder */}
+              <CharacterAvatar character={this.state.character} />
+            </div>
+            <div className='ten wide column'>
+              <CharacterDetails character={this.state.character} />
+            </div>
           </div>
-          <div className='ten wide column'>
-            <CharacterDetails character={this.state.character} />
-          </div>
-        </div>
+        )}
       </Container>
     )
   }

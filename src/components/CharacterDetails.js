@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Container } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
+import { titleCase } from '../lib/Helper'
 
 class CharacterDetails extends Component {
   render() {
@@ -9,16 +10,16 @@ class CharacterDetails extends Component {
       last_name,
       alias,
       motto,
-      species,
       bio,
       alignment,
       age,
       status,
       gender,
+      species,
       traits_positive,
       traits_negative
     } = this.props.character
-
+    console.log(species)
     return (
       <Container>
         <Link to='/characters'>Back to all Characters</Link>
@@ -28,7 +29,7 @@ class CharacterDetails extends Component {
         <p>
           <b>Also known as:</b> {alias} <br />
           <b>Motto:</b> {motto} <br />
-          <b>Species: </b> {species} <br />
+          <b>Species: </b> {titleCase(species)} <br />
           <b>Age: </b> {age} <br />
           <b>Status: </b> {status} <br />
           <b>Alignment: </b> {alignment} <br />
@@ -37,6 +38,11 @@ class CharacterDetails extends Component {
           <br />
           <b>Positive Traits:</b>
           {traits_positive}
+          {/* <ul>
+            {traits_positive.split(',').map(trait => (
+              <li>{trait}</li>
+            ))}
+          </ul> */}
           <br />
           <b>Negative Traits:</b>
           {traits_negative}
