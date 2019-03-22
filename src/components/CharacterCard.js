@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import { Card, Icon } from 'semantic-ui-react'
 
 const CharacterCard = props => {
-  const { first_name, last_name, bio, gender, species, alias } = props
+  const { id, first_name, last_name, bio, gender, species, alias } = props
 
   const footer = (
     <Fragment>
@@ -13,7 +13,7 @@ const CharacterCard = props => {
 
   return (
     <Card
-      href='#'
+      href={`/characters/${id}`}
       header={`${first_name} ${last_name} (${gender})`}
       meta={`AKA '${alias}'`}
       description={bio}

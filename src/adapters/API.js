@@ -5,6 +5,10 @@ const CHAR_URL = BASE_URL + '/characters'
 
 const getAllCharacters = () => fetch(CHAR_URL).then(resp => resp.json())
 
+const getCharacterById = id =>
+  fetch(`${CHAR_URL}/${id}`).then(resp => resp.json())
+
 export default {
-  getAllCharacters
+  getAllCharacters,
+  getCharacterById
 }

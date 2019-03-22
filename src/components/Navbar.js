@@ -89,7 +89,7 @@ class Navbar extends Component {
               </Menu.Item>
               <Menu.Item>
                 <NavLink to='/characters' exact>
-                  Charcter Library
+                  Character Library
                 </NavLink>
               </Menu.Item>
               <Menu.Item>
