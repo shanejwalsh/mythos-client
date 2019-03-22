@@ -18,10 +18,7 @@ class CharacterDetailsContainer extends Component {
         <div className='ui stackable two column grid'>
           <div className='six wide column'>
             {/* Seed & Gender is random for now as placeholder */}
-            <CharacterAvatar
-              gender={Math.random() >= 0.5 ? 'male' : 'female'}
-              seed={Math.round(Math.random() * 100)}
-            />
+            <CharacterAvatar character={this.state.character} />
           </div>
           <div className='ten wide column'>
             <CharacterDetails character={this.state.character} />

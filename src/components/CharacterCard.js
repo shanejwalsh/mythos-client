@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
-import { Card, Icon } from 'semantic-ui-react'
+import { Card, Icon, Image } from 'semantic-ui-react'
+import { titleCase } from '../lib/Helper'
 
 const CharacterCard = props => {
   const { id, first_name, last_name, bio, gender, species, alias } = props
@@ -7,18 +8,25 @@ const CharacterCard = props => {
   const footer = (
     <Fragment>
       <Icon name='user outline' />
-      {species}
+      {`${titleCase(species)} ${gender === 'male' ? '♂' : '♀'}`}
     </Fragment>
   )
 
   return (
-    <Card
-      href={`/characters/${id}`}
-      header={`${first_name} ${last_name} (${gender})`}
-      meta={`AKA '${alias}'`}
-      description={bio}
-      extra={footer}
-    />
+    <Card href={`characters/${id}`}>
+      <Card.Content>
+        <Image
+          floated='right'
+          size='mini'
+          src={`https://avatars.dicebear.com/v2/${gender}/${id}.svg`}
+        />
+        <Card.Header>{`${first_name} ${last_name}`}</Card.Header>
+        <Card.Meta>{`AKA '${alias}'`}</Card.Meta>
+        <Card.Description>{bio}</Card.Description>
+      </Card.Content>
+
+      <Card.Content extra>{footer}</Card.Content>
+    </Card>
   )
 }
 export default CharacterCard
