@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { Component } from "react";
+import { NavLink } from "react-router-dom";
 
 import {
   Icon,
@@ -9,58 +9,58 @@ import {
   Segment,
   Visibility,
   Header
-} from 'semantic-ui-react'
+} from "semantic-ui-react";
 
 class Navbar extends Component {
-  state = {}
+  state = {};
 
   headerText = () => {
     return (
       <Container
         style={{
-          padding: '2em 0em'
+          padding: "2em 0em"
         }}
         text
       >
         <Header
-          content='Welcome to'
+          content="Welcome to"
           style={{
-            fontSize: '4em',
-            fontWeight: 'normal',
+            fontSize: "4em",
+            fontWeight: "normal",
             marginBottom: 0
           }}
-          as='h3'
+          as="h3"
           inverted
         />
         <Header
-          content='MYTHOS'
+          content="MYTHOS"
           style={{
-            fontSize: '7em',
-            fontWeight: 'bold',
+            fontSize: "7em",
+            fontWeight: "bold",
             marginBottom: 0
           }}
-          as='h1'
+          as="h1"
           inverted
-          color='blue'
+          color="blue"
         />
         <Header
-          as='h2'
-          content='Create and manage a universe of characters'
+          as="h2"
+          content="Create and manage a universe of characters"
           inverted
         />
-        <Button primary size='huge'>
+        <Button primary size="huge">
           Get Started
-          <Icon name='right arrow' />
+          <Icon name="right arrow" />
         </Button>
       </Container>
-    )
-  }
+    );
+  };
 
-  hideFixedMenu = () => this.setState({ fixed: false })
-  showFixedMenu = () => this.setState({ fixed: true })
+  hideFixedMenu = () => this.setState({ fixed: false });
+  showFixedMenu = () => this.setState({ fixed: true });
 
   render() {
-    const { fixed } = this.state
+    const { fixed } = this.state;
 
     return (
       <Visibility
@@ -70,40 +70,45 @@ class Navbar extends Component {
       >
         <Segment
           inverted
-          textAlign='center'
-          style={{ height: '100vh', padding: '1em 0em' }}
+          textAlign="center"
+          style={{ height: "100vh", padding: "1em 0em" }}
           vertical
         >
           <Menu
-            fixed={fixed ? 'top' : null}
+            fixed={fixed ? "top" : null}
             inverted={!fixed}
             pointing={!fixed}
             secondary={!fixed}
-            size='large'
+            size="large"
           >
             <Container>
               <Menu.Item active>
-                <NavLink to='/' exact>
+                <NavLink to="/" exact>
                   About
                 </NavLink>
               </Menu.Item>
               <Menu.Item>
-                <NavLink to='/characters' exact>
+                <NavLink to="/characters" exact>
                   Character Library
                 </NavLink>
               </Menu.Item>
               <Menu.Item>
-                <NavLink to='/account' exact>
+                <NavLink to="/characters/new" exact>
+                  Create Character
+                </NavLink>
+              </Menu.Item>
+              <Menu.Item>
+                <NavLink to="/account" exact>
                   My Account
                 </NavLink>
               </Menu.Item>
 
-              <Menu.Item position='right'>
+              <Menu.Item position="right">
                 <Button inverted={!fixed}>Log in</Button>
                 <Button
                   inverted={!fixed}
                   primary={fixed}
-                  style={{ marginLeft: '0.5em' }}
+                  style={{ marginLeft: "0.5em" }}
                 >
                   Sign Up
                 </Button>
@@ -113,7 +118,7 @@ class Navbar extends Component {
           {this.headerText()}
         </Segment>
       </Visibility>
-    )
+    );
   }
 }
-export default Navbar
+export default Navbar;
