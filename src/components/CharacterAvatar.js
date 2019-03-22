@@ -5,8 +5,8 @@ const CharacterAvatar = props => {
   return (
     <Card
       header='Avatar'
-      image={`https://avatars.dicebear.com/v2/${props.gender}/${
-        props.seed
+      image={`https://avatars.dicebear.com/v2/${props.character.gender}/${
+        props.character.id
       }.svg?`}
       description='GENERIC PLACEHOLDER'
     />
