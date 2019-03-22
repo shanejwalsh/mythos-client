@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import API from '../adapters/API'
-import CharacterContainer from '../containers/CharacterContainer'
+import CharactersContainer from '../containers/CharactersContainer'
 
 class CharacterIndex extends Component {
   state = {
@@ -13,12 +13,7 @@ class CharacterIndex extends Component {
     )
 
   render() {
-    return (
-      <Fragment>
-        <h1>All Characters:</h1>
-        <CharacterContainer characters={this.state.allCharacters} />
-      </Fragment>
-    )
+    return <CharactersContainer characters={this.state.allCharacters} />
   }
 }
 export default CharacterIndex

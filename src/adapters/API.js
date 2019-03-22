@@ -18,8 +18,12 @@ const createCharacter = character => {
   fetch(CHAR_URL, options).then(resp => resp.json());
 };
 
+const getCharacterById = id =>
+  fetch(`${CHAR_URL}/${id}`).then(resp => resp.json());
+
 export default {
   getAllCharacters,
   deleteCharacter,
-  createCharacter
+  createCharacter,
+  getCharacterById
 };

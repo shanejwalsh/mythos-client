@@ -15,7 +15,7 @@ const CharacterCard = props => {
 
   return (
     <Card
-      href="#"
+      href={`/characters/${id}`}
       header={`${first_name} ${last_name} (${gender})`}
       meta={`AKA '${alias}'`}
       description={bio}
