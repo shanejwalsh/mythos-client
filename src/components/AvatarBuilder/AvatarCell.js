@@ -1,21 +1,15 @@
 import React from 'react'
-import styled from 'styled-components'
-
-const Cell = styled.div`
-  background-color: ${props => (props.color ? props.color : '#000000')};
-  width: 6.25%;
-  padding-bottom: 6.25%;
-  border: solid;
-  cursor: cell;
-  font-size: 16px;
-  line-height: 0px;
-  float: left;
-  border: 1px solid #585858;
-  border-width: 0 1px 1px 0;
-`
 
 const AvatarCell = props => {
-  return <Cell />
+  const cellsStyle = {
+    backgroundColor: `${props.color}`,
+    width: '6.25%',
+    paddingBottom: '6.25%',
+    border: '0.5px solid #d9e3f0',
+    cursor: 'pointer',
+    float: 'left'
+  }
+  return <div onClick={() => props.handleClick(props.id)} style={cellsStyle} />
 }
 
 export default AvatarCell

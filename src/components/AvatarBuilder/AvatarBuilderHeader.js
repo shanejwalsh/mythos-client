@@ -10,7 +10,7 @@ const AvatarBuilderHeader = props => {
       >
         Go Back
       </Button>
-      <h1>Edit your Avatar</h1>
+      <h1>Edit Your Avatar</h1>
     </span>
   )
 }

@@ -17,7 +17,7 @@ const CharacterCard = props => {
     <Card as={Link} to={`characters/${id}`}>
       <Card.Content>
         <Image
-          floated='right'
+          floated='left'
           size='mini'
           src={`https://avatars.dicebear.com/v2/${gender}/${id}.svg`}
         />
