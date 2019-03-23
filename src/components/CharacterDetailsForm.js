@@ -1,26 +1,26 @@
-import React, { Fragment } from "react"
-import { Form, Button, Input, Label, Icon, Container } from "semantic-ui-react"
-import API from "../adapters/API"
+import React from 'react'
+import { Form, Button, Input, Container } from 'semantic-ui-react'
+import API from '../adapters/API'
 
 export default class CharacterDetailsForm extends React.Component {
   state = {
-    first_name: "",
-    last_name: "",
-    alias: "",
-    motto: "",
-    species: "",
-    bio: "",
-    alignment: "",
-    traits_positive: "",
-    traits_negative: "",
-    age: "",
-    status: "",
-    feats: ""
+    first_name: '',
+    last_name: '',
+    alias: '',
+    motto: '',
+    species: '',
+    bio: '',
+    alignment: '',
+    traits_positive: '',
+    traits_negative: '',
+    age: '',
+    status: '',
+    feats: ''
   }
 
   handleSubmit = () => {
     API.createCharacter(this.state)
-    alert("char created BOIIIIIIII!")
+    alert('char created BOIIIIIIII!')
   }
 
   componentDidMount = () => this.randomizeAll()

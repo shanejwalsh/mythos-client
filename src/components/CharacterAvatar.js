@@ -4,6 +4,7 @@ import { Card } from 'semantic-ui-react'
 const CharacterAvatar = props => {
   return (
     <Card
+      onClick={props.handleClick}
       header='Avatar'
       image={`https://avatars.dicebear.com/v2/${props.character.gender}/${
         props.character.id

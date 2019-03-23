@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Container } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
-import { titleCase } from '../lib/Helper'
+import { titleCase } from '../lib/helper'
 
 class CharacterDetails extends Component {
   render() {
@@ -19,7 +19,7 @@ class CharacterDetails extends Component {
       traits_positive,
       traits_negative
     } = this.props.character
-    console.log(species)
+
     return (
       <Container>
         <Link to='/characters'>Back to all Characters</Link>
