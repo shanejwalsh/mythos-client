@@ -7,8 +7,10 @@ const NEW_CHAR_URL = BASE_URL + "/generate/full_character"
 
 const getAllCharacters = () => fetch(CHAR_URL).then(resp => resp.json())
 
-const deleteCharacter = id =>
-  fetch(CHAR_URL + `/${id}`, { method: "DELETE" }).then(resp => resp.json())
+const getCharacterById = id =>
+  fetch(`${CHAR_URL}/${id}`).then(resp => resp.json())
+
+const generateNewCharacter = () => fetch(NEW_CHAR_URL).then(resp => resp.json())
 
 const createCharacter = character => {
   const options = {
@@ -17,13 +19,21 @@ const createCharacter = character => {
     body: JSON.stringify(character)
   }
 
-  fetch(CHAR_URL, options).then(resp => resp.json())
+  return fetch(CHAR_URL, options).then(resp => resp.json())
 }
 
-const getCharacterById = id =>
-  fetch(`${CHAR_URL}/${id}`).then(resp => resp.json())
+const updateCharacter = character => {
+  const options = {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(character)
+  }
 
-const generateNewCharacter = () => fetch(NEW_CHAR_URL).then(resp => resp.json())
+  return fetch(CHAR_URL + `/${character.id}`, options).then(resp => resp.json())
+}
+
+const deleteCharacter = id =>
+  fetch(CHAR_URL + `/${id}`, { method: "DELETE" }).then(resp => resp.json())
 
 export default {
   getAllCharacters,

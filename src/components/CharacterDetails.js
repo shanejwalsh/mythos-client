@@ -1,11 +1,12 @@
-import React, { Component } from 'react'
-import { Container } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
-import { titleCase } from '../lib/helper'
+import React, { Component } from "react"
+import { Container, Button } from "semantic-ui-react"
+import { Link } from "react-router-dom"
+import { titleCase } from "../lib/Helper.js"
 
 class CharacterDetails extends Component {
   render() {
     const {
+      id,
       first_name,
       last_name,
       alias,
@@ -32,11 +33,11 @@ class CharacterDetails extends Component {
           <b>Species: </b> {titleCase(species)} <br />
           <b>Age: </b> {age} <br />
           <b>Status: </b> {status} <br />
-          <b>Alignment: </b> {alignment} <br />
+          <b>Alignment: </b> {titleCase(alignment)} <br />
           <br />
           <b>Bio: </b> {bio} <br />
           <br />
-          <b>Positive Traits:</b>
+          <b>Positive Traits: </b>
           {traits_positive}
           {/* <ul>
             {traits_positive.split(',').map(trait => (
@@ -44,10 +45,13 @@ class CharacterDetails extends Component {
             ))}
           </ul> */}
           <br />
-          <b>Negative Traits:</b>
+          <b>Negative Traits: </b>
           {traits_negative}
           <br />
         </p>
+        <Button as={Link} onClick={() => console.log(id)}>
+          Edit Character
+        </Button>
       </Container>
     )
   }

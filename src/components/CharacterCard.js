@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react'
-import { Card, Icon, Image } from 'semantic-ui-react'
-import { titleCase } from '../lib/helper'
-import { Link } from 'react-router-dom'
+import React, { Fragment } from "react"
+import { Card, Icon, Image } from "semantic-ui-react"
+import { titleCase } from "../lib/Helper.js"
+import { Link } from "react-router-dom"
 
 const CharacterCard = props => {
   const { id, first_name, last_name, bio, gender, species, alias } = props
@@ -9,7 +9,7 @@ const CharacterCard = props => {
   const footer = (
     <Fragment>
       <Icon name='user outline' />
-      {`${titleCase(species)} ${gender === 'male' ? '♂' : '♀'}`}
+      {`${titleCase(species)} ${gender === "male" ? "♂" : "♀"}`}
     </Fragment>
   )
 
