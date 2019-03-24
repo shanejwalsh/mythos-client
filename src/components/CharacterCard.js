@@ -4,7 +4,16 @@ import { titleCase } from '../lib/helper'
 import { Link } from 'react-router-dom'
 
 const CharacterCard = props => {
-  const { id, first_name, last_name, bio, gender, species, alias } = props
+  const {
+    id,
+    first_name,
+    last_name,
+    bio,
+    gender,
+    species,
+    alias,
+    sprite_data
+  } = props
 
   const footer = (
     <Fragment>
