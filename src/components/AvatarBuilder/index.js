@@ -19,6 +19,7 @@ class AvatarBuilder extends Component {
   generateCSS = (pixelSize, reactFormat = true) => {
     let generatedBoxShadow = ''
     this.state.cellColors.forEach((color, i) => {
+      if (color === this.BASE_COLOR()) return // ignore default cells
       const cellRow = Math.ceil((i + 1) / 16) * pixelSize
       let cellColumn = ((i + 1) % 16) * pixelSize
       if (cellColumn === 0) cellColumn = 16 * pixelSize

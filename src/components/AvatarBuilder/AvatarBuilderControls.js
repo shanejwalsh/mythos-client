@@ -136,7 +136,7 @@ class AvatarBuilderControls extends Component {
                 </h3>
                 <p>
                   Just copy the CSS below, include it in your web project and
-                  giv a 'div' element the class 'my-avatar', thats it! Logic and
+                  giv a div element the class my-avatar, thats it! Logic and
                   design influenced by the amazing git project at &nbsp;
                   <a href='https://www.pixelartcss.com/'>
                     https://www.pixelartcss.com/
@@ -166,7 +166,12 @@ class AvatarBuilderControls extends Component {
               <Modal.Content>
                 <p>
                   Make sure to save to keep your changes before leaving the
-                  avatar editing page
+                  avatar editing page.
+                  <br />
+                  <br />
+                  <b>Please note</b> - any cells left the default color (or
+                  cleared with the eraser) will be previewed and saved as
+                  transparent.
                 </p>
                 <div style={this.props.avatarCSS} />
               </Modal.Content>

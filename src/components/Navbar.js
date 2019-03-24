@@ -1,124 +1,78 @@
-import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
 import {
-  Icon,
   Container,
   Button,
   Menu,
   Segment,
   Visibility,
-  Header
-} from "semantic-ui-react";
+  Responsive
+} from 'semantic-ui-react'
 
 class Navbar extends Component {
-  state = {};
+  state = {}
 
-  headerText = () => {
-    return (
-      <Container
-        style={{
-          padding: "2em 0em"
-        }}
-        text
-      >
-        <Header
-          content="Welcome to"
-          style={{
-            fontSize: "4em",
-            fontWeight: "normal",
-            marginBottom: 0
-          }}
-          as="h3"
-          inverted
-        />
-        <Header
-          content="MYTHOS"
-          style={{
-            fontSize: "7em",
-            fontWeight: "bold",
-            marginBottom: 0
-          }}
-          as="h1"
-          inverted
-          color="blue"
-        />
-        <Header
-          as="h2"
-          content="Create and manage a universe of characters"
-          inverted
-        />
-        <Button primary size="huge">
-          Get Started
-          <Icon name="right arrow" />
-        </Button>
-      </Container>
-    );
-  };
-
-  hideFixedMenu = () => this.setState({ fixed: false });
-  showFixedMenu = () => this.setState({ fixed: true });
+  hideFixedMenu = () => this.setState({ fixed: false })
+  showFixedMenu = () => this.setState({ fixed: true })
 
   render() {
-    const { fixed } = this.state;
+    const { fixed } = this.state
+    const getWidth = () => {
+      const isSSR = typeof window === 'undefined'
+      return isSSR ? Responsive.onlyTablet.minWidth : window.innerWidth
+    }
 
     return (
-      <Visibility
-        once={false}
-        onBottomPassed={this.showFixedMenu}
-        onBottomPassedReverse={this.hideFixedMenu}
-      >
-        <Segment
-          inverted
-          textAlign="center"
-          style={{ height: "100vh", padding: "1em 0em" }}
-          vertical
+      <Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
+        <Visibility
+          once={false}
+          onBottomPassed={this.showFixedMenu}
+          onBottomPassedReverse={this.hideFixedMenu}
         >
-          <Menu
-            fixed={fixed ? "top" : null}
-            inverted={!fixed}
-            pointing={!fixed}
-            secondary={!fixed}
-            size="large"
+          <Segment
+            inverted
+            textAlign='center'
+            style={{ height: '75px' }}
+            vertical
           >
-            <Container>
-              <Menu.Item active>
-                <NavLink to="/" exact>
+            <Menu
+              fixed={fixed ? 'top' : null}
+              inverted={!fixed}
+              pointing={!fixed}
+              secondary={!fixed}
+              size='large'
+            >
+              <Container>
+                <Menu.Item as={Link} to='/' active>
                   About
-                </NavLink>
-              </Menu.Item>
-              <Menu.Item>
-                <NavLink to="/characters" exact>
+                </Menu.Item>
+                <Menu.Item as={Link} to='/characters'>
                   Character Library
-                </NavLink>
-              </Menu.Item>
-              <Menu.Item>
-                <NavLink to="/characters/new" exact>
+                </Menu.Item>
+                <Menu.Item as={Link} to='/characters/new'>
                   Create Character
-                </NavLink>
-              </Menu.Item>
-              <Menu.Item>
-                <NavLink to="/account" exact>
+                </Menu.Item>
+                <Menu.Item as={Link} to='/characters/new'>
                   My Account
-                </NavLink>
-              </Menu.Item>
+                </Menu.Item>
 
-              <Menu.Item position="right">
-                <Button inverted={!fixed}>Log in</Button>
-                <Button
-                  inverted={!fixed}
-                  primary={fixed}
-                  style={{ marginLeft: "0.5em" }}
-                >
-                  Sign Up
-                </Button>
-              </Menu.Item>
-            </Container>
-          </Menu>
-          {this.headerText()}
-        </Segment>
-      </Visibility>
-    );
+                <Menu.Item position='right'>
+                  <Button inverted={!fixed}>Log in</Button>
+                  <Button
+                    inverted={!fixed}
+                    primary={fixed}
+                    style={{ marginLeft: '0.5em' }}
+                  >
+                    Sign Up
+                  </Button>
+                </Menu.Item>
+              </Container>
+            </Menu>
+          </Segment>
+        </Visibility>
+      </Responsive>
+    )
   }
 }
-export default Navbar;
+export default Navbar
