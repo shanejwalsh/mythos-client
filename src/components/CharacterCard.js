@@ -29,16 +29,19 @@ const CharacterCard = props => {
       <Card.Content>
         <div
           style={{
-            ...generateCSS({
+            height: GRID_SIZE * 3.5,
+            width: GRID_SIZE * 3.5,
+            float: 'right'
+          }}
+        >
+          <div
+            style={generateCSS({
               cellColors: sprite_data.split(','),
               pixelSize: 3,
               cssFormat: false
-            }),
-            float: 'right',
-            marginRight: GRID_SIZE * 3,
-            marginBottom: '1px'
-          }}
-        />
+            })}
+          />
+        </div>
 
         <Card.Header>{`${first_name} ${last_name}`}</Card.Header>
         <Card.Meta>{`AKA '${alias}'`}</Card.Meta>

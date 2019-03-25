@@ -188,6 +188,12 @@ class AvatarBuilderControls extends Component {
           <div style={this.props.avatarCSS} />
         </Modal.Content>
       </Modal>
+      <Button
+        onClick={this.props.saveAvatar}
+        content='Save'
+        icon='save'
+        color='green'
+      />
     </Fragment>
   )
   render() {

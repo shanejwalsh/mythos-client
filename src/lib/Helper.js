@@ -19,7 +19,7 @@ export const generateCSS = ({
   cellColors = [],
   pixelSize = 10,
   cssFormat = true
-}) => {
+} = {}) => {
   let generatedBoxShadow = ''
 
   cellColors.forEach((color, i) => {

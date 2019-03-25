@@ -24,6 +24,7 @@ class CharacterDetailsContainer extends Component {
       <Container>
         {viewMode === 'edit-avatar' && (
           <AvatarBuilder
+            characterId={this.state.character.id}
             cellColors={this.state.character.sprite_data.split(',')}
             setDisplayMode={() => this.setState({ view: 'display' })}
           />
@@ -36,17 +37,17 @@ class CharacterDetailsContainer extends Component {
                 <Icon name='arrow left' />
                 All Characters
               </Button>
-
-              <div
-                style={generateCSS({
-                  cellColors: this.state.character.sprite_data.split(','),
-                  pixelSize: 12,
-                  cssFormat: false
-                })}
-              />
-
+              <div style={{ height: GRID_SIZE * 13, width: GRID_SIZE * 13 }}>
+                <div
+                  style={generateCSS({
+                    cellColors: this.state.character.sprite_data.split(','),
+                    pixelSize: 12,
+                    cssFormat: false
+                  })}
+                />
+              </div>
               <Button
-                style={{ float: 'right', marginTop: GRID_SIZE * 13 }}
+                style={{ float: 'right' }}
                 onClick={() => this.setState({ view: 'edit-avatar' })}
                 icon
                 labelPosition='left'
@@ -55,7 +56,7 @@ class CharacterDetailsContainer extends Component {
                 Edit Avatar
               </Button>
             </div>
-            <div className='ten wide column'>
+            <div className='tweleve wide column'>
               <CharacterDetails character={this.state.character} />
             </div>
           </div>
