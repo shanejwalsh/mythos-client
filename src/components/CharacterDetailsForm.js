@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { Fragment } from "react"
 import { Form, Button, Input, Container } from "semantic-ui-react"
 import API from "../adapters/API"
@@ -34,28 +33,6 @@ export default class CharacterDetailsForm extends React.Component {
       "feats",
       "gender"
     ]
-=======
-import React from 'react'
-import { Form, Button, Input, Container } from 'semantic-ui-react'
-import API from '../adapters/API'
-
-export default class CharacterDetailsForm extends React.Component {
-  state = {
-    id: '',
-    first_name: '',
-    last_name: '',
-    alias: '',
-    motto: '',
-    species: '',
-    bio: '',
-    alignment: '',
-    traits_positive: '',
-    traits_negative: '',
-    age: '',
-    status: '',
-    feats: '',
-    edit: true
->>>>>>> 261acb6e6aca239350b6a714f10026c205729213
   }
 
   handleSubmit = () => {
@@ -63,12 +40,12 @@ export default class CharacterDetailsForm extends React.Component {
       API.updateCharacter(this.state)
     } else {
       API.createCharacter(this.state)
-      alert('char created BOIIIIIIII!')
+      alert("char created BOIIIIIIII!")
     }
   }
 
   componentDidMount = () => {
-    if (this.props.match.path.includes('edit')) {
+    if (this.props.match.path.includes("edit")) {
       API.getCharacterById(this.props.match.params.id).then(character =>
         this.setState({ ...character })
       )
@@ -144,7 +121,7 @@ export default class CharacterDetailsForm extends React.Component {
   render() {
     return (
       <Container>
-        <h1>{this.state.edit ? 'Edit Character ' : 'Create Character'}</h1>
+        <h1>{this.state.edit ? "Edit Character " : "Create Character"}</h1>
         {!this.state.edit ? (
           <Button
             onClick={this.randomizeUnlockedAttributes}
@@ -258,7 +235,7 @@ export default class CharacterDetailsForm extends React.Component {
           {this.addButtonsToInput("feats")}
           <hr />
           <Button color='green' fluid>
-            {this.state.edit ? 'Update Character' : 'Create Character'}
+            {this.state.edit ? "Update Character" : "Create Character"}
           </Button>
         </Form>
       </Container>
