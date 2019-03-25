@@ -23,14 +23,14 @@ const createCharacter = character => {
   return fetch(CHAR_URL, options).then(resp => resp.json())
 }
 
-const updateCharacter = (id, character) => {
+const updateCharacter = character => {
   const options = {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(character)
   }
 
-  return fetch(CHAR_URL + `/${id}`, options).then(resp => resp.json())
+  return fetch(CHAR_URL + `/${character.id}`, options).then(resp => resp.json())
 }
 
 const deleteCharacter = id =>

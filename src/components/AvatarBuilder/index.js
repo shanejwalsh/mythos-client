@@ -4,6 +4,7 @@ import AvatarBuilderControls from './AvatarBuilderControls'
 import AvatarBuilderHeader from './AvatarBuilderHeader'
 import { BASE_COLOR, GRID_SIZE } from '../../config/config'
 import { generateCSS } from '../../lib/helper'
+import API from '../../adapters/API'
 
 class AvatarBuilder extends Component {
   state = {
@@ -12,6 +13,14 @@ class AvatarBuilder extends Component {
     displayExtraPicker: false,
     mode: 'brush',
     avatarCSS: {}
+  }
+
+  //Updates Character Sprite Data on Server
+  updateCharacterSprite = () => {
+    API.updateCharacter({
+      id: this.props.characterId,
+      sprite_data: this.state.cellColors.join(',')
+    })
   }
 
   //Fill the grid with characters colors, if empty create blank grid
@@ -80,6 +89,7 @@ class AvatarBuilder extends Component {
         >
           <div className='five wide column'>
             <AvatarBuilderControls
+              saveAvatar={this.updateCharacterSprite}
               handlePreview={() =>
                 this.setState({
                   avatarCSS: generateCSS({
