@@ -31,7 +31,7 @@ const CharacterCard = props => {
           style={{
             height: GRID_SIZE * 3.5,
             width: GRID_SIZE * 3.5,
-            float: 'right'
+            float: 'left'
           }}
         >
           <div
