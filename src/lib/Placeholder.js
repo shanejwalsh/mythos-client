@@ -1,5 +1,5 @@
-import React from 'react'
-import { Grid, Placeholder, Segment } from 'semantic-ui-react'
+import React from "react"
+import { Grid, Placeholder, Segment } from "semantic-ui-react"
 
 export const PlaceholderGrid = () =>
   [1, 2, 3].map(i => (

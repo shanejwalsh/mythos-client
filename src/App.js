@@ -1,11 +1,11 @@
-import React, { Component, Fragment } from 'react'
-import { Switch, Route } from 'react-router-dom'
-import './App.css'
-import CharacterIndex from './components/CharacterIndex'
-import Navbar from './components/Navbar'
-import CharacterDetailsContainer from './containers/CharacterDetailsContainer'
-import CharacterDetailsForm from './components/CharacterDetailsForm'
-import About from './components/About'
+import React, { Component, Fragment } from "react"
+import { Switch, Route } from "react-router-dom"
+import "./App.css"
+import CharacterIndex from "./components/CharacterIndex"
+import Navbar from "./components/Navbar"
+import CharacterDetailsContainer from "./containers/CharacterDetailsContainer"
+import CharacterDetailsForm from "./components/CharacterDetailsForm"
+import About from "./components/About"
 
 class App extends Component {
   render() {
@@ -19,6 +19,11 @@ class App extends Component {
             exact
             path='/characters/new'
             component={CharacterDetailsForm}
+          />
+          <Route
+            exact
+            path='/characters/:id/edit'
+            component={routerProps => <CharacterDetailsForm {...routerProps} />}
           />
           <Route
             path='/characters/:id'

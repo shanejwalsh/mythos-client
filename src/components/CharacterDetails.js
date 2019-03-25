@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { Container, Button } from "semantic-ui-react"
 import { Link } from "react-router-dom"
-import { titleCase } from "../lib/Helper.js"
+import { titleCase } from "../lib/helper"
 
 class CharacterDetails extends Component {
   render() {
@@ -49,7 +49,11 @@ class CharacterDetails extends Component {
           {traits_negative}
           <br />
         </p>
-        <Button as={Link} onClick={() => console.log(id)}>
+        <Button
+          as={Link}
+          to={`/characters/${id}/edit`}
+          onClick={() => console.log(id)}
+        >
           Edit Character
         </Button>
       </Container>

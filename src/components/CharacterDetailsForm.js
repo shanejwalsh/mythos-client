@@ -1,29 +1,43 @@
-import React from 'react'
-import { Form, Button, Input, Container } from 'semantic-ui-react'
-import API from '../adapters/API'
+import React from "react"
+import { Form, Button, Input, Container } from "semantic-ui-react"
+import API from "../adapters/API"
 
 export default class CharacterDetailsForm extends React.Component {
   state = {
-    first_name: '',
-    last_name: '',
-    alias: '',
-    motto: '',
-    species: '',
-    bio: '',
-    alignment: '',
-    traits_positive: '',
-    traits_negative: '',
-    age: '',
-    status: '',
-    feats: ''
+    first_name: "",
+    last_name: "",
+    alias: "",
+    motto: "",
+    species: "",
+    bio: "",
+    alignment: "",
+    traits_positive: "",
+    traits_negative: "",
+    age: "",
+    status: "",
+    feats: "",
+    edit: true
   }
 
   handleSubmit = () => {
-    API.createCharacter(this.state)
-    alert('char created BOIIIIIIII!')
+    if (this.state.edit) {
+      API.updateCharacter(this.props.match.params.id, this.state)
+    } else {
+      API.createCharacter(this.state)
+      alert("char created BOIIIIIIII!")
+    }
   }
 
-  componentDidMount = () => this.randomizeAll()
+  componentDidMount = () => {
+    if (this.props.match.path.includes("edit")) {
+      API.getCharacterById(this.props.match.params.id).then(character =>
+        this.setState({ ...character })
+      )
+    } else {
+      this.setState({ edit: false })
+      this.randomizeAll()
+    }
+  }
 
   randomizeAll = () =>
     API.generateNewCharacter().then(character =>
@@ -37,13 +51,15 @@ export default class CharacterDetailsForm extends React.Component {
   render() {
     return (
       <Container>
-        <h1>Create Character </h1>
-        <Button
-          onClick={this.randomizeAll}
-          content='Randomize'
-          icon='random'
-          color='violet'
-        />
+        <h1>{this.state.edit ? "Edit Character " : "Create Character"}</h1>
+        {!this.state.edit ? (
+          <Button
+            onClick={this.randomizeAll}
+            content='Randomize'
+            icon='random'
+            color='violet'
+          />
+        ) : null}
         <hr />
         <Form onSubmit={this.handleSubmit}>
           <Input
@@ -59,6 +75,13 @@ export default class CharacterDetailsForm extends React.Component {
             onChange={this.handleChange}
             name='last_name'
             value={this.state.last_name}
+          />
+          <Input
+            fluid
+            label='Species'
+            onChange={this.handleChange}
+            name='species'
+            value={this.state.species}
           />
           <Input
             fluid
@@ -133,7 +156,8 @@ export default class CharacterDetailsForm extends React.Component {
           />
           <hr />
           <Button color='green' fluid>
-            Create Character
+            {" "}
+            {this.state.edit ? "Update Character" : "Create Character"}
           </Button>
         </Form>
       </Container>

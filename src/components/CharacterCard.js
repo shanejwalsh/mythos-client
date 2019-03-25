@@ -1,6 +1,6 @@
 import React, { Fragment } from "react"
 import { Card, Icon, Image } from "semantic-ui-react"
-import { titleCase } from "../lib/Helper.js"
+import { titleCase } from "../lib/helper"
 import { Link } from "react-router-dom"
 
 const CharacterCard = props => {
