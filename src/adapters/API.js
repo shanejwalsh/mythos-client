@@ -1,5 +1,5 @@
 const BASE_URL = window.location.href.includes("ngrok")
-  ? "https://a200359b.ngrok.io/api/v1"
+  ? "https://11e9b152.ngrok.io/api/v1"
   : "http://localhost:3000/api/v1"
 
 const CHAR_URL = BASE_URL + "/characters"

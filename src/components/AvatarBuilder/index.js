@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react'
 import AvatarCellGrid from './AvatarCellGrid'
 import AvatarBuilderControls from './AvatarBuilderControls'
 import AvatarBuilderHeader from './AvatarBuilderHeader'
+import { BASE_COLOR, GRID_SIZE } from '../../config/config'
+import { generateCSS } from '../../lib/helper'
 
 class AvatarBuilder extends Component {
   state = {
@@ -9,76 +11,64 @@ class AvatarBuilder extends Component {
     selectedColor: '#f44336',
     displayExtraPicker: false,
     mode: 'brush',
-    dropperActive: false,
-    eraserActive: false,
     avatarCSS: {}
   }
 
-  BASE_COLOR = () => '#585858'
-
-  generateCSS = (pixelSize, reactFormat = true) => {
-    let generatedBoxShadow = ''
-    this.state.cellColors.forEach((color, i) => {
-      if (color === this.BASE_COLOR()) return // ignore default cells
-      const cellRow = Math.ceil((i + 1) / 16) * pixelSize
-      let cellColumn = ((i + 1) % 16) * pixelSize
-      if (cellColumn === 0) cellColumn = 16 * pixelSize
-      generatedBoxShadow += `${cellColumn}px ${cellRow}px 0 0 ${color}, `
-    })
-    generatedBoxShadow = generatedBoxShadow.slice(0, -2) // remove trailing ', '
-    //return CSS in a standard format
-    if (reactFormat === false) {
-      return `.my-avatar {
-        height: ${pixelSize}px;
-        width: ${pixelSize}px;
-        box-shadow: ${generatedBoxShadow} ;
-      }`
-    }
-
-    return {
-      boxShadow: generatedBoxShadow,
-      height: `${pixelSize}px`,
-      width: `${pixelSize}px`
+  //Fill the grid with characters colors, if empty create blank grid
+  componentDidMount = () => {
+    if (this.props.sprite_data !== []) {
+      this.setState({ cellColors: this.props.cellColors })
+    } else {
+      this.setState({ cellColors: this.buildGrid(BASE_COLOR) })
     }
   }
 
-  componentDidMount = () =>
-    this.setState({ cellColors: this.buildGrid(this.BASE_COLOR()) })
+  //Build a grid of the correct size filled with a given color
+  buildGrid = (color = BASE_COLOR) =>
+    new Array(GRID_SIZE * GRID_SIZE).fill(color)
 
-  buildGrid = color => new Array(256).fill(color)
-
-  fillGrid = color => {
-    if (color === 'default') color = this.BASE_COLOR()
+  //Fill the grid with a given color
+  fillGrid = (color = BASE_COLOR) => {
     this.setState({ cellColors: this.buildGrid(color) })
   }
 
-  clickCellHandler = id => {
-    //handle dropper
-    if (this.state.mode === 'dropper') {
-      return this.setState({
-        selectedColor: this.state.cellColors[id],
-        mode: 'brush'
-      })
-    }
-    //handle eraser action
-    let newColorArray = this.state.cellColors
-    if (this.state.mode === 'eraser') {
-      newColorArray[id] = this.BASE_COLOR()
-      return this.setState({ cellColors: newColorArray })
-    }
-    if (this.state.mode === 'exchange') {
-      const oldColor = newColorArray[id]
-      newColorArray = newColorArray.map(color =>
-        color === oldColor ? this.state.selectedColor : color
-      )
-      return this.setState({ cellColors: newColorArray, mode: 'brush' })
-    }
-    //handle normal fill action
-    newColorArray[id] = this.state.selectedColor
+  //Change selected color to the clicked cell than go back to brush mode
+  dropperHandler = id =>
+    this.setState({
+      selectedColor: this.state.cellColors[id],
+      mode: 'brush'
+    })
+
+  //Set the color of clicked cell to base and update array
+  eraserHandler = id => {
+    const newColorArray = this.state.cellColors
+    newColorArray[id] = BASE_COLOR
     this.setState({ cellColors: newColorArray })
   }
 
-  setActiveColor = color => this.setState({ selectedColor: color.hex })
+  //Swap all cells of the old color with the new color
+  exchangeHandler = id => {
+    let newColorArray = this.state.cellColors
+    const oldColor = newColorArray[id]
+    newColorArray = newColorArray.map(color =>
+      color === oldColor ? this.state.selectedColor : color
+    )
+    this.setState({ cellColors: newColorArray, mode: 'brush' })
+  }
+
+  //Handle cell click depending on current mode
+  clickCellHandler = id => {
+    //handle dropper mode
+    if (this.state.mode === 'dropper') return this.dropperHandler(id)
+    //handle eraser mode
+    if (this.state.mode === 'eraser') return this.eraserHandler(id)
+    //handle exchange mode
+    if (this.state.mode === 'exchange') return this.exchangeHandler(id)
+    //handle normal fill action
+    const newColorArray = this.state.cellColors
+    newColorArray[id] = this.state.selectedColor
+    this.setState({ cellColors: newColorArray })
+  }
 
   render() {
     return (
@@ -91,9 +81,15 @@ class AvatarBuilder extends Component {
           <div className='five wide column'>
             <AvatarBuilderControls
               handlePreview={() =>
-                this.setState({ avatarCSS: this.generateCSS(10) })
+                this.setState({
+                  avatarCSS: generateCSS({
+                    cellColors: this.state.cellColors,
+                    pixelSize: 15,
+                    cssFormat: false
+                  })
+                })
               }
-              generateCSS={this.generateCSS}
+              cellColors={this.state.cellColors}
               avatarCSS={this.state.avatarCSS}
               fillGrid={this.fillGrid}
               displayExtraPicker={this.state.displayExtraPicker}
@@ -105,7 +101,9 @@ class AvatarBuilder extends Component {
                 })
               }
               selectedColor={this.state.selectedColor}
-              handleColorChange={this.setActiveColor}
+              handleColorChange={color =>
+                this.setState({ selectedColor: color.hex })
+              }
             />
           </div>
           <div className='one wide column' />
