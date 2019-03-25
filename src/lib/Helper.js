@@ -16,7 +16,7 @@ export const titleCase = sentence =>
 // Default is to return a normal CSS string but optionally
 // can return a React Style Object
 export const generateCSS = ({
-  cellColors,
+  cellColors = [],
   pixelSize = 10,
   cssFormat = true
 }) => {

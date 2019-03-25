@@ -1,7 +1,7 @@
-import React, { Component } from "react"
-import { Container, Button } from "semantic-ui-react"
-import { Link } from "react-router-dom"
-import { titleCase } from "../lib/helper"
+import React, { Component } from 'react'
+import { Container, Button, Icon } from 'semantic-ui-react'
+import { titleCase } from '../lib/helper'
+import { Link } from 'react-router-dom'
 
 class CharacterDetails extends Component {
   render() {
@@ -23,7 +23,6 @@ class CharacterDetails extends Component {
 
     return (
       <Container>
-        <Link to='/characters'>Back to all Characters</Link>
         <h1>
           {first_name} {last_name} ({gender})
         </h1>
@@ -39,11 +38,6 @@ class CharacterDetails extends Component {
           <br />
           <b>Positive Traits: </b>
           {traits_positive}
-          {/* <ul>
-            {traits_positive.split(',').map(trait => (
-              <li>{trait}</li>
-            ))}
-          </ul> */}
           <br />
           <b>Negative Traits: </b>
           {traits_negative}
@@ -52,9 +46,12 @@ class CharacterDetails extends Component {
         <Button
           as={Link}
           to={`/characters/${id}/edit`}
-          onClick={() => console.log(id)}
+          style={{ float: 'right' }}
+          icon
+          labelPosition='left'
         >
-          Edit Character
+          <Icon name='edit outline' />
+          Edit Details
         </Button>
       </Container>
     )

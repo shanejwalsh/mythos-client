@@ -1,7 +1,9 @@
-import React, { Fragment } from "react"
-import { Card, Icon, Image } from "semantic-ui-react"
-import { titleCase } from "../lib/helper"
-import { Link } from "react-router-dom"
+import React, { Fragment } from 'react'
+import { Card, Icon } from 'semantic-ui-react'
+import { titleCase } from '../lib/helper'
+import { Link } from 'react-router-dom'
+import { generateCSS } from '../lib/helper'
+import { GRID_SIZE } from '../config/config'
 
 const CharacterCard = props => {
   const {
@@ -18,18 +20,26 @@ const CharacterCard = props => {
   const footer = (
     <Fragment>
       <Icon name='user outline' />
-      {`${titleCase(species)} ${gender === "male" ? "♂" : "♀"}`}
+      {`${titleCase(species)} ${gender === 'male' ? '♂' : '♀'}`}
     </Fragment>
   )
 
   return (
     <Card as={Link} to={`characters/${id}`}>
       <Card.Content>
-        <Image
-          floated='left'
-          size='mini'
-          src={`https://avatars.dicebear.com/v2/${gender}/${id}.svg`}
+        <div
+          style={{
+            ...generateCSS({
+              cellColors: sprite_data.split(','),
+              pixelSize: 3,
+              cssFormat: false
+            }),
+            float: 'right',
+            marginRight: GRID_SIZE * 3,
+            marginBottom: '1px'
+          }}
         />
+
         <Card.Header>{`${first_name} ${last_name}`}</Card.Header>
         <Card.Meta>{`AKA '${alias}'`}</Card.Meta>
         <Card.Description>{bio}</Card.Description>
