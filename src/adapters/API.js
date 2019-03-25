@@ -4,6 +4,7 @@ const BASE_URL = window.location.href.includes("ngrok")
 
 const CHAR_URL = BASE_URL + "/characters"
 const NEW_CHAR_URL = BASE_URL + "/generate/full_character"
+const GENERATE_URL = BASE_URL + "/generate/"
 
 const getAllCharacters = () => fetch(CHAR_URL).then(resp => resp.json())
 
@@ -35,44 +36,8 @@ const updateCharacter = (id, character) => {
 const deleteCharacter = id =>
   fetch(CHAR_URL + `/${id}`, { method: "DELETE" }).then(resp => resp.json())
 
-const generateFirstName = () =>
-  fetch(BASE_URL + "generate/first_name").then(resp => resp.json())
-
-const generateLastName = () =>
-  fetch(BASE_URL + "generate/last_name").then(resp => resp.json())
-
-const generateAlias = () =>
-  fetch(BASE_URL + "generate/alias").then(resp => resp.json())
-
-const generateMotto = () =>
-  fetch(BASE_URL + "generate/motto").then(resp => resp.json())
-
-const generateSpecies = () =>
-  fetch(BASE_URL + "generate/species").then(resp => resp.json())
-
-const generateBio = () =>
-  fetch(BASE_URL + "generate/bio").then(resp => resp.json())
-
-const generateAlignment = () =>
-  fetch(BASE_URL + "generate/alignment").then(resp => resp.json())
-
-const generateTraitsPositive = () =>
-  fetch(BASE_URL + "generate/trait_positive").then(resp => resp.json())
-
-const generateTraitsNegative = () =>
-  fetch(BASE_URL + "generate/trait_negative").then(resp => resp.json())
-
-const generateAge = () =>
-  fetch(BASE_URL + "generate/age").then(resp => resp.json())
-
-const generateGender = () =>
-  fetch(BASE_URL + "generate/gender").then(resp => resp.json())
-
-const generateStatus = () =>
-  fetch(BASE_URL + "generate/status").then(resp => resp.json())
-
-const generateFeats = () =>
-  fetch(BASE_URL + "generate/feats").then(resp => resp.json())
+const generateAttribute = attribute =>
+  fetch(GENERATE_URL + `${attribute}`).then(resp => resp.json())
 
 export default {
   getAllCharacters,
@@ -81,17 +46,5 @@ export default {
   getCharacterById,
   generateNewCharacter,
   updateCharacter,
-  generateFirstName,
-  generateLastName,
-  generateAlias,
-  generateMotto,
-  generateSpecies,
-  generateBio,
-  generateAlignment,
-  generateTraitsPositive,
-  generateTraitsNegative,
-  generateAge,
-  generateGender,
-  generateStatus,
-  generateFeats
+  generateAttribute
 }

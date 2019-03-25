@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Fragment } from "react"
 import { Form, Button, Input, Container } from "semantic-ui-react"
 import API from "../adapters/API"
 
@@ -48,6 +48,27 @@ export default class CharacterDetailsForm extends React.Component {
     this.setState({ [event.target.name]: event.target.value })
   }
 
+  handleRandomAttribute = event => {
+    API.generateAttribute(event.target.id).then(attribute =>
+      this.setState({ ...attribute })
+    )
+  }
+
+  addButtonsToInput = attribute => {
+    return (
+      <Fragment>
+        <Button onClick={this.handleRandomAttribute} icon attached='right'>
+          <i id={`${attribute}`} class='random icon' />
+        </Button>
+        <Button animate='fade' icon attached='right'>
+          <Button.Content visable>
+            <i class='lock open icon' />
+          </Button.Content>
+        </Button>
+      </Fragment>
+    )
+  }
+
   render() {
     return (
       <Container>
@@ -61,102 +82,102 @@ export default class CharacterDetailsForm extends React.Component {
           />
         ) : null}
         <hr />
-        <Form onSubmit={this.handleSubmit}>
+        <Form class='ui form' onSubmit={this.handleSubmit}>
           <Input
-            fluid
             label='First Name'
             onChange={this.handleChange}
             name='first_name'
             value={this.state.first_name}
           />
+          {this.addButtonsToInput("first_name")}
+
           <Input
-            fluid
             label='Last Name'
             onChange={this.handleChange}
             name='last_name'
             value={this.state.last_name}
           />
+          {this.addButtonsToInput("last_name")}
           <Input
-            fluid
             label='Species'
             onChange={this.handleChange}
             name='species'
             value={this.state.species}
           />
+          {this.addButtonsToInput("species")}
           <Input
-            fluid
             label='Alias'
             onChange={this.handleChange}
             name='alias'
             value={this.state.alias}
           />
+          {this.addButtonsToInput("alias")}
           <Input
-            fluid
             label='Motto'
             onChange={this.handleChange}
             name='motto'
             value={this.state.motto}
           />
+          {this.addButtonsToInput("motto")}
           <Input
-            fluid
             type='textarea'
             label='Bio'
             onChange={this.handleChange}
             name='bio'
             value={this.state.bio}
           />
+          {this.addButtonsToInput("bio")}
           <Input
-            fluid
             label='Alignment'
             onChange={this.handleChange}
             name='alignment'
             value={this.state.alignment}
           />
+          {this.addButtonsToInput("alignment")}
           <Input
-            fluid
             label='Positive Traits'
             onChange={this.handleChange}
             name='traits_positive'
             value={this.state.traits_positive}
           />
+          {this.addButtonsToInput("traits_positive")}
           <Input
-            fluid
-            label='Negativde Traits'
+            label='Negative Traits'
             onChange={this.handleChange}
             name='traits_negative'
             value={this.state.traits_negative}
           />
+          {this.addButtonsToInput("traits_negative")}
           <Input
-            fluid
             label='Age'
             onChange={this.handleChange}
             name='age'
             value={this.state.age}
           />
+          {this.addButtonsToInput("age")}
           <Input
-            fluid
             label='Status'
             onChange={this.handleChange}
             name='status'
             value={this.state.status}
           />
+          {this.addButtonsToInput("status")}
           <Input
-            fluid
             label='Gender'
             onChange={this.handleChange}
             name='gender'
             value={this.state.gender}
           />
+          {this.addButtonsToInput("gender")}
           <Input
-            fluid
             label='Feats'
             onChange={this.handleChange}
             name='feats'
             value={this.state.feats}
           />
+          {this.addButtonsToInput("feats")}
           <hr />
           <Button color='green' fluid>
-            {" "}
             {this.state.edit ? "Update Character" : "Create Character"}
           </Button>
         </Form>

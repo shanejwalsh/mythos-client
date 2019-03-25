@@ -49,11 +49,7 @@ class CharacterDetails extends Component {
           {traits_negative}
           <br />
         </p>
-        <Button
-          as={Link}
-          to={`/characters/${id}/edit`}
-          onClick={() => console.log(id)}
-        >
+        <Button as={Link} to={`/characters/${id}/edit`}>
           Edit Character
         </Button>
       </Container>
