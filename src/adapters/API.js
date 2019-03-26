@@ -5,6 +5,7 @@ const BASE_URL = window.location.href.includes("ngrok")
 const CHAR_URL = BASE_URL + "/characters"
 const NEW_CHAR_URL = BASE_URL + "/generate/full_character"
 const GENERATE_URL = BASE_URL + "/generate/"
+const USER_URL = BASE_URL + "/users"
 
 const getAllCharacters = () => fetch(CHAR_URL).then(resp => resp.json())
 
@@ -39,6 +40,16 @@ const deleteCharacter = id =>
 const generateAttribute = attribute =>
   fetch(GENERATE_URL + `${attribute}`).then(resp => resp.json())
 
+const createNewUser = userData => {
+  const options = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ user: userData })
+  }
+
+  return fetch(USER_URL, options).then(resp => resp.json())
+}
+
 export default {
   getAllCharacters,
   deleteCharacter,
@@ -46,5 +57,6 @@ export default {
   getCharacterById,
   generateNewCharacter,
   updateCharacter,
-  generateAttribute
+  generateAttribute,
+  createNewUser
 }

@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Container, Button, Icon } from "semantic-ui-react"
+import { Container, Button } from "semantic-ui-react"
 import { titleCase } from "../lib/helper"
 import { Link } from "react-router-dom"
 

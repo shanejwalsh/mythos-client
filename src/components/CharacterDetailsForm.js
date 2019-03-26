@@ -97,7 +97,7 @@ export default class CharacterDetailsForm extends React.Component {
         <Button attached='right'>
           <i
             id={`${attribute}`}
-            class='random icon'
+            className='random icon'
             onClick={this.handleRandomAttribute}
             icon='random'
           />
@@ -105,7 +105,7 @@ export default class CharacterDetailsForm extends React.Component {
 
         <Button attached='right'>
           <i
-            class={
+            className={
               this.state.unlockedAttributes.includes(attribute)
                 ? "lock open icon"
                 : "lock closed icon"
@@ -132,7 +132,7 @@ export default class CharacterDetailsForm extends React.Component {
           />
         ) : null}
         <hr />
-        <Form class='ui inverted form' onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit}>
           <div>
             <Input
               label='First Name'
