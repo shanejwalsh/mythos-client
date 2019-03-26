@@ -6,6 +6,7 @@ const CHAR_URL = BASE_URL + "/characters"
 const NEW_CHAR_URL = BASE_URL + "/generate/full_character"
 const GENERATE_URL = BASE_URL + "/generate/"
 const USER_URL = BASE_URL + "/users"
+const CLONE_URL = CHAR_URL + ":id/clone"
 
 const getAllCharacters = () => fetch(CHAR_URL).then(resp => resp.json())
 
@@ -41,6 +42,8 @@ const generateAttribute = attribute =>
   fetch(GENERATE_URL + `${attribute}`).then(resp => resp.json())
 
 const createNewUser = userData => {
+  userData.username = "@" + userData.username
+
   const options = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -48,6 +51,16 @@ const createNewUser = userData => {
   }
 
   return fetch(USER_URL, options).then(resp => resp.json())
+}
+
+const cloneCharcter = (characterId, userId) => {
+  const options = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id: characterId, user: userId })
+  }
+
+  return fetch(CLONE_URL, options).then(resp => resp.json())
 }
 
 export default {
@@ -58,5 +71,6 @@ export default {
   generateNewCharacter,
   updateCharacter,
   generateAttribute,
-  createNewUser
+  createNewUser,
+  cloneCharcter
 }
