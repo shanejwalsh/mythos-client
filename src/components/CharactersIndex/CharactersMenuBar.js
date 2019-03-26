@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { Menu, Input, Dropdown } from 'semantic-ui-react'
-import { titleCase } from '../lib/helper'
+import { titleCase } from '../../lib/helper'
 
 const generateMenuFromOptions = options =>
   options.map((option, i) => ({

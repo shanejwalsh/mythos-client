@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import { Form, Button, Input, Container } from 'semantic-ui-react'
 import API from '../adapters/API'
 
-export default class CharacterDetailsForm extends React.Component {
+class CharacterCreateOrUpdate extends React.Component {
   state = {
     user_id: 1,
     first_name: '',
@@ -132,11 +132,7 @@ export default class CharacterDetailsForm extends React.Component {
           />
         ) : null}
         <hr />
-<<<<<<< HEAD
         <Form onSubmit={this.handleSubmit}>
-=======
-        <Form className='ui inverted form' onSubmit={this.handleSubmit}>
->>>>>>> chris
           <div>
             <Input
               label='First Name'
@@ -247,3 +243,4 @@ export default class CharacterDetailsForm extends React.Component {
     )
   }
 }
+export default CharacterCreateOrUpdate
