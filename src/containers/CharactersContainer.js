@@ -4,7 +4,7 @@ import { Card } from 'semantic-ui-react'
 
 const CharactersContainer = props => {
   return (
-    <Card.Group itemsPerRow={4}>
+    <Card.Group stackable itemsPerRow={4}>
       {props.characters.map(character => (
         <CharacterCard key={character.id} {...character} />
       ))}

@@ -12,11 +12,11 @@ const generateMenuFromOptions = options =>
 const CharactersMenuBar = props => {
   return (
     <Fragment>
-      <Menu>
+      <Menu stackable>
         <Menu.Menu>
           <Dropdown
             closeOnBlur
-            placeholder='Filter by Species'
+            placeholder='All Species'
             multiple
             search
             selection
@@ -25,7 +25,7 @@ const CharactersMenuBar = props => {
           />
           <Dropdown
             closeOnBlur
-            placeholder='Filter by Status'
+            placeholder='All Status'
             multiple
             search
             selection
