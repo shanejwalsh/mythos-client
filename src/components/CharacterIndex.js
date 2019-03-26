@@ -1,22 +1,21 @@
-import React, { Component, Fragment } from "react"
-import { placeholderGrid } from "../lib/placeholder"
-import API from "../adapters/API"
-import CharactersContainer from "../containers/CharactersContainer"
-import { Container, Segment } from "semantic-ui-react"
-import CharactersMenuBar from "./CharactersMenuBar"
+import React, { Component, Fragment } from 'react'
+import { placeholderGrid } from '../lib/placeholder'
+import API from '../adapters/API'
+import CharactersContainer from '../containers/CharactersContainer'
+import { Container, Segment } from 'semantic-ui-react'
+import CharactersMenuBar from './CharactersMenuBar'
 
 class CharacterIndex extends Component {
   state = {
     allCharacters: [],
     loaded: false,
-    searchTerm: "",
+    searchTerm: '',
     filterSpecies: [],
     filterSpeciesOptions: [],
     filterStatus: [],
     filterStatusOptions: [],
     sortbyDate: true
   }
-
   componentDidMount = () =>
     API.getAllCharacters().then(allCharacters =>
       this.setState({
@@ -60,7 +59,7 @@ class CharacterIndex extends Component {
       })
 
   handleSortChange = (_, data) => {
-    data.value === "name"
+    data.value === 'name'
       ? this.setState({ sortbyDate: false })
       : this.setState({ sortbyDate: true })
   }
