@@ -4,6 +4,7 @@ import API from "../adapters/API"
 
 export default class CharacterDetailsForm extends React.Component {
   state = {
+    user_id: 1,
     first_name: "",
     last_name: "",
     alias: "",

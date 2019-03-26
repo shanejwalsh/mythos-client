@@ -1,15 +1,15 @@
-import React, { Component, Fragment } from 'react'
-import { placeholderGrid } from '../lib/placeholder'
-import API from '../adapters/API'
-import CharactersContainer from '../containers/CharactersContainer'
-import { Container, Segment } from 'semantic-ui-react'
-import CharactersMenuBar from './CharactersMenuBar'
+import React, { Component, Fragment } from "react"
+import { placeholderGrid } from "../lib/placeholder"
+import API from "../adapters/API"
+import CharactersContainer from "../containers/CharactersContainer"
+import { Container, Segment } from "semantic-ui-react"
+import CharactersMenuBar from "./CharactersMenuBar"
 
 class CharacterIndex extends Component {
   state = {
     allCharacters: [],
     loaded: false,
-    searchTerm: '',
+    searchTerm: "",
     filterSpecies: [],
     filterSpeciesOptions: [],
     filterStatus: [],
@@ -49,7 +49,6 @@ class CharacterIndex extends Component {
           : this.state.filterStatus.includes(character.status.toLowerCase())
       )
       .sort((a, b) => {
-        debugger
         if (this.state.sortbyDate) {
           return b.created_at > a.created_at ? 1 : -1
         } else {
@@ -61,7 +60,7 @@ class CharacterIndex extends Component {
       })
 
   handleSortChange = (_, data) => {
-    data.value === 'name'
+    data.value === "name"
       ? this.setState({ sortbyDate: false })
       : this.setState({ sortbyDate: true })
   }
