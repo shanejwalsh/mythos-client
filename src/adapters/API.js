@@ -21,6 +21,9 @@ const authorizedFetch = (url, options = {}) => {
   })
 }
 
+const validate = () =>
+  authorisedFetch(BASE_URL + "/validate").then(resp => resp.json())
+
 const deleteCharacter = id =>
   authorizedFetch(CHAR_URL + `/${id}`, { method: "DELETE" }).then(resp =>
     resp.json()
@@ -46,8 +49,6 @@ const updateCharacter = character =>
 //================ OPEN API CALLS ================//
 
 const getAllCharacters = () => fetch(CHAR_URL).then(resp => resp.json())
-
-const validate = () => fetch(BASE_URL + "/validate").then(resp => resp.json())
 
 const generateNewCharacter = () => fetch(NEW_CHAR_URL).then(resp => resp.json())
 

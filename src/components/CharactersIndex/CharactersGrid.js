@@ -6,7 +6,11 @@ const CharactersGrid = props => {
   return (
     <Card.Group stackable itemsPerRow={props.gridSize}>
       {props.characters.map(character => (
-        <CharacterCard key={character.id} {...character} />
+        <CharacterCard
+          footerPrimary={props.footerPrimary}
+          key={character.id}
+          {...character}
+        />
       ))}
     </Card.Group>
   )

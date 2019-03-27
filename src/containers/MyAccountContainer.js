@@ -87,13 +87,19 @@ class MyAccountContainer extends Component {
               <Segment>
                 <h1 style={{ color: '#54C8FF' }}>{`${this.props.username}`}</h1>
               </Segment>
-              <Segment>Joined: 26/03/2019 24 Avatars Created</Segment>
+              <Segment>
+                <b>Joined </b>26/03/2019
+              </Segment>
+              <Segment>
+                <b>Created </b> {this.state.myCharacters.length} Characters
+              </Segment>
             </Segment.Group>
           </div>
           <div className='twelve wide column'>
             <h1>Your Characters</h1>
             <CharacterIndex
               gridSize='2'
+              footerPrimary='created-date'
               characters={myCharacters}
               filterSpeciesOptions={filterSpeciesOptions}
               filterStatusOptions={filterStatusOptions}

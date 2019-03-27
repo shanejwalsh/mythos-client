@@ -14,13 +14,29 @@ const CharacterCard = props => {
     gender,
     species,
     alias,
-    sprite_data
+    sprite_data,
+    user,
+    created_at,
+    footerPrimary
   } = props
 
   const footer = (
     <Fragment>
-      <Icon name='user outline' />
-      {`${titleCase(species)} ${gender === 'male' ? '♂' : '♀'}`}
+      {footerPrimary === 'user' ? (
+        <Fragment>
+          <Icon name='user outline' />
+          <span style={{ color: '#54C8FF' }}>{user.username}</span>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <Icon name='calendar plus outline' />
+          {created_at.slice(0, 10)}
+        </Fragment>
+      )}
+
+      <span style={{ float: 'right' }}>{`${titleCase(species)} ${
+        gender === 'male' ? '♂' : '♀'
+      }`}</span>
     </Fragment>
   )
 

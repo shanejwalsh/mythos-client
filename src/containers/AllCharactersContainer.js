@@ -37,6 +37,7 @@ class AllCharactersContainer extends Component {
         {this.state.loaded ? (
           <CharacterIndex
             gridSize='4'
+            footerPrimary='user'
             characters={allCharacters}
             filterSpeciesOptions={filterSpeciesOptions}
             filterStatusOptions={filterStatusOptions}
