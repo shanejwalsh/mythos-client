@@ -15,6 +15,7 @@ const CharactersMenuBar = props => {
       <Menu stackable>
         <Menu.Menu>
           <Dropdown
+            style={{ border: 0, margin: 'auto' }}
             closeOnBlur
             placeholder='All Species'
             multiple
@@ -24,6 +25,7 @@ const CharactersMenuBar = props => {
             options={generateMenuFromOptions(props.speciesOptions)}
           />
           <Dropdown
+            style={{ border: 0, margin: 'auto' }}
             closeOnBlur
             placeholder='All Status'
             multiple
