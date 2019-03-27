@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
-import { Segment, Form, Image, Button, Container } from 'semantic-ui-react'
-import API from '../adapters/API'
+import React, { Component } from "react"
+import { Segment, Form, Image, Button, Container } from "semantic-ui-react"
+import API from "../adapters/API"
 
 class SignUpForm extends Component {
   state = {
-    username: '',
-    password: ''
+    username: "",
+    password: ""
   }
   handleChange = event =>
     this.setState({ [event.target.name]: event.target.value })
@@ -13,16 +13,16 @@ class SignUpForm extends Component {
   handleSubmit = () => {
     const { history } = this.props
     const user = {
-      username: '@' + this.state.username,
+      username: "@" + this.state.username,
       password: this.state.password
     }
 
     API.signUp(user).then(data => {
       if (data.error) {
-        alert('somthing went wrong')
+        alert("somthing went wrong")
       } else {
-        alert('User added, sign in to get cracking!')
-        history.push('/login')
+        alert("User added, sign in to get cracking!")
+        history.push("/login")
       }
     })
   }
@@ -36,7 +36,7 @@ class SignUpForm extends Component {
           <Image
             centered
             size='small'
-            src={require('../icon2.png')}
+            src={require("../icon2.png")}
             alt='skeleton'
           />
           <h1>Build Your Fantasy Universe</h1>
@@ -54,7 +54,7 @@ class SignUpForm extends Component {
                 onChange={this.handleChange}
                 icon='at'
                 iconPosition='left'
-                placeholder='@Username'
+                placeholder='Username'
                 name='username'
               />
               <Form.Input

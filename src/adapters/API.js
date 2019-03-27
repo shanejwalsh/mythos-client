@@ -11,7 +11,7 @@ const CLONE_URL = CHAR_URL + "/clone"
 //================ AUTHORISED API CALLS ================//
 
 //Used to control access to authorised endpoint for signed up users only
-const authorisedFetch = (url, options = {}) => {
+const authorizedFetch = (url, options = {}) => {
   return fetch(url, {
     ...options,
     headers: {
@@ -22,12 +22,19 @@ const authorisedFetch = (url, options = {}) => {
 }
 
 const deleteCharacter = id =>
-  authorisedFetch(CHAR_URL + `/${id}`, { method: "DELETE" }).then(resp =>
+  authorizedFetch(CHAR_URL + `/${id}`, { method: "DELETE" }).then(resp =>
     resp.json()
   )
 
 const getMyCharacters = () =>
-  authorisedFetch(BASE_URL + "/mycharacters").then(resp => resp.json())
+  authorizedFetch(BASE_URL + "/mycharacters").then(resp => resp.json())
+
+const cloneCharcter = (characterId, userId) => {
+  return authorizedFetch(CLONE_URL, {
+    method: "POST",
+    body: JSON.stringify({ id: characterId, user: userId })
+  }).then(resp => resp.json())
+}
 
 const updateCharacter = character =>
   fetch(CHAR_URL + `/${character.id}`, {
@@ -76,16 +83,6 @@ const signUp = userData => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ user: userData })
   }).then(resp => resp.json())
-}
-
-const cloneCharcter = (characterId, userId) => {
-  const options = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id: characterId, user: userId })
-  }
-
-  return fetch(CLONE_URL, options).then(resp => resp.json())
 }
 
 export default {
