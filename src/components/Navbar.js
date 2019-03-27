@@ -41,13 +41,18 @@ class Navbar extends Component {
     const showExpandedMenu = (isMobile && expanded) || !isMobile
 
     return (
-      <Menu style={{ borderRadius: 0 }} borderless inverted stackable>
+      <Menu
+        style={{ borderRadius: 0, marginBottom: '2px' }}
+        borderless
+        inverted
+        stackable
+      >
         <Container>
           <Menu.Item>
             <img
               alt='logo'
               style={{ paddingRight: '3px' }}
-              src='https://react.semantic-ui.com/logo.png'
+              src={require('../icon.png')}
             />
             {displayMenuBtn && this.toggleButton()}
             {displayMenuCloseBtn && this.toggleButton()}
@@ -96,7 +101,13 @@ class Navbar extends Component {
                   <Button as={Link} to='/login' inverted>
                     Log in
                   </Button>
-                  <Button inverted primary style={{ marginLeft: '0.5em' }}>
+                  <Button
+                    as={Link}
+                    to='/signup'
+                    inverted
+                    primary
+                    style={{ marginLeft: '0.5em' }}
+                  >
                     Sign Up
                   </Button>
                 </Menu.Item>

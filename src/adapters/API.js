@@ -64,20 +64,26 @@ const login = user => {
   }).then(resp => resp.json())
 }
 
-const createCharacter = character =>
-  fetch(CHAR_URL, {
+const createCharacter = characterData => {
+  return fetch(CHAR_URL, {
     method: "POST",
-    body: JSON.stringify(character)
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ character: characterData })
   }).then(resp => resp.json())
+}
 
 const generateAttribute = attribute =>
   fetch(GENERATE_URL + `${attribute}`).then(resp => resp.json())
 
-const createNewUser = userData =>
-  fetch(USER_URL, {
+const signUp = userData => {
+  return fetch(USER_URL, {
     method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ user: userData })
   }).then(resp => resp.json())
+}
 
 export default {
   login,
@@ -90,6 +96,6 @@ export default {
   generateNewCharacter,
   updateCharacter,
   generateAttribute,
-  createNewUser,
-  cloneCharcter
+  cloneCharcter,
+  signUp
 }

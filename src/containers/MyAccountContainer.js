@@ -22,7 +22,8 @@ class MyAccountContainer extends Component {
   }
   componentDidMount = () => {
     if (this.props.username !== '') {
-      API.getMyCharacters().then(myCharacters =>
+      API.getMyCharacters().then(myCharacters => {
+        if (myCharacters === {}) return
         this.setState({
           myCharacters,
           filterSpeciesOptions: [
@@ -33,37 +34,41 @@ class MyAccountContainer extends Component {
           ],
           loaded: true
         })
-      )
+      })
     }
   }
   emptyState = () => (
-    <Segment placeholder>
-      <Grid columns={2} stackable textAlign='center'>
+    <Fragment>
+      <h1 style={{ textAlign: 'center' }}>
         Looks like you haven't created any characters yet!
-        <Divider vertical>Or</Divider>
-        <Grid.Row verticalAlign='middle'>
-          <Grid.Column>
-            <Header icon>
-              <Icon name='grid layout' />
-              Clone one from the library
-            </Header>
-            <Button as={Link} to='/characters/new' primary>
-              Take Me There!
-            </Button>
-          </Grid.Column>
+      </h1>
+      <Segment placeholder>
+        <Grid columns={2} stackable textAlign='center'>
+          <Divider vertical>Or</Divider>
+          <Grid.Row verticalAlign='middle'>
+            <Grid.Column>
+              <Header icon>
+                <Icon name='grid layout' />
+                Clone one from the library
+              </Header>
+              <Button as={Link} to='/characters' primary>
+                Take Me There!
+              </Button>
+            </Grid.Column>
 
-          <Grid.Column>
-            <Header icon>
-              <Icon color='blue' name='add circle' />
-              Create your own!
-            </Header>
-            <Button as={Link} to='/characters' secondary>
-              Create
-            </Button>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </Segment>
+            <Grid.Column>
+              <Header icon>
+                <Icon color='blue' name='add circle' />
+                Create your own!
+              </Header>
+              <Button as={Link} to='/characters/new' secondary>
+                Create
+              </Button>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Segment>
+    </Fragment>
   )
 
   characterIndexLoader = () => {
@@ -76,14 +81,25 @@ class MyAccountContainer extends Component {
 
     if (myCharacters.length > 0) {
       return (
-        <Fragment>
-          <h1> {`${this.props.username}'s`} Characters</h1>
-          <CharacterIndex
-            characters={myCharacters}
-            filterSpeciesOptions={filterSpeciesOptions}
-            filterStatusOptions={filterStatusOptions}
-          />
-        </Fragment>
+        <div className='ui stackable two column grid'>
+          <div className='four wide column'>
+            <Segment.Group>
+              <Segment>
+                <h1 style={{ color: '#54C8FF' }}>{`${this.props.username}`}</h1>
+              </Segment>
+              <Segment>Joined: 26/03/2019 24 Avatars Created</Segment>
+            </Segment.Group>
+          </div>
+          <div className='twelve wide column'>
+            <h1>Your Characters</h1>
+            <CharacterIndex
+              gridSize='2'
+              characters={myCharacters}
+              filterSpeciesOptions={filterSpeciesOptions}
+              filterStatusOptions={filterStatusOptions}
+            />
+          </div>
+        </div>
       )
     } else {
       return this.emptyState()
@@ -108,7 +124,6 @@ class MyAccountContainer extends Component {
   )
 
   render() {
-    debugger
     const username = this.props.username
     return (
       <Container>
