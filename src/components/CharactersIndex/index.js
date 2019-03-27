@@ -80,6 +80,7 @@ class CharacterIndex extends Component {
 
           <CharactersContainer
             gridSize={this.props.gridSize}
+            footerPrimary={this.props.footerPrimary}
             characters={this.filterAndSortCharacters()}
           />
         </Container>

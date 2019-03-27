@@ -24,7 +24,6 @@ class App extends Component {
     localStorage.removeItem('token')
     this.setState({ username: '', id: '' })
   }
-
   componentDidMount() {
     API.validate().then(userData => {
       if (userData.error) {
