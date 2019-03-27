@@ -1,6 +1,15 @@
-import React, { Fragment } from "react"
-import { Form, Button, Input, Container, Grid } from "semantic-ui-react"
+import React from "react"
+import {
+  Form,
+  Button,
+  Input,
+  Container,
+  Grid,
+  TextArea,
+  Label
+} from "semantic-ui-react"
 import API from "../adapters/API"
+import { titleCase, capitalize } from "../lib/helper"
 
 class CharacterCreateOrUpdate extends React.Component {
   state = {
@@ -99,7 +108,7 @@ class CharacterCreateOrUpdate extends React.Component {
   addButtonsToInput = attribute => {
     return (
       <div style={{ display: "flex" }}>
-        <Button
+        {/* <Button
           id={`${attribute}`}
           attached='right'
           onClick={this.handleRandomAttribute}
@@ -109,7 +118,7 @@ class CharacterCreateOrUpdate extends React.Component {
             className='random icon'
             icon='random'
           />
-        </Button>
+        </Button> */}
 
         <Button
           onClick={this.handleLockAttribute}
@@ -143,6 +152,7 @@ class CharacterCreateOrUpdate extends React.Component {
         <h1>{this.state.edit ? "Edit Character " : "Create Character"}</h1>
         {!this.state.edit ? (
           <Button
+            fluid
             onClick={this.randomizeUnlockedAttributes}
             content='Randomize'
             icon='random'
@@ -200,15 +210,6 @@ class CharacterCreateOrUpdate extends React.Component {
                 {this.addButtonsToInput("motto")}
               </div>
 
-              <div style={divStyle}>
-                <Input
-                  label='Bio'
-                  onChange={this.handleChange}
-                  name='bio'
-                  value={this.state.bio}
-                />
-                {this.addButtonsToInput("bio")}
-              </div>
               <div style={divStyle}>
                 <Input
                   label='Alignment'
@@ -278,6 +279,18 @@ class CharacterCreateOrUpdate extends React.Component {
                   value={this.state.feats}
                 />
                 {this.addButtonsToInput("feats")}
+              </div>
+              <div style={divStyle}>
+                <Label size='large'>Bio</Label>
+                <br />
+                <TextArea
+                  rows='4'
+                  label='Bio'
+                  onChange={this.handleChange}
+                  name='bio'
+                  value={this.state.bio}
+                />
+                {this.addButtonsToInput("bio")}
               </div>
 
               <hr />
