@@ -12,3 +12,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.ui.labeled.input:not([class*="corner labeled"]) .label:first-child {
+  width: 104px;
+}
+
+.ui.labeled.input:not([class*="corner labeled"]) .label:first-child + input {
+  width: 350px;
+  border-radius: 0px;
+}
