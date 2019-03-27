@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import './App.css'
+import { Message } from 'semantic-ui-react'
 import Navbar from './components/Navbar'
 import API from './adapters/API'
 import About from './components/About'
@@ -9,18 +10,19 @@ import CharacterCreateOrUpdate from './components/CharacterCreateOrUpdate'
 import LoginForm from './components/LoginForm'
 import MyAccountContainer from './containers/MyAccountContainer'
 import CharacterDetailsContainer from './containers/CharacterDetailsContainer'
+import SignUpForm from './components/SignUpForm'
 
 class App extends Component {
-  state = { username: '' }
+  state = { username: '', id: '' }
 
   login = user => {
     localStorage.setItem('token', user.token)
-    this.setState({ username: user.username })
+    this.setState({ username: user.username, id: user.id })
   }
 
   logout = () => {
     localStorage.removeItem('token')
-    this.setState({ username: '' })
+    this.setState({ username: '', id: '' })
   }
 
   componentDidMount() {
@@ -44,13 +46,21 @@ class App extends Component {
           <Route
             exact
             path='/characters/new'
-            component={CharacterCreateOrUpdate}
+            component={routerProps => (
+              <CharacterCreateOrUpdate
+                userid={this.state.id}
+                {...routerProps}
+              />
+            )}
           />
           <Route
             exact
             path='/characters/:id/edit'
             component={routerProps => (
-              <CharacterCreateOrUpdate {...routerProps} />
+              <CharacterCreateOrUpdate
+                userid={this.state.id}
+                {...routerProps}
+              />
             )}
           />
           <Route
@@ -77,6 +87,10 @@ class App extends Component {
             component={routerProps => (
               <LoginForm login={this.login} {...routerProps} />
             )}
+          />
+          <Route
+            path='/signup'
+            component={routerProps => <SignUpForm {...routerProps} />}
           />
         </Switch>
       </Fragment>

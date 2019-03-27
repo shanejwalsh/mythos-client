@@ -78,7 +78,10 @@ class CharacterIndex extends Component {
             searchTerm={this.state.searchTerm}
           />
 
-          <CharactersContainer characters={this.filterAndSortCharacters()} />
+          <CharactersContainer
+            gridSize={this.props.gridSize}
+            characters={this.filterAndSortCharacters()}
+          />
         </Container>
       )
     )

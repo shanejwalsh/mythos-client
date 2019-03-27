@@ -5,7 +5,8 @@ import {
   Header,
   Message,
   Segment,
-  Container
+  Container,
+  Grid
 } from 'semantic-ui-react'
 import API from '../adapters/API'
 
@@ -20,14 +21,16 @@ class LoginForm extends Component {
 
   handleSubmit = () => {
     const { login, history } = this.props
-    const user = this.state
-
+    const user = {
+      username: '@' + this.state.username,
+      password: this.state.password
+    }
     API.login(user).then(data => {
       if (data.error) {
         alert('somthing went wrong')
       } else {
         login(data)
-        history.push('/characters')
+        history.push('/myaccount')
       }
     })
   }
@@ -38,42 +41,52 @@ class LoginForm extends Component {
     return (
       <Container
         textAlign='center'
-        style={{ height: '90%', maxWidth: '200px' }}
+        style={{ paddingTop: '20px', height: '90%' }}
       >
-        <Header as='h2' color='blue' textAlign='center'>
-          Log-in to your account
-        </Header>
+        <Grid
+          textAlign='center'
+          style={{ height: '100%' }}
+          verticalAlign='middle'
+        >
+          <Grid.Column style={{ maxWidth: 450 }}>
+            <Header as='h2' color='blue' textAlign='center'>
+              Log-in to your account
+            </Header>
 
-        <Form onSubmit={this.handleSubmit} size='large'>
-          <Segment stacked>
-            <Form.Input
-              fluid
-              value={username}
-              onChange={this.handleChange}
-              icon='at'
-              iconPosition='left'
-              placeholder='@Username'
-              name='username'
-            />
-            <Form.Input
-              fluid
-              value={password}
-              onChange={this.handleChange}
-              icon='lock'
-              iconPosition='left'
-              placeholder='Password'
-              type='password'
-              name='password'
-            />
+            <Form onSubmit={this.handleSubmit} size='large'>
+              <Segment stacked>
+                <Form.Input
+                  autoComplete='username'
+                  fluid
+                  value={username}
+                  onChange={this.handleChange}
+                  icon='at'
+                  iconPosition='left'
+                  placeholder='@Username'
+                  name='username'
+                />
+                <Form.Input
+                  autoComplete='current-password'
+                  fluid
+                  value={password}
+                  onChange={this.handleChange}
+                  icon='lock'
+                  iconPosition='left'
+                  placeholder='Password'
+                  type='password'
+                  name='password'
+                />
 
-            <Button color='blue' fluid size='large'>
-              Login
-            </Button>
-          </Segment>
-        </Form>
-        <Message>
-          New to us? <a href='#'>Sign Up</a>
-        </Message>
+                <Button color='blue' fluid size='large'>
+                  Login
+                </Button>
+              </Segment>
+            </Form>
+            <Message>
+              New to us? <a href='#'>Sign Up</a>
+            </Message>
+          </Grid.Column>
+        </Grid>
       </Container>
     )
   }

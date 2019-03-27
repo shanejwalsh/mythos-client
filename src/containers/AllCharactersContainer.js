@@ -36,6 +36,7 @@ class AllCharactersContainer extends Component {
         <h1>Published Characters</h1>
         {this.state.loaded ? (
           <CharacterIndex
+            gridSize='4'
             characters={allCharacters}
             filterSpeciesOptions={filterSpeciesOptions}
             filterStatusOptions={filterStatusOptions}

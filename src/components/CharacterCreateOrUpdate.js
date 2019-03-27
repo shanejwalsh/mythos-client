@@ -4,7 +4,7 @@ import API from '../adapters/API'
 
 class CharacterCreateOrUpdate extends React.Component {
   state = {
-    user_id: 1,
+    user_id: '',
     first_name: '',
     last_name: '',
     alias: '',
@@ -40,12 +40,17 @@ class CharacterCreateOrUpdate extends React.Component {
     if (this.state.edit) {
       API.updateCharacter(this.state)
     } else {
-      API.createCharacter(this.state)
-      alert('char created BOIIIIIIII!')
+      API.createCharacter(this.state).then(alert('char created BOIIIIIIII!'))
     }
   }
 
   componentDidMount = () => {
+    if (this.props.id) {
+      this.setState({ user_id: this.props.userid })
+    } else {
+      this.setState({ user_id: 1 }) // If not signed in create as guest
+    }
+
     if (this.props.match.path.includes('edit')) {
       API.getCharacterById(this.props.match.params.id).then(character =>
         this.setState({ ...character })
@@ -133,24 +138,35 @@ class CharacterCreateOrUpdate extends React.Component {
         ) : null}
         <hr />
         <Form onSubmit={this.handleSubmit}>
-          <div>
-            <Input
-              label='First Name'
-              onChange={this.handleChange}
-              name='first_name'
-              value={this.state.first_name}
-            />
-            {this.addButtonsToInput('first_name')}
-          </div>
-          <div>
-            <Input
-              label='Last Name'
-              onChange={this.handleChange}
-              name='last_name'
-              value={this.state.last_name}
-            />
-            {this.addButtonsToInput('last_name')}
-          </div>
+          <Form.Group widths='equal'>
+            <div>
+              <Input
+                label='First Name'
+                onChange={this.handleChange}
+                name='first_name'
+                value={this.state.first_name}
+              />
+              {this.addButtonsToInput('first_name')}
+            </div>
+            <div>
+              <Input
+                label='Last Name'
+                onChange={this.handleChange}
+                name='last_name'
+                value={this.state.last_name}
+              />
+              {this.addButtonsToInput('last_name')}
+            </div>
+            <div>
+              <Input
+                label='Alias'
+                onChange={this.handleChange}
+                name='alias'
+                value={this.state.alias}
+              />
+              {this.addButtonsToInput('alias')}
+            </div>
+          </Form.Group>
           <div>
             <Input
               label='Species'
@@ -160,15 +176,7 @@ class CharacterCreateOrUpdate extends React.Component {
             />
             {this.addButtonsToInput('species')}
           </div>
-          <div>
-            <Input
-              label='Alias'
-              onChange={this.handleChange}
-              name='alias'
-              value={this.state.alias}
-            />
-            {this.addButtonsToInput('alias')}
-          </div>
+
           <div>
             <Input
               label='Motto'
