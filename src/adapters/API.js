@@ -22,7 +22,7 @@ const authorizedFetch = (url, options = {}) => {
 }
 
 const validate = () =>
-  authorisedFetch(BASE_URL + "/validate").then(resp => resp.json())
+  authorizedFetch(BASE_URL + "/validate").then(resp => resp.json())
 
 const deleteCharacter = id =>
   authorizedFetch(CHAR_URL + `/${id}`, { method: "DELETE" }).then(resp =>
