@@ -1,4 +1,5 @@
-import React, { Component } from "react"
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import {
   Button,
   Form,
@@ -7,13 +8,13 @@ import {
   Segment,
   Container,
   Grid
-} from "semantic-ui-react"
-import API from "../adapters/API"
+} from 'semantic-ui-react'
+import API from '../adapters/API'
 
 class LoginForm extends Component {
   state = {
-    username: "",
-    password: ""
+    username: '',
+    password: ''
   }
 
   handleChange = event =>
@@ -22,15 +23,15 @@ class LoginForm extends Component {
   handleSubmit = () => {
     const { login, history } = this.props
     const user = {
-      username: "@" + this.state.username,
+      username: '@' + this.state.username,
       password: this.state.password
     }
     API.login(user).then(data => {
       if (data.error) {
-        alert("somthing went wrong")
+        alert('somthing went wrong')
       } else {
         login(data)
-        history.push("/myaccount")
+        history.push('/myaccount')
       }
     })
   }
@@ -41,11 +42,11 @@ class LoginForm extends Component {
     return (
       <Container
         textAlign='center'
-        style={{ paddingTop: "20px", height: "90%" }}
+        style={{ paddingTop: '20px', height: '90%' }}
       >
         <Grid
           textAlign='center'
-          style={{ height: "100%" }}
+          style={{ height: '100%' }}
           verticalAlign='middle'
         >
           <Grid.Column style={{ maxWidth: 450 }}>
@@ -82,9 +83,11 @@ class LoginForm extends Component {
                 </Button>
               </Segment>
             </Form>
-            <Message>
-              New to us? <a href='#'>Sign Up</a>
-            </Message>
+            <Segment basic>
+              <Message color='blue' as={Link} to='/signup'>
+                Not got an account? Take 20 seconds to Sign Up!
+              </Message>
+            </Segment>
           </Grid.Column>
         </Grid>
       </Container>

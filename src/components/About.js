@@ -1,18 +1,10 @@
 import React from 'react'
-import {
-  Segment,
-  Image,
-  Header,
-  Button,
-  Icon,
-  Reveal,
-  Container
-} from 'semantic-ui-react'
+import { Segment, Image, Header, Reveal, Container } from 'semantic-ui-react'
 
 const About = () => {
   return (
     <Container>
-      <Segment inverted textAlign='center'>
+      <Segment style={{ paddingBottom: '60px' }} inverted textAlign='center'>
         <Header
           content='Welcome to'
           style={{
