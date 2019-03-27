@@ -1,38 +1,38 @@
-import React, { Fragment } from "react"
-import { Form, Button, Input, Container } from "semantic-ui-react"
-import API from "../adapters/API"
+import React, { Fragment } from 'react'
+import { Form, Button, Input, Container } from 'semantic-ui-react'
+import API from '../adapters/API'
 
-export default class CharacterDetailsForm extends React.Component {
+class CharacterCreateOrUpdate extends React.Component {
   state = {
     user_id: 1,
-    first_name: "",
-    last_name: "",
-    alias: "",
-    motto: "",
-    species: "",
-    bio: "",
-    alignment: "",
-    traits_positive: "",
-    traits_negative: "",
-    age: "",
-    gender: "",
-    status: "",
-    feats: "",
+    first_name: '',
+    last_name: '',
+    alias: '',
+    motto: '',
+    species: '',
+    bio: '',
+    alignment: '',
+    traits_positive: '',
+    traits_negative: '',
+    age: '',
+    gender: '',
+    status: '',
+    feats: '',
     edit: true,
     unlockedAttributes: [
-      "first_name",
-      "last_name",
-      "alias",
-      "motto",
-      "species",
-      "bio",
-      "alignment",
-      "traits_positive",
-      "traits_negative",
-      "age",
-      "status",
-      "feats",
-      "gender"
+      'first_name',
+      'last_name',
+      'alias',
+      'motto',
+      'species',
+      'bio',
+      'alignment',
+      'traits_positive',
+      'traits_negative',
+      'age',
+      'status',
+      'feats',
+      'gender'
     ]
   }
 
@@ -41,12 +41,12 @@ export default class CharacterDetailsForm extends React.Component {
       API.updateCharacter(this.state)
     } else {
       API.createCharacter(this.state)
-      alert("char created BOIIIIIIII!")
+      alert('char created BOIIIIIIII!')
     }
   }
 
   componentDidMount = () => {
-    if (this.props.match.path.includes("edit")) {
+    if (this.props.match.path.includes('edit')) {
       API.getCharacterById(this.props.match.params.id).then(character =>
         this.setState({ ...character })
       )
@@ -107,8 +107,8 @@ export default class CharacterDetailsForm extends React.Component {
           <i
             className={
               this.state.unlockedAttributes.includes(attribute)
-                ? "lock open icon"
-                : "lock closed icon"
+                ? 'lock open icon'
+                : 'lock closed icon'
             }
             id={`${attribute}`}
             onClick={this.handleLockAttribute}
@@ -122,7 +122,7 @@ export default class CharacterDetailsForm extends React.Component {
   render() {
     return (
       <Container>
-        <h1>{this.state.edit ? "Edit Character " : "Create Character"}</h1>
+        <h1>{this.state.edit ? 'Edit Character ' : 'Create Character'}</h1>
         {!this.state.edit ? (
           <Button
             onClick={this.randomizeUnlockedAttributes}
@@ -140,7 +140,7 @@ export default class CharacterDetailsForm extends React.Component {
               name='first_name'
               value={this.state.first_name}
             />
-            {this.addButtonsToInput("first_name")}
+            {this.addButtonsToInput('first_name')}
           </div>
           <div>
             <Input
@@ -149,7 +149,7 @@ export default class CharacterDetailsForm extends React.Component {
               name='last_name'
               value={this.state.last_name}
             />
-            {this.addButtonsToInput("last_name")}
+            {this.addButtonsToInput('last_name')}
           </div>
           <div>
             <Input
@@ -158,7 +158,7 @@ export default class CharacterDetailsForm extends React.Component {
               name='species'
               value={this.state.species}
             />
-            {this.addButtonsToInput("species")}
+            {this.addButtonsToInput('species')}
           </div>
           <div>
             <Input
@@ -167,7 +167,7 @@ export default class CharacterDetailsForm extends React.Component {
               name='alias'
               value={this.state.alias}
             />
-            {this.addButtonsToInput("alias")}
+            {this.addButtonsToInput('alias')}
           </div>
           <div>
             <Input
@@ -176,7 +176,7 @@ export default class CharacterDetailsForm extends React.Component {
               name='motto'
               value={this.state.motto}
             />
-            {this.addButtonsToInput("motto")}
+            {this.addButtonsToInput('motto')}
           </div>
           <Input
             label='Bio'
@@ -184,62 +184,63 @@ export default class CharacterDetailsForm extends React.Component {
             name='bio'
             value={this.state.bio}
           />
-          {this.addButtonsToInput("bio")}
+          {this.addButtonsToInput('bio')}
           <Input
             label='Alignment'
             onChange={this.handleChange}
             name='alignment'
             value={this.state.alignment}
           />
-          {this.addButtonsToInput("alignment")}
+          {this.addButtonsToInput('alignment')}
           <Input
             label='Positive Traits'
             onChange={this.handleChange}
             name='traits_positive'
             value={this.state.traits_positive}
           />
-          {this.addButtonsToInput("traits_positive")}
+          {this.addButtonsToInput('traits_positive')}
           <Input
             label='Negative Traits'
             onChange={this.handleChange}
             name='traits_negative'
             value={this.state.traits_negative}
           />
-          {this.addButtonsToInput("traits_negative")}
+          {this.addButtonsToInput('traits_negative')}
           <Input
             label='Age'
             onChange={this.handleChange}
             name='age'
             value={this.state.age}
           />
-          {this.addButtonsToInput("age")}
+          {this.addButtonsToInput('age')}
           <Input
             label='Status'
             onChange={this.handleChange}
             name='status'
             value={this.state.status}
           />
-          {this.addButtonsToInput("status")}
+          {this.addButtonsToInput('status')}
           <Input
             label='Gender'
             onChange={this.handleChange}
             name='gender'
             value={this.state.gender}
           />
-          {this.addButtonsToInput("gender")}
+          {this.addButtonsToInput('gender')}
           <Input
             label='Feats'
             onChange={this.handleChange}
             name='feats'
             value={this.state.feats}
           />
-          {this.addButtonsToInput("feats")}
+          {this.addButtonsToInput('feats')}
           <hr />
           <Button color='green' fluid>
-            {this.state.edit ? "Update Character" : "Create Character"}
+            {this.state.edit ? 'Update Character' : 'Create Character'}
           </Button>
         </Form>
       </Container>
     )
   }
 }
+export default CharacterCreateOrUpdate

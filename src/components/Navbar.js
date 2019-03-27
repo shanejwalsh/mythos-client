@@ -38,6 +38,7 @@ class Navbar extends Component {
     const { activeItem, expanded } = this.state
     const displayMenuBtn = isMobile && !expanded
     const displayMenuCloseBtn = isMobile && expanded
+    const showExpandedMenu = (isMobile && expanded) || !isMobile
 
     return (
       <Menu style={{ borderRadius: 0 }} borderless inverted stackable>
@@ -52,7 +53,7 @@ class Navbar extends Component {
             {displayMenuCloseBtn && this.toggleButton()}
           </Menu.Item>
 
-          {(isMobile && expanded) || !isMobile ? (
+          {showExpandedMenu && (
             <Fragment>
               <Menu.Item
                 name='about'
@@ -86,19 +87,28 @@ class Navbar extends Component {
                 active={activeItem === 'account'}
                 onClick={this.handleItemClick}
                 as={Link}
-                to='/characters/new'
+                to='/myaccount'
               >
                 My Account
               </Menu.Item>
-
-              <Menu.Item position='right'>
-                <Button inverted>Log in</Button>
-                <Button inverted primary style={{ marginLeft: '0.5em' }}>
-                  Sign Up
-                </Button>
-              </Menu.Item>
+              {this.props.username === '' ? (
+                <Menu.Item position='right'>
+                  <Button as={Link} to='/login' inverted>
+                    Log in
+                  </Button>
+                  <Button inverted primary style={{ marginLeft: '0.5em' }}>
+                    Sign Up
+                  </Button>
+                </Menu.Item>
+              ) : (
+                <Menu.Item position='right'>
+                  <Button onClick={this.props.logout} inverted>
+                    Log Out {this.props.username}
+                  </Button>
+                </Menu.Item>
+              )}
             </Fragment>
-          ) : null}
+          )}
         </Container>
       </Menu>
     )

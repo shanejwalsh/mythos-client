@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react'
 import { Card, Icon } from 'semantic-ui-react'
-import { titleCase } from '../lib/helper'
+import { titleCase } from '../../lib/helper'
 import { Link } from 'react-router-dom'
-import { generateCSS } from '../lib/helper'
-import { GRID_SIZE } from '../config/config'
+import { generateCSS } from '../../lib/helper'
+import { GRID_SIZE } from '../../config/config'
 
 const CharacterCard = props => {
   const {
@@ -45,7 +45,7 @@ const CharacterCard = props => {
 
         <Card.Header>{`${first_name} ${last_name}`}</Card.Header>
         <Card.Meta>{`AKA '${alias}'`}</Card.Meta>
-        <Card.Description>{bio}</Card.Description>
+        <Card.Description>{bio.slice(0, 132) + '...'}</Card.Description>
       </Card.Content>
 
       <Card.Content extra>{footer}</Card.Content>

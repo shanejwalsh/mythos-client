@@ -1,10 +1,10 @@
 import React from 'react'
-import CharacterCard from '../components/CharacterCard'
+import CharacterCard from './CharacterCard'
 import { Card } from 'semantic-ui-react'
 
-const CharactersContainer = props => {
+const CharactersGrid = props => {
   return (
-    <Card.Group itemsPerRow={4}>
+    <Card.Group stackable itemsPerRow={4}>
       {props.characters.map(character => (
         <CharacterCard key={character.id} {...character} />
       ))}
@@ -12,4 +12,4 @@ const CharactersContainer = props => {
   )
 }
 
-export default CharactersContainer
+export default CharactersGrid
