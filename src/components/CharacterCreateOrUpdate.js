@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react"
 import {
   Form,
   Button,
@@ -6,6 +6,7 @@ import {
   Container,
   TextArea,
   Label
+<<<<<<< HEAD
 } from 'semantic-ui-react'
 import API from '../adapters/API'
 import { GRID_SIZE } from '../config/config'
@@ -44,15 +45,70 @@ class CharacterCreateOrUpdate extends React.Component {
       'feats',
       'gender',
       'sprite_data'
+=======
+} from "semantic-ui-react"
+import API from "../adapters/API"
+
+class CharacterCreateOrUpdate extends React.Component {
+  state = {
+    user_id: "",
+    first_name: "",
+    last_name: "",
+    alias: "",
+    motto: "",
+    species: "",
+    bio: "",
+    alignment: "",
+    traits_positive: "",
+    traits_negative: "",
+    age: "",
+    gender: "",
+    status: "",
+    feats: "",
+    edit: true,
+    unlockedAttributes: [
+      "first_name",
+      "last_name",
+      "alias",
+      "motto",
+      "species",
+      "bio",
+      "alignment",
+      "traits_positive",
+      "traits_negative",
+      "age",
+      "status",
+      "feats",
+      "gender"
+>>>>>>> 2bb572996353fa66b31c5d406b119bdf50e43e39
     ]
   }
 
+  // then(data => {
+  //   if (data.error) {
+  // alert('somthing went wrong')
+
   handleSubmit = () => {
     if (this.state.edit) {
-      API.updateCharacter(this.state)
+      API.updateCharacter(this.state).then(data => {
+        if (data.error) {
+          return alert("something went wrong, character not updated")
+        } else {
+          alert("character updated!!")
+        }
+      })
     } else {
-      API.createCharacter(this.state).then(alert('char created BOIIIIIIII!'))
+      API.createCharacter(this.state).then(data => {
+        if (data.error) {
+          return alert("Something went wrong, character not created")
+        } else {
+          alert("Character Created!!")
+        }
+      })
     }
+    this.state.user_id === 1
+      ? this.props.history.push("/characters")
+      : this.props.history.push("/myaccount")
   }
 
   componentDidMount = () => {
@@ -62,7 +118,7 @@ class CharacterCreateOrUpdate extends React.Component {
       this.setState({ user_id: 1 }) // If not signed in create as guest
     }
 
-    if (this.props.match.path.includes('edit')) {
+    if (this.props.match.path.includes("edit")) {
       API.getCharacterById(this.props.match.params.id).then(character =>
         this.setState({ ...character })
       )
@@ -110,13 +166,21 @@ class CharacterCreateOrUpdate extends React.Component {
   addButtonsToInput = attribute => {
     const locked = this.state.unlockedAttributes.includes(attribute)
     return (
+<<<<<<< HEAD
       <div style={{ float: 'right' }} onClick={this.handleLockAttribute}>
+=======
+      <div style={{ display: "flex" }}>
+>>>>>>> 2bb572996353fa66b31c5d406b119bdf50e43e39
         <Button
           toggle
           active={locked}
           id={attribute}
           attached='right'
+<<<<<<< HEAD
           icon={locked ? 'lock open' : 'lock'}
+=======
+          icon={locked ? "lock open icon" : "lock closed icon"}
+>>>>>>> 2bb572996353fa66b31c5d406b119bdf50e43e39
         />
       </div>
     )
@@ -124,17 +188,30 @@ class CharacterCreateOrUpdate extends React.Component {
 
   render() {
     const divStyle = {
+<<<<<<< HEAD
       width: '90%',
       margin: '10px auto',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center'
+=======
+      width: "60%",
+      margin: "10px auto",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center"
+>>>>>>> 2bb572996353fa66b31c5d406b119bdf50e43e39
     }
 
     return (
       <Container>
+<<<<<<< HEAD
         <h1>{this.state.edit ? 'Edit Character ' : 'Create Character'}</h1>
         {!this.state.edit && (
+=======
+        <h1>{this.state.edit ? "Edit Character " : "Create Character"}</h1>
+        {!this.state.edit ? (
+>>>>>>> 2bb572996353fa66b31c5d406b119bdf50e43e39
           <Button
             fluid
             onClick={this.randomizeUnlockedAttributes}
@@ -144,6 +221,7 @@ class CharacterCreateOrUpdate extends React.Component {
           />
         )}
         <hr />
+<<<<<<< HEAD
 
         {this.state.sprite_data.length > 0 && (
           <div
@@ -268,10 +346,112 @@ class CharacterCreateOrUpdate extends React.Component {
               name='gender'
               value={this.state.gender}
             />
+=======
+        <Grid columns={1}>
+          <Grid.Column>
+            <Form onSubmit={this.handleSubmit}>
+              <div style={divStyle}>
+                <Input
+                  label='First Name'
+                  onChange={this.handleChange}
+                  name='first_name'
+                  value={this.state.first_name}
+                />
+                {this.addButtonsToInput("first_name")}
+              </div>
+              <div style={divStyle}>
+                <Input
+                  label='Last Name'
+                  onChange={this.handleChange}
+                  name='last_name'
+                  value={this.state.last_name}
+                />
+                {this.addButtonsToInput("last_name")}
+              </div>
+              <div style={divStyle}>
+                <Input
+                  label='Alias'
+                  onChange={this.handleChange}
+                  name='alias'
+                  value={this.state.alias}
+                />
+                {this.addButtonsToInput("alias")}
+              </div>
+              <div style={divStyle}>
+                <Input
+                  label='Species'
+                  onChange={this.handleChange}
+                  name='species'
+                  value={this.state.species}
+                />
+                {this.addButtonsToInput("species")}
+              </div>
+
+              <div style={divStyle}>
+                <Input
+                  label='Motto'
+                  onChange={this.handleChange}
+                  name='motto'
+                  value={this.state.motto}
+                />
+                {this.addButtonsToInput("motto")}
+              </div>
+
+              <div style={divStyle}>
+                <Input
+                  label='Alignment'
+                  onChange={this.handleChange}
+                  name='alignment'
+                  value={this.state.alignment}
+                />
+                {this.addButtonsToInput("alignment")}
+              </div>
+              <div style={divStyle}>
+                <Input
+                  label='Positive Traits'
+                  onChange={this.handleChange}
+                  name='traits_positive'
+                  value={this.state.traits_positive}
+                />
+                {this.addButtonsToInput("traits_positive")}
+              </div>
+
+              <div style={divStyle}>
+                <Input
+                  label='Negative Traits'
+                  onChange={this.handleChange}
+                  name='traits_negative'
+                  value={this.state.traits_negative}
+                />
+                {this.addButtonsToInput("traits_negative")}
+              </div>
+
+              <div style={divStyle}>
+                <Input
+                  label='Age'
+                  onChange={this.handleChange}
+                  name='age'
+                  value={this.state.age}
+                />
+                {this.addButtonsToInput("age")}
+              </div>
+              <div style={divStyle} />
+
+              <div style={divStyle}>
+                <Input
+                  label='Status'
+                  onChange={this.handleChange}
+                  name='status'
+                  value={this.state.status}
+                />
+                {this.addButtonsToInput("status")}
+              </div>
+>>>>>>> 2bb572996353fa66b31c5d406b119bdf50e43e39
 
             {this.addButtonsToInput('gender')}
           </div>
 
+<<<<<<< HEAD
           <div style={divStyle}>
             <Input
               label='Feats'
@@ -299,6 +479,40 @@ class CharacterCreateOrUpdate extends React.Component {
             {this.state.edit ? 'Update Character' : 'Create Character'}
           </Button>
         </Form>
+=======
+                {this.addButtonsToInput("gender")}
+              </div>
+
+              <div style={divStyle}>
+                <Input
+                  label='Feats'
+                  onChange={this.handleChange}
+                  name='feats'
+                  value={this.state.feats}
+                />
+                {this.addButtonsToInput("feats")}
+              </div>
+              <div style={divStyle}>
+                <Label size='large'>Bio</Label>
+                <br />
+                <TextArea
+                  rows='4'
+                  label='Bio'
+                  onChange={this.handleChange}
+                  name='bio'
+                  value={this.state.bio}
+                />
+                {this.addButtonsToInput("bio")}
+              </div>
+
+              <hr />
+              <Button color='green' fluid>
+                {this.state.edit ? "Update Character" : "Create Character"}
+              </Button>
+            </Form>
+          </Grid.Column>
+        </Grid>
+>>>>>>> 2bb572996353fa66b31c5d406b119bdf50e43e39
       </Container>
     )
   }

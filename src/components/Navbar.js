@@ -1,7 +1,7 @@
-import React, { Component, Fragment } from 'react'
-import { Link } from 'react-router-dom'
-import { Container, Button, Menu, Icon } from 'semantic-ui-react'
-import { debounce } from 'lodash'
+import React, { Component, Fragment } from "react"
+import { Link } from "react-router-dom"
+import { Container, Button, Menu, Icon } from "semantic-ui-react"
+import { debounce } from "lodash"
 
 class Navbar extends Component {
   state = { width: window.innerWidth, expanded: false }
@@ -11,15 +11,20 @@ class Navbar extends Component {
 
   componentDidMount = () =>
     window.addEventListener(
-      'resize',
+      "resize",
       debounce(this.handleWindowSizeChange, 100)
     )
   componentWillUnmount() {
-    window.removeEventListener('resize', this.handleWindowSizeChange)
+    window.removeEventListener("resize", this.handleWindowSizeChange)
   }
 
   handleWindowSizeChange = () => {
     this.setState({ width: window.innerWidth })
+  }
+
+  handleLogout = () => {
+    this.props.logout()
+    alert("Goodbye!")
   }
 
   toggleButton = () => (
@@ -27,9 +32,9 @@ class Navbar extends Component {
       onClick={() => this.setState({ expanded: !this.state.expanded })}
       size='big'
       as='i'
-      color={this.state.expanded ? 'grey' : 'blue'}
+      color={this.state.expanded ? "grey" : "blue"}
       inverted
-      name={this.state.expanded ? 'close' : 'bars'}
+      name={this.state.expanded ? "close" : "bars"}
     />
   )
 
@@ -42,7 +47,7 @@ class Navbar extends Component {
 
     return (
       <Menu
-        style={{ borderRadius: 0, marginBottom: '2px' }}
+        style={{ borderRadius: 0, marginBottom: "2px" }}
         borderless
         inverted
         stackable
@@ -51,8 +56,8 @@ class Navbar extends Component {
           <Menu.Item>
             <img
               alt='logo'
-              style={{ paddingRight: '3px' }}
-              src={require('../icon.png')}
+              style={{ paddingRight: "3px" }}
+              src={require("../icon.png")}
             />
             {displayMenuBtn && this.toggleButton()}
             {displayMenuCloseBtn && this.toggleButton()}
@@ -62,7 +67,7 @@ class Navbar extends Component {
             <Fragment>
               <Menu.Item
                 name='about'
-                active={activeItem === 'about'}
+                active={activeItem === "about"}
                 onClick={this.handleItemClick}
                 as={Link}
                 to='/'
@@ -71,7 +76,7 @@ class Navbar extends Component {
               </Menu.Item>
               <Menu.Item
                 name='char-lib'
-                active={activeItem === 'char-lib'}
+                active={activeItem === "char-lib"}
                 onClick={this.handleItemClick}
                 as={Link}
                 to='/characters'
@@ -80,7 +85,7 @@ class Navbar extends Component {
               </Menu.Item>
               <Menu.Item
                 name='char-new'
-                active={activeItem === 'char-new'}
+                active={activeItem === "char-new"}
                 onClick={this.handleItemClick}
                 as={Link}
                 to='/characters/new'
@@ -89,14 +94,14 @@ class Navbar extends Component {
               </Menu.Item>
               <Menu.Item
                 name='account'
-                active={activeItem === 'account'}
+                active={activeItem === "account"}
                 onClick={this.handleItemClick}
                 as={Link}
                 to='/myaccount'
               >
                 My Account
               </Menu.Item>
-              {this.props.username === '' ? (
+              {this.props.username === "" ? (
                 <Menu.Item position='right'>
                   <Button as={Link} to='/login' inverted>
                     Log in
@@ -106,14 +111,14 @@ class Navbar extends Component {
                     to='/signup'
                     inverted
                     primary
-                    style={{ marginLeft: '0.5em' }}
+                    style={{ marginLeft: "0.5em" }}
                   >
                     Sign Up
                   </Button>
                 </Menu.Item>
               ) : (
                 <Menu.Item position='right'>
-                  <Button onClick={this.props.logout} inverted>
+                  <Button onClick={this.handleLogout} as={Link} to='/' inverted>
                     Log Out {this.props.username}
                   </Button>
                 </Menu.Item>
