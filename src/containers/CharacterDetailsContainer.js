@@ -9,14 +9,16 @@ import { GRID_SIZE } from '../config/config'
 
 class CharacterDetailsContainer extends Component {
   state = {
+    id: null,
     character: null,
     view: 'display' //default to display mode when viewing a Character
   }
 
   componentDidMount = () =>
-    API.getCharacterById(this.props.id).then(character =>
-      this.setState({ character })
-    )
+    API.getCharacterById(this.props.id).then(character => {
+      debugger
+      this.setState({ character, id: this.props.id })
+    })
 
   render() {
     const viewMode = this.state.view
@@ -65,6 +67,8 @@ class CharacterDetailsContainer extends Component {
             </div>
             <div className='tweleve wide column'>
               <CharacterDetails
+                user_id={this.props.user_id}
+                username={this.props.username}
                 editable={editable}
                 character={this.state.character}
               />
