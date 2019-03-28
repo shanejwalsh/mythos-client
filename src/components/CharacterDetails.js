@@ -2,8 +2,21 @@ import React, { Component } from 'react'
 import { Container, Button, Icon } from 'semantic-ui-react'
 import { titleCase } from '../lib/helper'
 import { Link } from 'react-router-dom'
+import API from '../adapters/API'
 
 class CharacterDetails extends Component {
+  handleClick = () => {
+    API.cloneCharcter(this.props.character.id, this.props.user_id).then(
+      data => {
+        if (data.error) {
+          return alert('Something went wrong during cloning')
+        } else {
+          alert('Character Cloned to your library!!')
+        }
+      }
+    )
+  }
+
   render() {
     const {
       id,
@@ -43,17 +56,34 @@ class CharacterDetails extends Component {
           {traits_negative}
           <br />
         </p>
-        {this.props.editable ? (
+        {this.props.editable && (
           <Button as={Link} to={`/characters/${id}/edit`}>
             <Icon name='edit outline' />
             Edit Character
           </Button>
+        )}
+
+        {this.props.user_id && !this.props.editable ? (
+          <Button
+            onClick={this.handleClick}
+            content='Clone To My Account'
+            icon='copy'
+            fluid
+            color='violet'
+          />
         ) : (
           <Button
             content='Clone To My Account'
             icon='copy'
             fluid
             color='violet'
+            label={{
+              basic: true,
+              color: 'red',
+              pointing: 'left',
+              content: 'create an account / sign in to clone characters'
+            }}
+            disabled
           />
         )}
       </Container>
