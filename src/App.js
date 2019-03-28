@@ -1,28 +1,28 @@
-import React, { Component, Fragment } from 'react'
-import { Switch, Route, withRouter } from 'react-router-dom'
-import './App.css'
-import { Message } from 'semantic-ui-react'
-import Navbar from './components/Navbar'
-import API from './adapters/API'
-import About from './components/About'
-import AllCharactersContainer from './containers/AllCharactersContainer'
-import CharacterCreateOrUpdate from './components/CharacterCreateOrUpdate'
-import LoginForm from './components/LoginForm'
-import MyAccountContainer from './containers/MyAccountContainer'
-import CharacterDetailsContainer from './containers/CharacterDetailsContainer'
-import SignUpForm from './components/SignUpForm'
+import React, { Component, Fragment } from "react"
+import { Switch, Route, withRouter } from "react-router-dom"
+import "./App.css"
+import { Message } from "semantic-ui-react"
+import Navbar from "./components/Navbar"
+import API from "./adapters/API"
+import About from "./components/About"
+import AllCharactersContainer from "./containers/AllCharactersContainer"
+import CharacterCreateOrUpdate from "./components/CharacterCreateOrUpdate"
+import LoginForm from "./components/LoginForm"
+import MyAccountContainer from "./containers/MyAccountContainer"
+import CharacterDetailsContainer from "./containers/CharacterDetailsContainer"
+import SignUpForm from "./components/SignUpForm"
 
 class App extends Component {
-  state = { username: '', id: '' }
+  state = { username: "", id: "" }
 
   login = user => {
-    localStorage.setItem('token', user.token)
+    localStorage.setItem("token", user.token)
     this.setState({ username: user.username, id: user.id })
   }
 
   logout = () => {
-    localStorage.removeItem('token')
-    this.setState({ username: '', id: '' })
+    localStorage.removeItem("token")
+    this.setState({ username: "", id: "" })
   }
   componentDidMount() {
     API.validate().then(userData => {
@@ -30,7 +30,7 @@ class App extends Component {
         this.logout()
       } else {
         this.login(userData)
-        this.props.history.push('/characters')
+        this.props.history.push("/characters")
       }
     })
   }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react"
 import {
   Form,
   Button,
@@ -7,41 +7,40 @@ import {
   Grid,
   TextArea,
   Label
-} from 'semantic-ui-react'
-import API from '../adapters/API'
-import { titleCase, capitalize } from '../lib/helper'
+} from "semantic-ui-react"
+import API from "../adapters/API"
 
 class CharacterCreateOrUpdate extends React.Component {
   state = {
-    user_id: '',
-    first_name: '',
-    last_name: '',
-    alias: '',
-    motto: '',
-    species: '',
-    bio: '',
-    alignment: '',
-    traits_positive: '',
-    traits_negative: '',
-    age: '',
-    gender: '',
-    status: '',
-    feats: '',
+    user_id: "",
+    first_name: "",
+    last_name: "",
+    alias: "",
+    motto: "",
+    species: "",
+    bio: "",
+    alignment: "",
+    traits_positive: "",
+    traits_negative: "",
+    age: "",
+    gender: "",
+    status: "",
+    feats: "",
     edit: true,
     unlockedAttributes: [
-      'first_name',
-      'last_name',
-      'alias',
-      'motto',
-      'species',
-      'bio',
-      'alignment',
-      'traits_positive',
-      'traits_negative',
-      'age',
-      'status',
-      'feats',
-      'gender'
+      "first_name",
+      "last_name",
+      "alias",
+      "motto",
+      "species",
+      "bio",
+      "alignment",
+      "traits_positive",
+      "traits_negative",
+      "age",
+      "status",
+      "feats",
+      "gender"
     ]
   }
 
@@ -49,8 +48,11 @@ class CharacterCreateOrUpdate extends React.Component {
     if (this.state.edit) {
       API.updateCharacter(this.state)
     } else {
-      API.createCharacter(this.state).then(alert('char created BOIIIIIIII!'))
+      API.createCharacter(this.state).then(alert("char created BOIIIIIIII!"))
     }
+    this.state.user_id === 1
+      ? this.props.history.push("/characters")
+      : this.props.history.push("/myaccount")
   }
 
   componentDidMount = () => {
@@ -60,7 +62,7 @@ class CharacterCreateOrUpdate extends React.Component {
       this.setState({ user_id: 1 }) // If not signed in create as guest
     }
 
-    if (this.props.match.path.includes('edit')) {
+    if (this.props.match.path.includes("edit")) {
       API.getCharacterById(this.props.match.params.id).then(character =>
         this.setState({ ...character })
       )
@@ -108,14 +110,14 @@ class CharacterCreateOrUpdate extends React.Component {
   addButtonsToInput = attribute => {
     const locked = this.state.unlockedAttributes.includes(attribute)
     return (
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: "flex" }}>
         <Button
           toggle
           active={locked}
           onClick={this.handleLockAttribute}
           id={attribute}
           attached='right'
-          icon={locked ? 'lock open icon' : 'lock closed icon'}
+          icon={locked ? "lock open icon" : "lock closed icon"}
         />
       </div>
     )
@@ -123,16 +125,16 @@ class CharacterCreateOrUpdate extends React.Component {
 
   render() {
     const divStyle = {
-      width: '60%',
-      margin: '10px auto',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center'
+      width: "60%",
+      margin: "10px auto",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center"
     }
 
     return (
       <Container>
-        <h1>{this.state.edit ? 'Edit Character ' : 'Create Character'}</h1>
+        <h1>{this.state.edit ? "Edit Character " : "Create Character"}</h1>
         {!this.state.edit ? (
           <Button
             fluid
@@ -153,7 +155,7 @@ class CharacterCreateOrUpdate extends React.Component {
                   name='first_name'
                   value={this.state.first_name}
                 />
-                {this.addButtonsToInput('first_name')}
+                {this.addButtonsToInput("first_name")}
               </div>
               <div style={divStyle}>
                 <Input
@@ -162,7 +164,7 @@ class CharacterCreateOrUpdate extends React.Component {
                   name='last_name'
                   value={this.state.last_name}
                 />
-                {this.addButtonsToInput('last_name')}
+                {this.addButtonsToInput("last_name")}
               </div>
               <div style={divStyle}>
                 <Input
@@ -171,7 +173,7 @@ class CharacterCreateOrUpdate extends React.Component {
                   name='alias'
                   value={this.state.alias}
                 />
-                {this.addButtonsToInput('alias')}
+                {this.addButtonsToInput("alias")}
               </div>
               <div style={divStyle}>
                 <Input
@@ -180,7 +182,7 @@ class CharacterCreateOrUpdate extends React.Component {
                   name='species'
                   value={this.state.species}
                 />
-                {this.addButtonsToInput('species')}
+                {this.addButtonsToInput("species")}
               </div>
 
               <div style={divStyle}>
@@ -190,7 +192,7 @@ class CharacterCreateOrUpdate extends React.Component {
                   name='motto'
                   value={this.state.motto}
                 />
-                {this.addButtonsToInput('motto')}
+                {this.addButtonsToInput("motto")}
               </div>
 
               <div style={divStyle}>
@@ -200,7 +202,7 @@ class CharacterCreateOrUpdate extends React.Component {
                   name='alignment'
                   value={this.state.alignment}
                 />
-                {this.addButtonsToInput('alignment')}
+                {this.addButtonsToInput("alignment")}
               </div>
               <div style={divStyle}>
                 <Input
@@ -209,7 +211,7 @@ class CharacterCreateOrUpdate extends React.Component {
                   name='traits_positive'
                   value={this.state.traits_positive}
                 />
-                {this.addButtonsToInput('traits_positive')}
+                {this.addButtonsToInput("traits_positive")}
               </div>
 
               <div style={divStyle}>
@@ -219,7 +221,7 @@ class CharacterCreateOrUpdate extends React.Component {
                   name='traits_negative'
                   value={this.state.traits_negative}
                 />
-                {this.addButtonsToInput('traits_negative')}
+                {this.addButtonsToInput("traits_negative")}
               </div>
 
               <div style={divStyle}>
@@ -229,7 +231,7 @@ class CharacterCreateOrUpdate extends React.Component {
                   name='age'
                   value={this.state.age}
                 />
-                {this.addButtonsToInput('age')}
+                {this.addButtonsToInput("age")}
               </div>
               <div style={divStyle} />
 
@@ -240,7 +242,7 @@ class CharacterCreateOrUpdate extends React.Component {
                   name='status'
                   value={this.state.status}
                 />
-                {this.addButtonsToInput('status')}
+                {this.addButtonsToInput("status")}
               </div>
 
               <div style={divStyle}>
@@ -251,7 +253,7 @@ class CharacterCreateOrUpdate extends React.Component {
                   value={this.state.gender}
                 />
 
-                {this.addButtonsToInput('gender')}
+                {this.addButtonsToInput("gender")}
               </div>
 
               <div style={divStyle}>
@@ -261,7 +263,7 @@ class CharacterCreateOrUpdate extends React.Component {
                   name='feats'
                   value={this.state.feats}
                 />
-                {this.addButtonsToInput('feats')}
+                {this.addButtonsToInput("feats")}
               </div>
               <div style={divStyle}>
                 <Label size='large'>Bio</Label>
@@ -273,12 +275,12 @@ class CharacterCreateOrUpdate extends React.Component {
                   name='bio'
                   value={this.state.bio}
                 />
-                {this.addButtonsToInput('bio')}
+                {this.addButtonsToInput("bio")}
               </div>
 
               <hr />
               <Button color='green' fluid>
-                {this.state.edit ? 'Update Character' : 'Create Character'}
+                {this.state.edit ? "Update Character" : "Create Character"}
               </Button>
             </Form>
           </Grid.Column>
