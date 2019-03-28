@@ -44,11 +44,27 @@ class CharacterCreateOrUpdate extends React.Component {
     ]
   }
 
+  // then(data => {
+  //   if (data.error) {
+  // alert('somthing went wrong')
+
   handleSubmit = () => {
     if (this.state.edit) {
-      API.updateCharacter(this.state)
+      API.updateCharacter(this.state).then(data => {
+        if (data.error) {
+          return alert("something went wrong!")
+        } else {
+          alert("character updated!!")
+        }
+      })
     } else {
-      API.createCharacter(this.state).then(alert("char created BOIIIIIIII!"))
+      API.createCharacter(this.state).then(data => {
+        if (data.error) {
+          return alert("Something went wrong!")
+        } else {
+          alert("Character Created!!")
+        }
+      })
     }
     this.state.user_id === 1
       ? this.props.history.push("/characters")
