@@ -1,5 +1,15 @@
 import React from 'react'
-import { Segment, Image, Header, Reveal, Container } from 'semantic-ui-react'
+import {
+  Segment,
+  Image,
+  Header,
+  Reveal,
+  Container,
+  Grid,
+  List,
+  Button,
+  Divider
+} from 'semantic-ui-react'
 
 const About = () => {
   return (
@@ -55,6 +65,71 @@ const About = () => {
           </Reveal>
         </Container>
         <h3>Hover / tap the avatar builder to see what you can create!</h3>
+      </Segment>
+
+      <Segment style={{ padding: '8em 0em' }} vertical>
+        <Grid container stackable verticalAlign='middle'>
+          <Grid.Row>
+            <Grid.Column width={8}>
+              <Header as='h3' style={{ fontSize: '2em' }}>
+                Avatars can be exported as pure CSS to use in your own projects!
+              </Header>
+              <p style={{ fontSize: '1.33em' }}>
+                No images, imports or any fuss needed, copy the CSS, paste it
+                and your set!
+              </p>
+            </Grid.Column>
+            <Grid.Column floated='right' width={6}>
+              <Image
+                bordered
+                rounded
+                size='large'
+                src={require('../css.png')}
+              />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row />
+        </Grid>
+      </Segment>
+      <Segment style={{ padding: '0em' }} vertical>
+        <Grid celled='internally' columns='equal' stackable>
+          <Grid.Row textAlign='center'>
+            <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
+              <Header as='h3' style={{ fontSize: '2em' }}>
+                Get Inspired
+              </Header>
+              <p style={{ fontSize: '1.33em' }}>
+                With 1000's of randomised charcter traits to build your fully
+                customisable character!
+              </p>
+              <p style={{ fontSize: '1.33em' }}>
+                All generated with unique backstories, races, genders, traits
+                and more.
+              </p>
+            </Grid.Column>
+            <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
+              <Image size='large' src={require('../random.png')} />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Segment>
+      <Segment style={{ padding: '1em 0em' }} textAlign='center' vertical>
+        <Grid celled='internally' columns='equal' stackable>
+          <Grid.Row textAlign='center'>
+            <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
+              <Image size='large' src={require('../cards.png')} />
+            </Grid.Column>
+            <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
+              <Header as='h3' style={{ fontSize: '2em' }}>
+                Curate Your Own Character Library
+              </Header>
+              <p style={{ fontSize: '1.33em' }}>
+                Clone from the user generated public library or create your own.
+                Keep track of all your characters adventures with your friends!
+              </p>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       </Segment>
     </Container>
   )
