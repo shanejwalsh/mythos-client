@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component, Fragment } from "react"
 import {
   Button,
   Divider,
@@ -7,11 +7,11 @@ import {
   Icon,
   Segment,
   Container
-} from 'semantic-ui-react'
-import API from '../adapters/API'
-import { placeholderGrid } from '../lib/placeholder'
-import CharacterIndex from '../components/CharactersIndex'
-import { Link } from 'react-router-dom'
+} from "semantic-ui-react"
+import API from "../adapters/API"
+import { placeholderGrid } from "../lib/placeholder"
+import CharacterIndex from "../components/CharactersIndex"
+import { Link } from "react-router-dom"
 
 class MyAccountContainer extends Component {
   state = {
@@ -21,7 +21,7 @@ class MyAccountContainer extends Component {
     loaded: false
   }
   componentDidMount = () => {
-    if (this.props.username !== '') {
+    if (this.props.username !== "") {
       API.getMyCharacters().then(myCharacters => {
         if (myCharacters === {}) return
         this.setState({
@@ -39,7 +39,7 @@ class MyAccountContainer extends Component {
   }
   emptyState = () => (
     <Fragment>
-      <h1 style={{ textAlign: 'center' }}>
+      <h1 style={{ textAlign: "center" }}>
         Looks like you haven't created any characters yet!
       </h1>
       <Segment placeholder>
@@ -85,13 +85,13 @@ class MyAccountContainer extends Component {
           <div className='four wide column'>
             <Segment.Group>
               <Segment>
-                <h1 style={{ color: '#54C8FF' }}>{`${this.props.username}`}</h1>
+                <h1 style={{ color: "#54C8FF" }}>{`${this.props.username}`}</h1>
               </Segment>
               <Segment>
                 <b>Joined </b>26/03/2019
               </Segment>
               <Segment>
-                <b>Created </b> {this.state.myCharacters.length} Characters
+                <b>Created Characters </b> {this.state.myCharacters.length}
               </Segment>
             </Segment.Group>
           </div>
@@ -133,7 +133,7 @@ class MyAccountContainer extends Component {
     const username = this.props.username
     return (
       <Container>
-        {username === ''
+        {username === ""
           ? this.unathorisedState()
           : this.characterIndexLoader()}
       </Container>
