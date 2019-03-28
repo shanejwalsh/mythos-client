@@ -1,23 +1,32 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
-.ui.labeled.input:not([class*="corner labeled"]) .label:first-child {
+.ui.labeled.input:not([class*='corner labeled']) .label:first-child {
   width: 104px;
 }
 
-.ui.labeled.input:not([class*="corner labeled"]) .label:first-child + input {
-  width: 350px;
+.ui.labeled.input:not([class*='corner labeled']) .label:first-child + input {
+  max-width: calc(100% - 104px);
   border-radius: 0px;
+}
+
+.ui.icon.button > .icon {
+  pointer-events: none;
+}
+
+.ui.input {
+  width: 100%;
+  max-width: 1600px;
 }

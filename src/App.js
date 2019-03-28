@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { Switch, Route, withRouter } from 'react-router-dom'
 import './App.css'
-import { Message } from 'semantic-ui-react'
 import Navbar from './components/Navbar'
 import API from './adapters/API'
 import About from './components/About'

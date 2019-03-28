@@ -5,10 +5,7 @@ import {
   Header,
   Reveal,
   Container,
-  Grid,
-  List,
-  Button,
-  Divider
+  Grid
 } from 'semantic-ui-react'
 
 const About = () => {
@@ -103,7 +100,7 @@ const About = () => {
                 customisable character!
               </p>
               <p style={{ fontSize: '1.33em' }}>
-                All generated with unique backstories, races, genders, traits
+                All generated with a unique backstory, species, alias, traits
                 and more.
               </p>
             </Grid.Column>

@@ -18,9 +18,7 @@ class CharacterDetails extends Component {
       gender,
       species,
       traits_positive,
-      traits_negative,
-      notes,
-      alive
+      traits_negative
     } = this.props.character
 
     return (
@@ -45,10 +43,19 @@ class CharacterDetails extends Component {
           {traits_negative}
           <br />
         </p>
-        <Button as={Link} to={`/characters/${id}/edit`}>
-          <Icon name='edit outline' />
-          Edit Character
-        </Button>
+        {this.props.editable ? (
+          <Button as={Link} to={`/characters/${id}/edit`}>
+            <Icon name='edit outline' />
+            Edit Character
+          </Button>
+        ) : (
+          <Button
+            content='Clone To My Account'
+            icon='copy'
+            fluid
+            color='violet'
+          />
+        )}
       </Container>
     )
   }

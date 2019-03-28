@@ -4,12 +4,12 @@ import {
   Button,
   Input,
   Container,
-  Grid,
   TextArea,
   Label
 } from 'semantic-ui-react'
 import API from '../adapters/API'
-import { titleCase, capitalize } from '../lib/helper'
+import { GRID_SIZE } from '../config/config'
+import { generateCSS } from '../lib/helper'
 
 class CharacterCreateOrUpdate extends React.Component {
   state = {
@@ -27,6 +27,7 @@ class CharacterCreateOrUpdate extends React.Component {
     gender: '',
     status: '',
     feats: '',
+    sprite_data: [],
     edit: true,
     unlockedAttributes: [
       'first_name',
@@ -41,7 +42,8 @@ class CharacterCreateOrUpdate extends React.Component {
       'age',
       'status',
       'feats',
-      'gender'
+      'gender',
+      'sprite_data'
     ]
   }
 
@@ -65,8 +67,8 @@ class CharacterCreateOrUpdate extends React.Component {
         this.setState({ ...character })
       )
     } else {
-      this.setState({ edit: false })
       this.randomizeUnlockedAttributes()
+      this.setState({ edit: false })
     }
   }
 
@@ -108,14 +110,13 @@ class CharacterCreateOrUpdate extends React.Component {
   addButtonsToInput = attribute => {
     const locked = this.state.unlockedAttributes.includes(attribute)
     return (
-      <div style={{ display: 'flex' }}>
+      <div style={{ float: 'right' }} onClick={this.handleLockAttribute}>
         <Button
           toggle
           active={locked}
-          onClick={this.handleLockAttribute}
           id={attribute}
           attached='right'
-          icon={locked ? 'lock open icon' : 'lock closed icon'}
+          icon={locked ? 'lock open' : 'lock'}
         />
       </div>
     )
@@ -123,7 +124,7 @@ class CharacterCreateOrUpdate extends React.Component {
 
   render() {
     const divStyle = {
-      width: '60%',
+      width: '90%',
       margin: '10px auto',
       display: 'flex',
       justifyContent: 'center',
@@ -133,7 +134,7 @@ class CharacterCreateOrUpdate extends React.Component {
     return (
       <Container>
         <h1>{this.state.edit ? 'Edit Character ' : 'Create Character'}</h1>
-        {!this.state.edit ? (
+        {!this.state.edit && (
           <Button
             fluid
             onClick={this.randomizeUnlockedAttributes}
@@ -141,148 +142,163 @@ class CharacterCreateOrUpdate extends React.Component {
             icon='random'
             color='violet'
           />
-        ) : null}
+        )}
         <hr />
-        <Grid columns={1}>
-          <Grid.Column>
-            <Form onSubmit={this.handleSubmit}>
-              <div style={divStyle}>
-                <Input
-                  label='First Name'
-                  onChange={this.handleChange}
-                  name='first_name'
-                  value={this.state.first_name}
-                />
-                {this.addButtonsToInput('first_name')}
-              </div>
-              <div style={divStyle}>
-                <Input
-                  label='Last Name'
-                  onChange={this.handleChange}
-                  name='last_name'
-                  value={this.state.last_name}
-                />
-                {this.addButtonsToInput('last_name')}
-              </div>
-              <div style={divStyle}>
-                <Input
-                  label='Alias'
-                  onChange={this.handleChange}
-                  name='alias'
-                  value={this.state.alias}
-                />
-                {this.addButtonsToInput('alias')}
-              </div>
-              <div style={divStyle}>
-                <Input
-                  label='Species'
-                  onChange={this.handleChange}
-                  name='species'
-                  value={this.state.species}
-                />
-                {this.addButtonsToInput('species')}
-              </div>
 
-              <div style={divStyle}>
-                <Input
-                  label='Motto'
-                  onChange={this.handleChange}
-                  name='motto'
-                  value={this.state.motto}
-                />
-                {this.addButtonsToInput('motto')}
-              </div>
+        {this.state.sprite_data.length > 0 && (
+          <div
+            style={{
+              margin: 'auto',
+              height: GRID_SIZE * 8.5,
+              width: GRID_SIZE * 8.5
+            }}
+          >
+            <div
+              style={generateCSS({
+                cellColors: this.state.sprite_data.split(','),
+                pixelSize: 8,
+                cssFormat: false
+              })}
+            />
+          </div>
+        )}
 
-              <div style={divStyle}>
-                <Input
-                  label='Alignment'
-                  onChange={this.handleChange}
-                  name='alignment'
-                  value={this.state.alignment}
-                />
-                {this.addButtonsToInput('alignment')}
-              </div>
-              <div style={divStyle}>
-                <Input
-                  label='Positive Traits'
-                  onChange={this.handleChange}
-                  name='traits_positive'
-                  value={this.state.traits_positive}
-                />
-                {this.addButtonsToInput('traits_positive')}
-              </div>
+        <Form onSubmit={this.handleSubmit}>
+          <div style={divStyle}>
+            <Input
+              label='First Name'
+              onChange={this.handleChange}
+              name='first_name'
+              value={this.state.first_name}
+            />
+            {this.addButtonsToInput('first_name')}
+          </div>
+          <div style={divStyle}>
+            <Input
+              label='Last Name'
+              onChange={this.handleChange}
+              name='last_name'
+              value={this.state.last_name}
+            />
+            {this.addButtonsToInput('last_name')}
+          </div>
+          <div style={divStyle}>
+            <Input
+              label='Alias'
+              onChange={this.handleChange}
+              name='alias'
+              value={this.state.alias}
+            />
+            {this.addButtonsToInput('alias')}
+          </div>
+          <div style={divStyle}>
+            <Input
+              label='Species'
+              onChange={this.handleChange}
+              name='species'
+              value={this.state.species}
+            />
+            {this.addButtonsToInput('species')}
+          </div>
 
-              <div style={divStyle}>
-                <Input
-                  label='Negative Traits'
-                  onChange={this.handleChange}
-                  name='traits_negative'
-                  value={this.state.traits_negative}
-                />
-                {this.addButtonsToInput('traits_negative')}
-              </div>
+          <div style={divStyle}>
+            <Input
+              label='Motto'
+              onChange={this.handleChange}
+              name='motto'
+              value={this.state.motto}
+            />
+            {this.addButtonsToInput('motto')}
+          </div>
 
-              <div style={divStyle}>
-                <Input
-                  label='Age'
-                  onChange={this.handleChange}
-                  name='age'
-                  value={this.state.age}
-                />
-                {this.addButtonsToInput('age')}
-              </div>
-              <div style={divStyle} />
+          <div style={divStyle}>
+            <Input
+              label='Alignment'
+              onChange={this.handleChange}
+              name='alignment'
+              value={this.state.alignment}
+            />
+            {this.addButtonsToInput('alignment')}
+          </div>
+          <div style={divStyle}>
+            <Input
+              label='Positive Traits'
+              onChange={this.handleChange}
+              name='traits_positive'
+              value={this.state.traits_positive}
+            />
+            {this.addButtonsToInput('traits_positive')}
+          </div>
 
-              <div style={divStyle}>
-                <Input
-                  label='Status'
-                  onChange={this.handleChange}
-                  name='status'
-                  value={this.state.status}
-                />
-                {this.addButtonsToInput('status')}
-              </div>
+          <div style={divStyle}>
+            <Input
+              label='Negative Traits'
+              onChange={this.handleChange}
+              name='traits_negative'
+              value={this.state.traits_negative}
+            />
+            {this.addButtonsToInput('traits_negative')}
+          </div>
 
-              <div style={divStyle}>
-                <Input
-                  label='Gender'
-                  onChange={this.handleChange}
-                  name='gender'
-                  value={this.state.gender}
-                />
+          <div style={divStyle}>
+            <Input
+              label='Age'
+              onChange={this.handleChange}
+              name='age'
+              value={this.state.age}
+            />
+            {this.addButtonsToInput('age')}
+          </div>
+          <div style={divStyle} />
 
-                {this.addButtonsToInput('gender')}
-              </div>
+          <div style={divStyle}>
+            <Input
+              label='Status'
+              onChange={this.handleChange}
+              name='status'
+              value={this.state.status}
+            />
+            {this.addButtonsToInput('status')}
+          </div>
 
-              <div style={divStyle}>
-                <Input
-                  label='Feats'
-                  onChange={this.handleChange}
-                  name='feats'
-                  value={this.state.feats}
-                />
-                {this.addButtonsToInput('feats')}
-              </div>
-              <div style={divStyle}>
-                <Label size='large'>Bio</Label>
-                <br />
-                <TextArea
-                  rows='4'
-                  label='Bio'
-                  onChange={this.handleChange}
-                  name='bio'
-                  value={this.state.bio}
-                />
-                {this.addButtonsToInput('bio')}
-              </div>
+          <div style={divStyle}>
+            <Input
+              label='Gender'
+              onChange={this.handleChange}
+              name='gender'
+              value={this.state.gender}
+            />
 
-              <hr />
-              <Button color='green' fluid>
-                {this.state.edit ? 'Update Character' : 'Create Character'}
-              </Button>
-            </Form>
-          </Grid.Column>
-        </Grid>
+            {this.addButtonsToInput('gender')}
+          </div>
+
+          <div style={divStyle}>
+            <Input
+              label='Feats'
+              onChange={this.handleChange}
+              name='feats'
+              value={this.state.feats}
+            />
+            {this.addButtonsToInput('feats')}
+          </div>
+
+          <div style={divStyle}>
+            <Label size='large'>Bio</Label>
+            <TextArea
+              rows='5'
+              label='Bio'
+              onChange={this.handleChange}
+              name='bio'
+              value={this.state.bio}
+            />
+            {this.addButtonsToInput('bio')}
+          </div>
+
+          <hr />
+          <Button color='green' fluid>
+            {this.state.edit ? 'Update Character' : 'Create Character'}
+          </Button>
+        </Form>
       </Container>
     )
   }

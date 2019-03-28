@@ -20,6 +20,10 @@ class CharacterDetailsContainer extends Component {
 
   render() {
     const viewMode = this.state.view
+    const editable =
+      this.state.character &&
+      this.props.username === this.state.character.user.username
+
     return (
       <Container>
         {viewMode === 'edit-avatar' && (
@@ -46,18 +50,24 @@ class CharacterDetailsContainer extends Component {
                   })}
                 />
               </div>
-              <Button
-                style={{ float: 'right' }}
-                onClick={() => this.setState({ view: 'edit-avatar' })}
-                icon
-                labelPosition='left'
-              >
-                <Icon name='edit outline' />
-                Edit Avatar
-              </Button>
+              {editable &&
+                this.state.character(
+                  <Button
+                    style={{ float: 'right' }}
+                    onClick={() => this.setState({ view: 'edit-avatar' })}
+                    icon
+                    labelPosition='left'
+                  >
+                    <Icon name='edit outline' />
+                    Edit Avatar
+                  </Button>
+                )}
             </div>
             <div className='tweleve wide column'>
-              <CharacterDetails character={this.state.character} />
+              <CharacterDetails
+                editable={editable}
+                character={this.state.character}
+              />
             </div>
           </div>
         )}
