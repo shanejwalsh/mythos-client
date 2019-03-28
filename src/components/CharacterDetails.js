@@ -31,7 +31,8 @@ class CharacterDetails extends Component {
       gender,
       species,
       traits_positive,
-      traits_negative
+      traits_negative,
+      user
     } = this.props.character
 
     return (
@@ -63,7 +64,7 @@ class CharacterDetails extends Component {
           </Button>
         )}
 
-        {this.props.user_id && !this.props.editable ? (
+        {this.props.user_id && this.props.username !== user.username && (
           <Button
             onClick={this.handleClick}
             content='Clone To My Account'
@@ -71,7 +72,9 @@ class CharacterDetails extends Component {
             fluid
             color='violet'
           />
-        ) : (
+        )}
+
+        {!this.props.user_id && (
           <Button
             content='Clone To My Account'
             icon='copy'

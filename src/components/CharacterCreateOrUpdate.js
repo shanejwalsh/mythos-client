@@ -5,15 +5,15 @@ import {
   Input,
   Container,
   TextArea,
-  Label
+  Label,
+  Message
 } from 'semantic-ui-react'
 import API from '../adapters/API'
 import { GRID_SIZE } from '../config/config'
 import { generateCSS } from '../lib/helper'
 
-class CharacterCreateOrUpdate extends React.Component {
-  state = {
-    user_id: '',
+const getInitialState = () => {
+  return {
     first_name: '',
     last_name: '',
     alias: '',
@@ -28,7 +28,7 @@ class CharacterCreateOrUpdate extends React.Component {
     status: '',
     feats: '',
     sprite_data: [],
-    edit: true,
+    edit: false,
     unlockedAttributes: [
       'first_name',
       'last_name',
@@ -46,32 +46,52 @@ class CharacterCreateOrUpdate extends React.Component {
       'sprite_data'
     ]
   }
+}
 
-  // then(data => {
-  //   if (data.error) {
-  // alert('somthing went wrong')
+class CharacterCreateOrUpdate extends React.Component {
+  state = getInitialState()
+  validate = () => {
+    debugger
+    if (this.state.first_name.length === 0) return false
+    if (this.state.last_name.length === 0) return false
+    if (this.state.alias.length === 0) return false
+    if (this.state.motto.length === 0) return false
+    if (this.state.species.length === 0) return false
+    if (this.state.bio.length === 0) return false
+    if (this.state.alignment.length === 0) return false
+    if (this.state.traits_positive.length === 0) return false
+    if (this.state.traits_negative.length === 0) return false
+    if (this.state.age.length === 0) return false
+    if (this.state.gender.length === 0) return false
+    if (this.state.status.length === 0) return false
+    if (this.state.feats.length === 0) return false
+    if (this.state.sprite_data.length === 0) return false
+    return true
+  }
 
   handleSubmit = () => {
-    if (this.state.edit) {
-      API.updateCharacter(this.state).then(data => {
-        if (data.error) {
-          return alert('something went wrong, character not updated')
-        } else {
-          alert('character updated!!')
-        }
-      })
+    if (this.validate()) {
+      if (this.state.edit) {
+        API.updateCharacter(this.state).then(data => {
+          if (data.error) {
+            return alert('something went wrong, character not updated')
+          } else {
+            alert('character updated!!')
+          }
+        })
+      } else {
+        API.createCharacter(this.state).then(data => {
+          if (data.error) {
+            return alert('Something went wrong, character not created')
+          } else {
+            alert('Character Created!!')
+          }
+        })
+      }
+      this.setState(getInitialState())
     } else {
-      API.createCharacter(this.state).then(data => {
-        if (data.error) {
-          return alert('Something went wrong, character not created')
-        } else {
-          alert('Character Created!!')
-        }
-      })
+      alert('no fields can be left empty')
     }
-    this.state.user_id === 1
-      ? this.props.history.push('/characters')
-      : this.props.history.push('/myaccount')
   }
 
   componentDidMount = () => {
@@ -83,7 +103,7 @@ class CharacterCreateOrUpdate extends React.Component {
 
     if (this.props.match.path.includes('edit')) {
       API.getCharacterById(this.props.match.params.id).then(character =>
-        this.setState({ ...character })
+        this.setState({ ...character, edit: true })
       )
     } else {
       this.randomizeUnlockedAttributes()
@@ -153,6 +173,16 @@ class CharacterCreateOrUpdate extends React.Component {
     return (
       <Container>
         <h1>{this.state.edit ? 'Edit Character ' : 'Create Character'}</h1>
+
+        {!this.props.user_id && (
+          <Message negative>
+            <Message.Header>Sign Up!</Message.Header>
+            <p>
+              You will not be able to edit this character once created unless
+              you sign up (it only takes 10 seconds)
+            </p>
+          </Message>
+        )}
         {!this.state.edit && (
           <Button
             fluid

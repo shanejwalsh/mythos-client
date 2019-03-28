@@ -9,17 +9,16 @@ import { GRID_SIZE } from '../config/config'
 
 class CharacterDetailsContainer extends Component {
   state = {
-    id: null,
     character: null,
     view: 'display' //default to display mode when viewing a Character
   }
 
-  componentDidMount = () =>
+  componentDidMount = () => {
+    if (this.state.character !== null) return
     API.getCharacterById(this.props.id).then(character => {
-      debugger
-      this.setState({ character, id: this.props.id })
+      this.setState({ character })
     })
-
+  }
   render() {
     const viewMode = this.state.view
     const editable =
@@ -52,18 +51,17 @@ class CharacterDetailsContainer extends Component {
                   })}
                 />
               </div>
-              {editable &&
-                this.state.character(
-                  <Button
-                    style={{ float: 'right' }}
-                    onClick={() => this.setState({ view: 'edit-avatar' })}
-                    icon
-                    labelPosition='left'
-                  >
-                    <Icon name='edit outline' />
-                    Edit Avatar
-                  </Button>
-                )}
+              {editable && this.state.character && (
+                <Button
+                  style={{ float: 'right' }}
+                  onClick={() => this.setState({ view: 'edit-avatar' })}
+                  icon
+                  labelPosition='left'
+                >
+                  <Icon name='edit outline' />
+                  Edit Avatar
+                </Button>
+              )}
             </div>
             <div className='tweleve wide column'>
               <CharacterDetails

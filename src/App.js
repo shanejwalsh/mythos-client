@@ -29,7 +29,6 @@ class App extends Component {
         this.logout()
       } else {
         this.login(userData)
-        this.props.history.push('/characters')
       }
     })
   }
@@ -56,6 +55,7 @@ class App extends Component {
             path='/characters/:id/edit'
             component={routerProps => (
               <CharacterCreateOrUpdate
+                edit={true}
                 user_id={this.state.id}
                 {...routerProps}
               />
