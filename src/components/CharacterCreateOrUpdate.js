@@ -52,7 +52,7 @@ class CharacterCreateOrUpdate extends React.Component {
     if (this.state.edit) {
       API.updateCharacter(this.state).then(data => {
         if (data.error) {
-          return alert("something went wrong!")
+          return alert("something went wrong, character not updated")
         } else {
           alert("character updated!!")
         }
@@ -60,7 +60,7 @@ class CharacterCreateOrUpdate extends React.Component {
     } else {
       API.createCharacter(this.state).then(data => {
         if (data.error) {
-          return alert("Something went wrong!")
+          return alert("Something went wrong, character not created")
         } else {
           alert("Character Created!!")
         }
