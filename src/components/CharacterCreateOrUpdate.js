@@ -85,6 +85,7 @@ class CharacterCreateOrUpdate extends React.Component {
             return alert('Something went wrong, character not created')
           } else {
             alert('Character Created!!')
+            this.props.history.push(`/characters/${data.id}`)
           }
         })
       }
