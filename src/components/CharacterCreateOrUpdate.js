@@ -76,6 +76,7 @@ class CharacterCreateOrUpdate extends React.Component {
             return alert('something went wrong, character not updated')
           } else {
             alert('character updated!!')
+            this.props.history.push(`/myaccount`)
           }
         })
       } else {
@@ -183,15 +184,15 @@ class CharacterCreateOrUpdate extends React.Component {
             </p>
           </Message>
         )}
-        {!this.state.edit && (
-          <Button
-            fluid
-            onClick={this.randomizeUnlockedAttributes}
-            content='Randomize'
-            icon='random'
-            color='violet'
-          />
-        )}
+
+        <Button
+          fluid
+          onClick={this.randomizeUnlockedAttributes}
+          content='Randomize Unlocked Attributes'
+          icon='random'
+          color='violet'
+        />
+
         <hr />
 
         {this.state.sprite_data.length > 0 && (
