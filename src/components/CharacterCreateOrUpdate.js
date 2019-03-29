@@ -51,7 +51,6 @@ const getInitialState = () => {
 class CharacterCreateOrUpdate extends React.Component {
   state = getInitialState()
   validate = () => {
-    debugger
     if (this.state.first_name.length === 0) return false
     if (this.state.last_name.length === 0) return false
     if (this.state.alias.length === 0) return false
