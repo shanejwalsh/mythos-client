@@ -1,4 +1,4 @@
-const BASE_URL = 'https://mythos-server.herokuapp.com/api/v1/'
+const BASE_URL = 'https://mythos-server.herokuapp.com/api/v1'
 
 const CHAR_URL = BASE_URL + '/characters'
 const NEW_CHAR_URL = BASE_URL + '/generate/full_character'
