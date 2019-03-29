@@ -29,6 +29,7 @@ class CharacterDetailsContainer extends Component {
       <Container>
         {viewMode === 'edit-avatar' && (
           <AvatarBuilder
+            history={this.props.history}
             characterId={this.state.character.id}
             cellColors={this.state.character.sprite_data.split(',')}
             setDisplayMode={() => this.setState({ view: 'display' })}

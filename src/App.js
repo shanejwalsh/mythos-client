@@ -66,6 +66,7 @@ class App extends Component {
             component={routerProps => {
               return (
                 <CharacterDetailsContainer
+                  {...routerProps}
                   user_id={this.state.id}
                   username={this.state.username}
                   id={routerProps.match.params.id}

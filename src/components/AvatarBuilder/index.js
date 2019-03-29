@@ -20,7 +20,7 @@ class AvatarBuilder extends Component {
     API.updateCharacter({
       id: this.props.characterId,
       sprite_data: this.state.cellColors.join(',')
-    })
+    }).then(charData => this.props.history.push(`/characters/${charData.id}`))
   }
 
   //Fill the grid with characters colors, if empty create blank grid
