@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   Form,
   Button,
@@ -7,10 +7,11 @@ import {
   TextArea,
   Label,
   Message
-} from 'semantic-ui-react'
-import API from '../adapters/API'
-import { GRID_SIZE } from '../config/config'
-import { generateCSS } from '../lib/helper'
+} from 'semantic-ui-react';
+// import API from '../api/API';
+import { GRID_SIZE } from '../config/config';
+import { generateCSS } from '../lib/helper';
+import { createCharacter, generateAttribute, generateNewCharacter, getCharacterById, updateCharacter } from '../api/API';
 
 const getInitialState = () => {
   return {
@@ -45,110 +46,110 @@ const getInitialState = () => {
       'gender',
       'sprite_data'
     ]
-  }
-}
+  };
+};
 
 class CharacterCreateOrUpdate extends React.Component {
-  state = getInitialState()
+  state = getInitialState();
   validate = () => {
-    if (this.state.first_name.length === 0) return false
-    if (this.state.last_name.length === 0) return false
-    if (this.state.alias.length === 0) return false
-    if (this.state.motto.length === 0) return false
-    if (this.state.species.length === 0) return false
-    if (this.state.bio.length === 0) return false
-    if (this.state.alignment.length === 0) return false
-    if (this.state.traits_positive.length === 0) return false
-    if (this.state.traits_negative.length === 0) return false
-    if (this.state.age.length === 0) return false
-    if (this.state.gender.length === 0) return false
-    if (this.state.status.length === 0) return false
-    if (this.state.feats.length === 0) return false
-    if (this.state.sprite_data.length === 0) return false
-    return true
-  }
+    if (this.state.first_name.length === 0) return false;
+    if (this.state.last_name.length === 0) return false;
+    if (this.state.alias.length === 0) return false;
+    if (this.state.motto.length === 0) return false;
+    if (this.state.species.length === 0) return false;
+    if (this.state.bio.length === 0) return false;
+    if (this.state.alignment.length === 0) return false;
+    if (this.state.traits_positive.length === 0) return false;
+    if (this.state.traits_negative.length === 0) return false;
+    if (this.state.age.length === 0) return false;
+    if (this.state.gender.length === 0) return false;
+    if (this.state.status.length === 0) return false;
+    if (this.state.feats.length === 0) return false;
+    if (this.state.sprite_data.length === 0) return false;
+    return true;
+  };
 
   handleSubmit = () => {
     if (this.validate()) {
       if (this.state.edit) {
-        API.updateCharacter(this.state).then(data => {
+        updateCharacter(this.state).then(data => {
           if (data.error) {
-            return alert('something went wrong, character not updated')
+            return alert('something went wrong, character not updated');
           } else {
-            alert('character updated!!')
-            this.props.history.push(`/myaccount`)
+            alert('character updated!!');
+            this.props.history.push(`/myaccount`);
           }
-        })
+        });
       } else {
-        API.createCharacter(this.state).then(data => {
+        createCharacter(this.state).then(data => {
           if (data.error) {
-            return alert('Something went wrong, character not created')
+            return alert('Something went wrong, character not created');
           } else {
-            alert('Character Created!!')
-            this.props.history.push(`/characters/${data.id}`)
+            alert('Character Created!!');
+            this.props.history.push(`/characters/${data.id}`);
           }
-        })
+        });
       }
-      this.setState(getInitialState())
+      this.setState(getInitialState());
     } else {
-      alert('no fields can be left empty')
+      alert('no fields can be left empty');
     }
-  }
+  };
 
   componentDidMount = () => {
     if (this.props.user_id) {
-      this.setState({ user_id: this.props.user_id })
+      this.setState({ user_id: this.props.user_id });
     } else {
-      this.setState({ user_id: 1 }) // If not signed in create as guest
+      this.setState({ user_id: 1 }); // If not signed in create as guest
     }
 
     if (this.props.match.path.includes('edit')) {
-      API.getCharacterById(this.props.match.params.id).then(character =>
+      getCharacterById(this.props.match.params.id).then(character =>
         this.setState({ ...character, edit: true })
-      )
+      );
     } else {
-      this.randomizeUnlockedAttributes()
-      this.setState({ edit: false })
+      this.randomizeUnlockedAttributes();
+      this.setState({ edit: false });
     }
-  }
+  };
 
   randomizeUnlockedAttributes = () =>
-    API.generateNewCharacter().then(character =>
+    generateNewCharacter().then(character =>
       Object.keys(character).map(attribute =>
         this.state.unlockedAttributes.includes(attribute)
           ? this.setState({ [attribute]: character[attribute] })
           : null
       )
-    )
+    );
 
   handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value })
-  }
+    this.setState({ [event.target.name]: event.target.value });
+  };
 
   handleRandomAttribute = event => {
-    event.persist()
-    API.generateAttribute(event.target.id).then(attribute =>
+    event.persist();
+    generateAttribute(event.target.id).then(attribute =>
       this.setState({ ...attribute })
-    )
-  }
+    );
+  };
 
   handleLockAttribute = event => {
-    event.persist()
+    event.persist();
     if (!this.state.unlockedAttributes.includes(event.target.id)) {
       this.setState({
         unlockedAttributes: [...this.state.unlockedAttributes, event.target.id]
-      })
+      });
     } else {
       this.setState({
         unlockedAttributes: this.state.unlockedAttributes.filter(
           attribute => attribute !== event.target.id
         )
-      })
+      });
     }
-  }
+  };
 
   addButtonsToInput = attribute => {
-    const locked = this.state.unlockedAttributes.includes(attribute)
+    const locked = this.state.unlockedAttributes.includes(attribute);
     return (
       <div style={{ float: 'right' }} onClick={this.handleLockAttribute}>
         <Button
@@ -159,8 +160,8 @@ class CharacterCreateOrUpdate extends React.Component {
           icon={locked ? 'lock open' : 'lock'}
         />
       </div>
-    )
-  }
+    );
+  };
 
   render() {
     const divStyle = {
@@ -169,7 +170,7 @@ class CharacterCreateOrUpdate extends React.Component {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center'
-    }
+    };
 
     return (
       <Container>
@@ -350,7 +351,7 @@ class CharacterCreateOrUpdate extends React.Component {
           </Button>
         </Form>
       </Container>
-    )
+    );
   }
 }
-export default CharacterCreateOrUpdate
+export default CharacterCreateOrUpdate;

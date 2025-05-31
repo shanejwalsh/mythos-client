@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
-import { placeholderGrid } from '../lib/placeholder'
-import API from '../adapters/API'
-import { Container } from 'semantic-ui-react'
-import CharacterIndex from '../components/CharactersIndex'
+import React, { Component } from 'react';
+import { PlaceholderGrid } from '../lib/placeholder';
+
+import { Container } from 'semantic-ui-react';
+import CharacterIndex from '../components/CharactersIndex';
+import { getAllCharacters } from '../api/API';
 
 class AllCharactersContainer extends Component {
   state = {
@@ -10,9 +11,9 @@ class AllCharactersContainer extends Component {
     filterSpeciesOptions: [],
     filterStatusOptions: [],
     loaded: false
-  }
+  };
   componentDidMount = () =>
-    API.getAllCharacters().then(allCharacters =>
+    getAllCharacters().then(allCharacters =>
       this.setState({
         allCharacters,
         filterSpeciesOptions: [
@@ -23,14 +24,14 @@ class AllCharactersContainer extends Component {
         ],
         loaded: true
       })
-    )
+    );
 
   render() {
     const {
       allCharacters,
       filterSpeciesOptions,
       filterStatusOptions
-    } = this.state
+    } = this.state;
     return (
       <Container>
         <h1>Published Characters</h1>
@@ -43,10 +44,10 @@ class AllCharactersContainer extends Component {
             filterStatusOptions={filterStatusOptions}
           />
         ) : (
-          placeholderGrid()
+          <PlaceholderGrid />
         )}
       </Container>
-    )
+    );
   }
 }
-export default AllCharactersContainer
+export default AllCharactersContainer;

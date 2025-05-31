@@ -1,21 +1,22 @@
-import React, { Component } from 'react'
-import { Container, Button, Icon } from 'semantic-ui-react'
-import { titleCase } from '../lib/helper'
-import { Link } from 'react-router-dom'
-import API from '../adapters/API'
+import React, { Component } from 'react';
+import { Container, Button, Icon } from 'semantic-ui-react';
+import { titleCase } from '../lib/helper';
+import { Link } from 'react-router-dom';
+import { cloneCharacter } from '../api/API';
+// import API from '../api/API';
 
 class CharacterDetails extends Component {
   handleClick = () => {
-    API.cloneCharcter(this.props.character.id, this.props.user_id).then(
+    cloneCharacter(this.props.character.id, this.props.user_id).then(
       data => {
         if (data.error) {
-          return alert('Something went wrong during cloning')
+          return alert('Something went wrong during cloning');
         } else {
-          alert('Character Cloned to your library!!')
+          alert('Character Cloned to your library!!');
         }
       }
-    )
-  }
+    );
+  };
 
   render() {
     const {
@@ -33,7 +34,7 @@ class CharacterDetails extends Component {
       traits_positive,
       traits_negative,
       user
-    } = this.props.character
+    } = this.props.character;
 
     return (
       <Container>
@@ -90,8 +91,8 @@ class CharacterDetails extends Component {
           />
         )}
       </Container>
-    )
+    );
   }
 }
 
-export default CharacterDetails
+export default CharacterDetails;

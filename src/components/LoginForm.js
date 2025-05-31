@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Button,
   Form,
@@ -8,36 +8,36 @@ import {
   Segment,
   Container,
   Grid
-} from 'semantic-ui-react'
-import API from '../adapters/API'
-
+} from 'semantic-ui-react';
+import { loginUser } from '../api/API';
 class LoginForm extends Component {
   state = {
     username: '',
     password: ''
-  }
+  };
 
   handleChange = event =>
-    this.setState({ [event.target.name]: event.target.value })
+    this.setState({ [event.target.name]: event.target.value });
 
   handleSubmit = () => {
-    const { login, history } = this.props
+    const { setUser, history } = this.props;
     const user = {
       username: '@' + this.state.username,
       password: this.state.password
-    }
-    API.login(user).then(data => {
-      if (data.error) {
-        alert('somthing went wrong')
+    };
+
+    loginUser(user).then(userData => {
+      if (userData.error) {
+        alert('something went wrong');
       } else {
-        login(data)
-        history.push('/myaccount')
+        setUser(userData);
+        history.push('/my-account');
       }
-    })
-  }
+    });
+  };
 
   render() {
-    const { username, password } = this.state
+    const { username, password } = this.state;
 
     return (
       <Container
@@ -91,8 +91,8 @@ class LoginForm extends Component {
           </Grid.Column>
         </Grid>
       </Container>
-    )
+    );
   }
 }
 
-export default LoginForm
+export default LoginForm;

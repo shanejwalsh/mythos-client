@@ -1,34 +1,35 @@
-import React, { Component } from "react"
-import { Segment, Form, Image, Button, Container } from "semantic-ui-react"
-import API from "../adapters/API"
+import React, { Component } from "react";
+import { Segment, Form, Image, Button, Container } from "semantic-ui-react";
+import { signUp } from "../api/API";
+// import API from "../api/API";
 
 class SignUpForm extends Component {
   state = {
     username: "",
     password: ""
-  }
+  };
   handleChange = event =>
-    this.setState({ [event.target.name]: event.target.value })
+    this.setState({ [event.target.name]: event.target.value });
 
   handleSubmit = () => {
-    const { history } = this.props
+    const { history } = this.props;
     const user = {
       username: "@" + this.state.username,
       password: this.state.password
-    }
+    };
 
-    API.signUp(user).then(data => {
+    signUp(user).then(data => {
       if (data.error) {
-        alert("somthing went wrong")
+        alert("something went wrong");
       } else {
-        alert("User added, sign in to get cracking!")
-        history.push("/login")
+        alert("User added, sign in to get cracking!");
+        history.push("/login");
       }
-    })
-  }
+    });
+  };
 
   render() {
-    const { username, password } = this.state
+    const { username, password } = this.state;
 
     return (
       <Container>
@@ -76,8 +77,8 @@ class SignUpForm extends Component {
           </Form>
         </Segment>
       </Container>
-    )
+    );
   }
 }
 
-export default SignUpForm
+export default SignUpForm;

@@ -1,29 +1,30 @@
-import React, { Component } from 'react'
-import CharacterDetails from '../components/CharacterDetails'
-import API from '../adapters/API'
-import { Container, Button, Icon } from 'semantic-ui-react'
-import AvatarBuilder from '../components/AvatarBuilder'
-import { generateCSS } from '../lib/helper'
-import { Link } from 'react-router-dom'
-import { GRID_SIZE } from '../config/config'
+import React, { Component } from 'react';
+import CharacterDetails from '../components/CharacterDetails';
+// import API from '../api/API';
+import { Container, Button, Icon } from 'semantic-ui-react';
+import AvatarBuilder from '../components/AvatarBuilder';
+import { generateCSS } from '../lib/helper';
+import { Link } from 'react-router-dom';
+import { GRID_SIZE } from '../config/config';
+import { getCharacterById } from '../api/API';
 
 class CharacterDetailsContainer extends Component {
   state = {
     character: null,
     view: 'display' //default to display mode when viewing a Character
-  }
+  };
 
   componentDidMount = () => {
-    if (this.state.character !== null) return
-    API.getCharacterById(this.props.id).then(character => {
-      this.setState({ character })
-    })
-  }
+    if (this.state.character !== null) return;
+    getCharacterById(this.props.id).then(character => {
+      this.setState({ character });
+    });
+  };
   render() {
-    const viewMode = this.state.view
+    const viewMode = this.state.view;
     const editable =
       this.state.character &&
-      this.props.username === this.state.character.user.username
+      this.props.username === this.state.character.user.username;
 
     return (
       <Container>
@@ -75,8 +76,8 @@ class CharacterDetailsContainer extends Component {
           </div>
         )}
       </Container>
-    )
+    );
   }
 }
 
-export default CharacterDetailsContainer
+export default CharacterDetailsContainer;

@@ -1,31 +1,31 @@
-import React, { Component, Fragment } from "react"
-import { Link } from "react-router-dom"
-import { Container, Button, Menu, Icon } from "semantic-ui-react"
-import { debounce } from "lodash"
+import React, { Component, Fragment } from "react";
+import { Link } from "react-router-dom";
+import { Container, Button, Menu, Icon } from "semantic-ui-react";
+import { debounce } from "lodash";
 
 class Navbar extends Component {
-  state = { width: window.innerWidth, expanded: false }
+  state = { width: window.innerWidth, expanded: false };
 
   handleItemClick = (e, { name }) =>
-    this.setState({ activeItem: name, expanded: !this.state.expanded })
+    this.setState({ activeItem: name, expanded: !this.state.expanded });
 
   componentDidMount = () =>
     window.addEventListener(
       "resize",
       debounce(this.handleWindowSizeChange, 100)
-    )
+    );
   componentWillUnmount() {
-    window.removeEventListener("resize", this.handleWindowSizeChange)
+    window.removeEventListener("resize", this.handleWindowSizeChange);
   }
 
   handleWindowSizeChange = () => {
-    this.setState({ width: window.innerWidth })
-  }
+    this.setState({ width: window.innerWidth });
+  };
 
   handleLogout = () => {
-    this.props.logout()
-    alert("Goodbye!")
-  }
+    this.props.logout();
+    alert("Goodbye!");
+  };
 
   toggleButton = () => (
     <Icon
@@ -36,14 +36,14 @@ class Navbar extends Component {
       inverted
       name={this.state.expanded ? "close" : "bars"}
     />
-  )
+  );
 
   render() {
-    const isMobile = this.state.width <= 780
-    const { activeItem, expanded } = this.state
-    const displayMenuBtn = isMobile && !expanded
-    const displayMenuCloseBtn = isMobile && expanded
-    const showExpandedMenu = (isMobile && expanded) || !isMobile
+    const isMobile = this.state.width <= 780;
+    const { activeItem, expanded } = this.state;
+    const displayMenuBtn = isMobile && !expanded;
+    const displayMenuCloseBtn = isMobile && expanded;
+    const showExpandedMenu = (isMobile && expanded) || !isMobile;
 
     return (
       <Menu
@@ -97,7 +97,7 @@ class Navbar extends Component {
                 active={activeItem === "account"}
                 onClick={this.handleItemClick}
                 as={Link}
-                to='/myaccount'
+                to='/my-account'
               >
                 My Account
               </Menu.Item>
@@ -127,8 +127,8 @@ class Navbar extends Component {
           )}
         </Container>
       </Menu>
-    )
+    );
   }
 }
 
-export default Navbar
+export default Navbar;

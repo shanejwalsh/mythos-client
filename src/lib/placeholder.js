@@ -1,7 +1,7 @@
-import React from 'react'
-import { Grid, Placeholder, Segment } from 'semantic-ui-react'
+import React from 'react';
+import { Grid, Placeholder, Segment } from 'semantic-ui-react';
 
-export const placeholderGrid = () =>
+export const PlaceholderGrid = () =>
   [1, 2, 3, 4].map(i => (
     <Grid key={i} columns={4} stackable>
       {[1, 2, 3, 4].map(i => (
@@ -23,4 +23,4 @@ export const placeholderGrid = () =>
         </Grid.Column>
       ))}
     </Grid>
-  ))
+  ));

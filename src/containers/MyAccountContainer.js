@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react"
+import React, { Component, Fragment } from "react";
 import {
   Button,
   Divider,
@@ -7,11 +7,12 @@ import {
   Icon,
   Segment,
   Container
-} from "semantic-ui-react"
-import API from "../adapters/API"
-import { placeholderGrid } from "../lib/placeholder"
-import CharacterIndex from "../components/CharactersIndex"
-import { Link } from "react-router-dom"
+} from "semantic-ui-react";
+// import API from "../adapters/API"
+import { PlaceholderGrid } from "../lib/placeholder";
+import CharacterIndex from "../components/CharactersIndex";
+import { Link } from "react-router-dom";
+import { getMyCharacters } from "../api/API";
 
 class MyAccountContainer extends Component {
   state = {
@@ -19,11 +20,11 @@ class MyAccountContainer extends Component {
     filterSpeciesOptions: [],
     filterStatusOptions: [],
     loaded: false
-  }
+  };
   componentDidMount = () => {
     if (this.props.username !== "") {
-      API.getMyCharacters().then(myCharacters => {
-        if (myCharacters === {}) return
+      getMyCharacters().then(myCharacters => {
+        if (myCharacters === {}) return;
         this.setState({
           myCharacters,
           filterSpeciesOptions: [
@@ -33,10 +34,10 @@ class MyAccountContainer extends Component {
             ...new Set(myCharacters.map(character => character.status).flat())
           ],
           loaded: true
-        })
-      })
+        });
+      });
     }
-  }
+  };
   emptyState = () => (
     <Fragment>
       <h1 style={{ textAlign: "center" }}>
@@ -69,15 +70,15 @@ class MyAccountContainer extends Component {
         </Grid>
       </Segment>
     </Fragment>
-  )
+  );
 
   characterIndexLoader = () => {
-    if (!this.state.loaded) return placeholderGrid()
+    if (!this.state.loaded) return <PlaceholderGrid />;
     const {
       myCharacters,
       filterSpeciesOptions,
       filterStatusOptions
-    } = this.state
+    } = this.state;
 
     if (myCharacters.length > 0) {
       return (
@@ -106,11 +107,11 @@ class MyAccountContainer extends Component {
             />
           </div>
         </div>
-      )
+      );
     } else {
-      return this.emptyState()
+      return this.emptyState();
     }
-  }
+  };
 
   unathorisedState = () => (
     <Segment inverted textAlign='center' placeholder>
@@ -127,17 +128,17 @@ class MyAccountContainer extends Component {
         Signup
       </Button>
     </Segment>
-  )
+  );
 
   render() {
-    const username = this.props.username
+    const username = this.props.username;
     return (
       <Container>
         {username === ""
           ? this.unathorisedState()
           : this.characterIndexLoader()}
       </Container>
-    )
+    );
   }
 }
-export default MyAccountContainer
+export default MyAccountContainer;

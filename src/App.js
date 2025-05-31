@@ -1,36 +1,36 @@
-import React, { Component, Fragment } from 'react'
-import { Switch, Route, withRouter } from 'react-router-dom'
-import './App.css'
-import Navbar from './components/Navbar'
-import API from './adapters/API'
-import About from './components/About'
-import AllCharactersContainer from './containers/AllCharactersContainer'
-import CharacterCreateOrUpdate from './components/CharacterCreateOrUpdate'
-import LoginForm from './components/LoginForm'
-import MyAccountContainer from './containers/MyAccountContainer'
-import CharacterDetailsContainer from './containers/CharacterDetailsContainer'
-import SignUpForm from './components/SignUpForm'
+import React, { Component, Fragment } from 'react';
+import { Switch, Route, withRouter } from 'react-router-dom';
+import './App.css';
+import Navbar from './components/Navbar';
+import About from './components/About';
+import AllCharactersContainer from './containers/AllCharactersContainer';
+import CharacterCreateOrUpdate from './components/CharacterCreateOrUpdate';
+import LoginForm from './components/LoginForm';
+import MyAccountContainer from './containers/MyAccountContainer';
+import CharacterDetailsContainer from './containers/CharacterDetailsContainer';
+import SignUpForm from './components/SignUpForm';
+import { validate } from './api/API';
 
 class App extends Component {
-  state = { username: '', id: '' }
+  state = { username: '', id: '' };
 
-  login = user => {
-    localStorage.setItem('token', user.token)
-    this.setState({ username: user.username, id: user.id })
-  }
+  setUser = (user) => {
+    localStorage.setItem('token', user.token);
+    this.setState({ username: user.username, id: user.id });
+  };
 
   logout = () => {
-    localStorage.removeItem('token')
-    this.setState({ username: '', id: '' })
-  }
+    localStorage.removeItem('token');
+    this.setState({ username: '', id: '' });
+  };
   componentDidMount() {
-    API.validate().then(userData => {
+    validate().then(userData => {
       if (userData.error) {
-        this.logout()
+        this.logout();
       } else {
-        this.login(userData)
+        this.login(userData);
       }
-    })
+    });
   }
 
   render() {
@@ -71,24 +71,24 @@ class App extends Component {
                   username={this.state.username}
                   id={routerProps.match.params.id}
                 />
-              )
+              );
             }}
           />
           <Route
-            path='/myaccount'
+            path='/my-account'
             component={routerProps => {
               return (
                 <MyAccountContainer
                   {...routerProps}
                   username={this.state.username}
                 />
-              )
+              );
             }}
           />
           <Route
             path='/login'
             component={routerProps => (
-              <LoginForm login={this.login} {...routerProps} />
+              <LoginForm setUser={this.setUser} {...routerProps} />
             )}
           />
           <Route
@@ -97,8 +97,8 @@ class App extends Component {
           />
         </Switch>
       </Fragment>
-    )
+    );
   }
 }
 
-export default withRouter(App)
+export default withRouter(App);
