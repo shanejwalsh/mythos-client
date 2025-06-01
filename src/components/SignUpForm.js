@@ -3,6 +3,7 @@ import { Segment, Form, Image, Button, Container } from "semantic-ui-react";
 import { signUp } from "../api/API";
 // import API from "../api/API";
 
+const PUBLIC_PATH = 'https://mythos-public-image-bucket.s3.eu-west-1.amazonaws.com';
 class SignUpForm extends Component {
   state = {
     username: "",
@@ -37,7 +38,7 @@ class SignUpForm extends Component {
           <Image
             centered
             size='small'
-            src={"/icon2.png"}
+            src={PUBLIC_PATH + "/icon2.png"}
             alt='skeleton'
           />
           <h1>Build Your Fantasy Universe</h1>
