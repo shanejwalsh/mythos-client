@@ -12,7 +12,8 @@ class AllCharactersContainer extends Component {
     filterStatusOptions: [],
     loaded: false
   };
-  componentDidMount = () =>
+
+  componentDidMount = () => {
     getAllCharacters().then(allCharacters =>
       this.setState({
         allCharacters,
@@ -25,6 +26,7 @@ class AllCharactersContainer extends Component {
         loaded: true
       })
     );
+  };
 
   render() {
     const {

@@ -51,6 +51,16 @@ function get(url) {
   return fetch(url).then(resp => resp.json());
 }
 
+export const post = (url, body) => {
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  }).then(resp => resp.json());
+};
+
 export const getAllCharacters = () => get(CHAR_URL);
 
 export const generateNewCharacter = () => fetch(NEW_CHAR_URL).then(resp => resp.json());

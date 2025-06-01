@@ -30,7 +30,9 @@ class LoginForm extends Component {
       if (userData.error) {
         alert('something went wrong');
       } else {
-        setUser({ user: userData });
+
+        console.log({ userData });
+        setUser(userData);
         history.push('/my-account');
       }
     });

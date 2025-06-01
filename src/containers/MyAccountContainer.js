@@ -6,10 +6,9 @@ import {
 import { PlaceholderGrid } from "../lib/placeholder";
 import { getMyCharacters } from "../api/API";
 import { EmptyAccount } from "../components/EmptyAccount";
-import { Unauthorised } from "../components/Unauthorised";
 import { CharacterSection } from "../components/CharacterSection";
 
-class MyAccountContainer extends React.Component {
+export class MyAccountContainer extends React.Component {
   state = {
     myCharacters: [],
     filterSpeciesOptions: [],
@@ -44,18 +43,10 @@ class MyAccountContainer extends React.Component {
     }
 
 
-    if (!this.state.myCharacters.length) {
-      return (
-        <Container>
-          <EmptyAccount />
-        </Container>
-      );
-    }
-
     return (
       <Container>
-        {username === ""
-          ? <Unauthorised />
+        {!this.state.myCharacters.length
+          ? <EmptyAccount />
           : <CharacterSection
             myCharacters={this.state.myCharacters}
             filterSpeciesOptions={this.state.filterSpeciesOptions}
@@ -66,4 +57,3 @@ class MyAccountContainer extends React.Component {
     );
   }
 }
-export default MyAccountContainer;

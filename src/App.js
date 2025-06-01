@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
-import './App.css';
 import Navbar from './components/Navbar';
 import About from './components/About';
 import AllCharactersContainer from './containers/AllCharactersContainer';
 import CharacterCreateOrUpdate from './components/CharacterCreateOrUpdate';
 import LoginForm from './components/LoginForm';
-import MyAccountContainer from './containers/MyAccountContainer';
+import { MyAccountContainer } from './containers/MyAccountContainer';
 import CharacterDetailsContainer from './containers/CharacterDetailsContainer';
 import SignUpForm from './components/SignUpForm';
 import { validate } from './api/API';
@@ -31,13 +30,13 @@ class App extends Component {
       if (userData.error) {
         this.logout();
       } else {
-        this.setUser(userData);
+
+        this.setUser({ user: userData });
       }
     });
   }
 
   render() {
-
     const user = this.state.user || {};
 
     return (
