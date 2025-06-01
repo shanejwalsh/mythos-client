@@ -37,7 +37,7 @@ class SignUpForm extends Component {
           <Image
             centered
             size='small'
-            src={require("../icon2.png")}
+            src={"/icon2.png"}
             alt='skeleton'
           />
           <h1>Build Your Fantasy Universe</h1>

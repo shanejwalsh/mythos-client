@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar';
@@ -10,33 +10,39 @@ import MyAccountContainer from './containers/MyAccountContainer';
 import CharacterDetailsContainer from './containers/CharacterDetailsContainer';
 import SignUpForm from './components/SignUpForm';
 import { validate } from './api/API';
+import { Unauthorised } from './components/Unauthorised';
 
 class App extends Component {
-  state = { username: '', id: '' };
+  state = { user: undefined };
 
   setUser = (user) => {
     localStorage.setItem('token', user.token);
-    this.setState({ username: user.username, id: user.id });
+    this.setState({ user });
   };
 
   logout = () => {
     localStorage.removeItem('token');
-    this.setState({ username: '', id: '' });
+    this.setState({ user: undefined });
+    this.props.history.push('/login');
   };
+
   componentDidMount() {
     validate().then(userData => {
       if (userData.error) {
         this.logout();
       } else {
-        this.login(userData);
+        this.setUser(userData);
       }
     });
   }
 
   render() {
+
+    const user = this.state.user || {};
+
     return (
-      <Fragment>
-        <Navbar username={this.state.username} logout={this.logout} />
+      <>
+        <Navbar username={user.username} logout={this.logout} />
         <Switch>
           <Route exact path='/' component={About} />
           <Route exact path='/characters' component={AllCharactersContainer} />
@@ -45,7 +51,7 @@ class App extends Component {
             path='/characters/new'
             component={routerProps => (
               <CharacterCreateOrUpdate
-                user_id={this.state.id}
+                user_id={user.id}
                 {...routerProps}
               />
             )}
@@ -56,7 +62,7 @@ class App extends Component {
             component={routerProps => (
               <CharacterCreateOrUpdate
                 edit={true}
-                user_id={this.state.id}
+                user_id={user.id}
                 {...routerProps}
               />
             )}
@@ -67,8 +73,8 @@ class App extends Component {
               return (
                 <CharacterDetailsContainer
                   {...routerProps}
-                  user_id={this.state.id}
-                  username={this.state.username}
+                  user_id={user.id}
+                  username={user.username}
                   id={routerProps.match.params.id}
                 />
               );
@@ -77,10 +83,13 @@ class App extends Component {
           <Route
             path='/my-account'
             component={routerProps => {
+              if (!user.username) {
+                return <Unauthorised />;
+              }
               return (
                 <MyAccountContainer
                   {...routerProps}
-                  username={this.state.username}
+                  username={user.username}
                 />
               );
             }}
@@ -96,7 +105,7 @@ class App extends Component {
             component={routerProps => <SignUpForm {...routerProps} />}
           />
         </Switch>
-      </Fragment>
+      </>
     );
   }
 }

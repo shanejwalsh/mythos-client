@@ -1,27 +1,24 @@
-import React, { Component, Fragment } from "react";
+import React from "react";
 import {
-  Button,
-  Divider,
-  Grid,
-  Header,
-  Icon,
-  Segment,
   Container
 } from "semantic-ui-react";
-// import API from "../adapters/API"
-import { PlaceholderGrid } from "../lib/placeholder";
-import CharacterIndex from "../components/CharactersIndex";
-import { Link } from "react-router-dom";
-import { getMyCharacters } from "../api/API";
 
-class MyAccountContainer extends Component {
+import { PlaceholderGrid } from "../lib/placeholder";
+import { getMyCharacters } from "../api/API";
+import { EmptyAccount } from "../components/EmptyAccount";
+import { Unauthorised } from "../components/Unauthorised";
+import { CharacterSection } from "../components/CharacterSection";
+
+class MyAccountContainer extends React.Component {
   state = {
     myCharacters: [],
     filterSpeciesOptions: [],
     filterStatusOptions: [],
-    loaded: false
+    isLoading: false
   };
   componentDidMount = () => {
+    this.setState({ isLoading: true });
+
     if (this.props.username !== "") {
       getMyCharacters().then(myCharacters => {
         if (myCharacters === {}) return;
@@ -33,110 +30,38 @@ class MyAccountContainer extends Component {
           filterStatusOptions: [
             ...new Set(myCharacters.map(character => character.status).flat())
           ],
-          loaded: true
+          isLoading: false
         });
       });
     }
   };
-  emptyState = () => (
-    <Fragment>
-      <h1 style={{ textAlign: "center" }}>
-        Looks like you haven't created any characters yet!
-      </h1>
-      <Segment placeholder>
-        <Grid columns={2} stackable textAlign='center'>
-          <Divider vertical>Or</Divider>
-          <Grid.Row verticalAlign='middle'>
-            <Grid.Column>
-              <Header icon>
-                <Icon name='grid layout' />
-                Clone one from the library
-              </Header>
-              <Button as={Link} to='/characters' primary>
-                Take Me There!
-              </Button>
-            </Grid.Column>
-
-            <Grid.Column>
-              <Header icon>
-                <Icon color='blue' name='add circle' />
-                Create your own!
-              </Header>
-              <Button as={Link} to='/characters/new' secondary>
-                Create
-              </Button>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Segment>
-    </Fragment>
-  );
-
-  characterIndexLoader = () => {
-    if (!this.state.loaded) return <PlaceholderGrid />;
-    const {
-      myCharacters,
-      filterSpeciesOptions,
-      filterStatusOptions
-    } = this.state;
-
-    if (myCharacters.length > 0) {
-      return (
-        <div className='ui stackable two column grid'>
-          <div className='four wide column'>
-            <Segment.Group>
-              <Segment>
-                <h1 style={{ color: "#54C8FF" }}>{`${this.props.username}`}</h1>
-              </Segment>
-              <Segment>
-                <b>Joined </b>26/03/2019
-              </Segment>
-              <Segment>
-                <b>Created Characters </b> {this.state.myCharacters.length}
-              </Segment>
-            </Segment.Group>
-          </div>
-          <div className='twelve wide column'>
-            <h1>Your Characters</h1>
-            <CharacterIndex
-              gridSize='2'
-              footerPrimary='created-date'
-              characters={myCharacters}
-              filterSpeciesOptions={filterSpeciesOptions}
-              filterStatusOptions={filterStatusOptions}
-            />
-          </div>
-        </div>
-      );
-    } else {
-      return this.emptyState();
-    }
-  };
-
-  unathorisedState = () => (
-    <Segment inverted textAlign='center' placeholder>
-      <Header icon>
-        <Icon size='massive' name='user close' />
-        You need to be logged in to view your account!
-      </Header>
-      <p>It only takes 2 minutes to sign up and get started!</p>
-      <Button as={Link} to='/login' inverted>
-        Login
-      </Button>
-      or
-      <Button as={Link} to='/signup' primary>
-        Signup
-      </Button>
-    </Segment>
-  );
 
   render() {
     const username = this.props.username;
+
+    if (this.state.isLoading) {
+      return <PlaceholderGrid />;
+    }
+
+
+    if (!this.state.myCharacters.length) {
+      return (
+        <Container>
+          <EmptyAccount />
+        </Container>
+      );
+    }
+
     return (
       <Container>
         {username === ""
-          ? this.unathorisedState()
-          : this.characterIndexLoader()}
+          ? <Unauthorised />
+          : <CharacterSection
+            myCharacters={this.state.myCharacters}
+            filterSpeciesOptions={this.state.filterSpeciesOptions}
+            filterStatusOptions={this.state.filterStatusOptions}
+            username={username}
+          />}
       </Container>
     );
   }

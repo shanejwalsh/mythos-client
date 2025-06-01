@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   Segment,
   Image,
@@ -6,7 +6,11 @@ import {
   Reveal,
   Container,
   Grid
-} from 'semantic-ui-react'
+} from 'semantic-ui-react';
+
+// todo move to s3 and dont bundle with webpack
+
+// const PUBLIC_PATH = '../../public/';
 
 const About = () => {
   return (
@@ -47,7 +51,7 @@ const About = () => {
         >
           <Reveal animated='move'>
             <Reveal.Content visible>
-              <Image size='large' src={require('../editor.png')} />
+              <Image size='large' src={'/editor.png'} />
             </Reveal.Content>
             <Reveal.Content hidden>
               <Image
@@ -56,7 +60,7 @@ const About = () => {
                   width: '50%'
                 }}
                 size='small'
-                src={require('../icon3.png')}
+                src={'/icon3.png'}
               />
             </Reveal.Content>
           </Reveal>
@@ -73,7 +77,7 @@ const About = () => {
               </Header>
               <p style={{ fontSize: '1.33em' }}>
                 No images, imports or any fuss needed, copy the CSS, paste it
-                and your set!
+                and you're good to go!
               </p>
             </Grid.Column>
             <Grid.Column floated='right' width={6}>
@@ -81,7 +85,7 @@ const About = () => {
                 bordered
                 rounded
                 size='large'
-                src={require('../css.png')}
+                src='/css.png'
               />
             </Grid.Column>
           </Grid.Row>
@@ -105,7 +109,7 @@ const About = () => {
               </p>
             </Grid.Column>
             <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
-              <Image size='large' src={require('../random.png')} />
+              <Image size='large' src={'/random.png'} />
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -114,7 +118,7 @@ const About = () => {
         <Grid celled='internally' columns='equal' stackable>
           <Grid.Row textAlign='center'>
             <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
-              <Image size='large' src={require('../cards.png')} />
+              <Image size='large' src={'cards.png'} />
             </Grid.Column>
             <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
               <Header as='h3' style={{ fontSize: '2em' }}>
@@ -129,6 +133,6 @@ const About = () => {
         </Grid>
       </Segment>
     </Container>
-  )
-}
-export default About
+  );
+};
+export default About;

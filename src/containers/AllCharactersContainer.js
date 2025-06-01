@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { PlaceholderGrid } from '../lib/placeholder';
 
 import { Container } from 'semantic-ui-react';
-import CharacterIndex from '../components/CharactersIndex';
+import { CharacterIndex } from '../components/CharactersIndex';
 import { getAllCharacters } from '../api/API';
 
 class AllCharactersContainer extends Component {

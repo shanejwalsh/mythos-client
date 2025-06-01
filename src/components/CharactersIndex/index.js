@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import CharactersContainer from './CharactersGrid'
-import { Container } from 'semantic-ui-react'
-import CharactersMenuBar from './CharactersMenuBar'
+import React, { Component } from 'react';
+import CharactersContainer from './CharactersGrid';
+import { Container } from 'semantic-ui-react';
+import CharactersMenuBar from './CharactersMenuBar';
 
-class CharacterIndex extends Component {
+export class CharacterIndex extends Component {
   state = {
     characters: [],
     searchTerm: '',
@@ -13,16 +13,16 @@ class CharacterIndex extends Component {
     filterStatusOptions: [],
     sortbyDate: true,
     loaded: false
-  }
+  };
   componentDidMount = () => {
-    const { characters, filterSpeciesOptions, filterStatusOptions } = this.props
+    const { characters, filterSpeciesOptions, filterStatusOptions } = this.props;
     this.setState({
       characters,
       filterSpeciesOptions,
       filterStatusOptions,
       loaded: true
-    })
-  }
+    });
+  };
 
   filterAndSortCharacters = () =>
     this.state.characters
@@ -43,20 +43,20 @@ class CharacterIndex extends Component {
       )
       .sort((a, b) => {
         if (this.state.sortbyDate) {
-          return b.created_at > a.created_at ? 1 : -1
+          return b.created_at > a.created_at ? 1 : -1;
         } else {
           return `${a.first_name} ${a.last_name}` >
             `${b.first_name} ${b.last_name}`
             ? 1
-            : -1
+            : -1;
         }
-      })
+      });
 
   handleSortChange = (_, data) => {
     data.value === 'name'
       ? this.setState({ sortbyDate: false })
-      : this.setState({ sortbyDate: true })
-  }
+      : this.setState({ sortbyDate: true });
+  };
 
   render() {
     return (
@@ -67,7 +67,7 @@ class CharacterIndex extends Component {
             speciesOptions={this.state.filterSpeciesOptions}
             handleSortChange={this.handleSortChange}
             handleSearch={event => {
-              this.setState({ searchTerm: event.target.value })
+              this.setState({ searchTerm: event.target.value });
             }}
             handleSpeciesFilter={(_, data) =>
               this.setState({ filterSpecies: data.value })
@@ -85,7 +85,7 @@ class CharacterIndex extends Component {
           />
         </Container>
       )
-    )
+    );
   }
 }
-export default CharacterIndex
+// export default CharacterIndex

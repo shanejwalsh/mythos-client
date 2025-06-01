@@ -30,7 +30,7 @@ class LoginForm extends Component {
       if (userData.error) {
         alert('something went wrong');
       } else {
-        setUser(userData);
+        setUser({ user: userData });
         history.push('/my-account');
       }
     });
@@ -63,7 +63,7 @@ class LoginForm extends Component {
                   onChange={this.handleChange}
                   icon='at'
                   iconPosition='left'
-                  placeholder='Username'
+                  placeholder='e.g. my-username'
                   name='username'
                 />
                 <Form.Input

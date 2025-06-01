@@ -57,7 +57,7 @@ class Navbar extends Component {
             <img
               alt='logo'
               style={{ paddingRight: "3px" }}
-              src={require("../icon.png")}
+              src={"/icon.png"}
             />
             {displayMenuBtn && this.toggleButton()}
             {displayMenuCloseBtn && this.toggleButton()}
