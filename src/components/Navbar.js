@@ -4,6 +4,9 @@ import { Container, Button, Menu } from 'semantic-ui-react';
 import { debounce } from 'lodash';
 import { NavbarIcon } from './NavbarIcon';
 
+const PUBLIC_PATH =
+  'https://mythos-public-image-bucket.s3.eu-west-1.amazonaws.com';
+
 class Navbar extends Component {
   state = { width: window.innerWidth, expanded: false };
 
@@ -42,7 +45,11 @@ class Navbar extends Component {
       >
         <Container>
           <Menu.Item>
-            <img alt="logo" style={{ paddingRight: '3px' }} src={'/icon.png'} />
+            <img
+              alt="logo"
+              style={{ paddingRight: '3px' }}
+              src={PUBLIC_PATH + '/icon.png'}
+            />
             {isMobile && (
               <NavbarIcon
                 handleClick={() =>
