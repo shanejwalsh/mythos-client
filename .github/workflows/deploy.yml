@@ -19,7 +19,7 @@ jobs:
       - name: Run Tests
         run: npm test
       - name: Deploy to S3
-        uses: aws-actions/s3-sync@v1
+        uses: jakejarvis/s3-sync-action@v0.5.1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
