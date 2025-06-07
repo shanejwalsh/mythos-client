@@ -21,9 +21,10 @@ jobs:
       - name: Deploy to S3
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          region: eu-west-1 # change this to your bucket's region
-          bucket: mythos-frontend-bucket
-          source-dir: build
-          delete: true # ensures old files are removed
+          args: --delete
+        env:
+          AWS_S3_BUCKET: mythos-frontend-bucket
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: eu-west-1 # Change to your region
+          SOURCE_DIR: build       es old files are removed
