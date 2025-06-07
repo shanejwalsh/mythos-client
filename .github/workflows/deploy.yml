@@ -12,6 +12,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '16.x'
-      - run: npm i
-      - run: npm run build --if-present
-      - run: npm test
+      - name: Install Dependencies
+        run: npm i
+      - name: Build
+        run: npm run build --if-present
+      - name: Run Tests
+        run: npm test
+      - name: Deploy to S3
+        uses: aws-actions/s3-sync@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          region: eu-west-1 # change this to your bucket's region
+          bucket: mythos-frontend-bucket
+          source-dir: build
+          delete: true # ensures old files are removed
