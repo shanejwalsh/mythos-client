@@ -1,11 +1,8 @@
-// const BASE_URL = 'https://mythos-server.herokuapp.com/api/v1'
-// const BASE_URL = 'http://localhost:8080/api/v1';
+const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-// use the env variable for the base URL in production
-const BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
-const PATH = '/api/v1';
+const API_PATH = 'api/v1';
 
-const ENDPOINT = `${BASE_URL}/${PATH}`;
+const ENDPOINT = `${BASE_URL}/${API_PATH}`;
 
 const CHAR_URL = `${ENDPOINT}/characters`;
 const NEW_CHAR_URL = `${ENDPOINT}/generate/full_character`;
@@ -13,9 +10,11 @@ const GENERATE_URL = `${ENDPOINT}/generate/`;
 const USER_URL = `${ENDPOINT}/users`;
 const CLONE_URL = `${ENDPOINT}/clone`;
 const LOGIN_URL = `${ENDPOINT}/login`;
+const VALIDATE_URL = `${ENDPOINT}/validate`;
 
-function get(url) {
-  return fetch(url).then((resp) => resp.json());
+async function get(url) {
+  const resp = await fetch(url);
+  return await resp.json();
 }
 
 export async function post(url, body) {
@@ -35,32 +34,34 @@ export async function post(url, body) {
 //================ AUTHORISED API CALLS ================//
 
 //Used to control access to authorised endpoint for signed up users only
-const authorizedFetch = (url, options = {}) => {
-  return fetch(url, {
+async function authorizedFetch(url, options = {}) {
+  const resp = await fetch(url, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
       Authorization: localStorage.getItem('token'),
     },
   });
-};
 
-export const validate = () =>
-  authorizedFetch(BASE_URL + '/validate').then((resp) => resp.json());
+  return await resp.json();
+}
 
-export const deleteCharacter = (id) =>
-  authorizedFetch(CHAR_URL + `/${id}`, { method: 'DELETE' }).then((resp) =>
-    resp.json()
-  );
+export function validate() {
+  return authorizedFetch(VALIDATE_URL);
+}
+
+export function deleteCharacter(id) {
+  return authorizedFetch(CHAR_URL + `/${id}`, { method: 'DELETE' });
+}
 
 export const getMyCharacters = () =>
-  authorizedFetch(BASE_URL + '/mycharacters').then((resp) => resp.json());
+  authorizedFetch(BASE_URL + '/mycharacters');
 
 export const cloneCharacter = (characterId, userId) => {
   return authorizedFetch(CLONE_URL, {
     method: 'POST',
     body: JSON.stringify({ id: characterId, user: userId }),
-  }).then((resp) => resp.json());
+  });
 };
 
 export function updateCharacter(character) {
@@ -106,18 +107,3 @@ export function generateAttribute(attribute) {
 export const signUp = (user) => {
   return post(USER_URL, { user });
 };
-
-// export default {
-//   login,
-//   validate,
-//   getMyCharacters,
-//   getAllCharacters,
-//   deleteCharacter,
-//   createCharacter,
-//   getCharacterById,
-//   generateNewCharacter,
-//   updateCharacter,
-//   generateAttribute,
-//   cloneCharacter,
-//   signUp
-// };
