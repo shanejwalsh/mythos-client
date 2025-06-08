@@ -4,7 +4,7 @@ const API_PATH = 'api/v1';
 
 const ENDPOINT = `${BASE_URL}/${API_PATH}`;
 
-console.log('API Endpoint:', ENDPOINT);
+// console.log('API Endpoint:', ENDPOINT);
 
 const CHAR_URL = `${ENDPOINT}/characters`;
 const NEW_CHAR_URL = `${ENDPOINT}/generate/full_character`;
