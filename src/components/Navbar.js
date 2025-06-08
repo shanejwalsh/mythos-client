@@ -5,7 +5,7 @@ import { debounce } from 'lodash';
 import { NavbarIcon } from './NavbarIcon';
 
 const PUBLIC_PATH =
-  'https://mythos-public-image-bucket.s3.eu-west-1.amazonaws.com';
+  'https://mythos-public-asset-bucket.s3.eu-west-1.amazonaws.com';
 
 class Navbar extends Component {
   state = { width: window.innerWidth, expanded: false };

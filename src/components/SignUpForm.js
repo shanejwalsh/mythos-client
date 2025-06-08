@@ -1,30 +1,31 @@
-import React, { Component } from "react";
-import { Segment, Form, Image, Button, Container } from "semantic-ui-react";
-import { signUp } from "../api/API";
+import React, { Component } from 'react';
+import { Segment, Form, Image, Button, Container } from 'semantic-ui-react';
+import { signUp } from '../api/API';
 // import API from "../api/API";
 
-const PUBLIC_PATH = 'https://mythos-public-image-bucket.s3.eu-west-1.amazonaws.com';
+const PUBLIC_PATH =
+  'https://mythos-public-asset-bucket.s3.eu-west-1.amazonaws.com';
 class SignUpForm extends Component {
   state = {
-    username: "",
-    password: ""
+    username: '',
+    password: '',
   };
-  handleChange = event =>
+  handleChange = (event) =>
     this.setState({ [event.target.name]: event.target.value });
 
   handleSubmit = () => {
     const { history } = this.props;
     const user = {
-      username: "@" + this.state.username,
-      password: this.state.password
+      username: '@' + this.state.username,
+      password: this.state.password,
     };
 
-    signUp(user).then(data => {
+    signUp(user).then((data) => {
       if (data.error) {
-        alert("something went wrong");
+        alert('something went wrong');
       } else {
-        alert("User added, sign in to get cracking!");
-        history.push("/login");
+        alert('User added, sign in to get cracking!');
+        history.push('/login');
       }
     });
   };
@@ -34,12 +35,12 @@ class SignUpForm extends Component {
 
     return (
       <Container>
-        <Segment inverted color='blue' textAlign='center' placeholder>
+        <Segment inverted color="blue" textAlign="center" placeholder>
           <Image
             centered
-            size='small'
-            src={PUBLIC_PATH + "/icon2.png"}
-            alt='skeleton'
+            size="small"
+            src={PUBLIC_PATH + '/icon2.png'}
+            alt="skeleton"
           />
           <h1>Build Your Fantasy Universe</h1>
           <p>
@@ -47,31 +48,31 @@ class SignUpForm extends Component {
             keep track of thier adventures!
           </p>
 
-          <Form onSubmit={this.handleSubmit} size='large'>
+          <Form onSubmit={this.handleSubmit} size="large">
             <Segment stacked>
               <Form.Input
-                autoComplete='username'
+                autoComplete="username"
                 fluid
                 value={username}
                 onChange={this.handleChange}
-                icon='at'
-                iconPosition='left'
-                placeholder='Username'
-                name='username'
+                icon="at"
+                iconPosition="left"
+                placeholder="Username"
+                name="username"
               />
               <Form.Input
-                autoComplete='new-password'
+                autoComplete="new-password"
                 fluid
                 value={password}
                 onChange={this.handleChange}
-                icon='lock'
-                iconPosition='left'
-                placeholder='Password'
-                type='password'
-                name='password'
+                icon="lock"
+                iconPosition="left"
+                placeholder="Password"
+                type="password"
+                name="password"
               />
 
-              <Button color='black' fluid size='large'>
+              <Button color="black" fluid size="large">
                 Sign Up
               </Button>
             </Segment>
