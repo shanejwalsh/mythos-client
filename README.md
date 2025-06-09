@@ -1,4 +1,4 @@
-Live Demo Here: https://mythosapp.herokuapp.com/
+Live Demo Here: https://mythosapp.io/
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
