@@ -7,6 +7,7 @@ const ENDPOINT = `${BASE_URL}/${API_PATH}`;
 // console.log('API Endpoint:', ENDPOINT);
 
 const CHAR_URL = `${ENDPOINT}/characters`;
+const MY_CHARS_URL = `${ENDPOINT}/mycharacters`;
 const NEW_CHAR_URL = `${ENDPOINT}/generate/full_character`;
 const GENERATE_URL = `${ENDPOINT}/generate/`;
 const USER_URL = `${ENDPOINT}/users`;
@@ -56,8 +57,7 @@ export function deleteCharacter(id) {
   return authorizedFetch(CHAR_URL + `/${id}`, { method: 'DELETE' });
 }
 
-export const getMyCharacters = () =>
-  authorizedFetch(BASE_URL + '/mycharacters');
+export const getMyCharacters = () => authorizedFetch(MY_CHARS_URL);
 
 export const cloneCharacter = (characterId, userId) => {
   return authorizedFetch(CLONE_URL, {
