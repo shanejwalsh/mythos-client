@@ -7,30 +7,29 @@ import {
   Message,
   Segment,
   Container,
-  Grid
+  Grid,
 } from 'semantic-ui-react';
 import { loginUser } from '../api/API';
 class LoginForm extends Component {
   state = {
     username: '',
-    password: ''
+    password: '',
   };
 
-  handleChange = event =>
+  handleChange = (event) =>
     this.setState({ [event.target.name]: event.target.value });
 
   handleSubmit = () => {
     const { setUser, history } = this.props;
     const user = {
       username: '@' + this.state.username,
-      password: this.state.password
+      password: this.state.password,
     };
 
-    loginUser(user).then(userData => {
+    loginUser(user).then((userData) => {
       if (userData.error) {
         alert('something went wrong');
       } else {
-
         console.log({ userData });
         setUser(userData);
         history.push('/my-account');
@@ -43,51 +42,51 @@ class LoginForm extends Component {
 
     return (
       <Container
-        textAlign='center'
+        textAlign="center"
         style={{ paddingTop: '20px', height: '90%' }}
       >
         <Grid
-          textAlign='center'
+          textAlign="center"
           style={{ height: '100%' }}
-          verticalAlign='middle'
+          verticalAlign="middle"
         >
           <Grid.Column style={{ maxWidth: 450 }}>
-            <Header as='h2' color='blue' textAlign='center'>
+            <Header as="h2" color="blue" textAlign="center">
               Log-in to your account
             </Header>
 
-            <Form onSubmit={this.handleSubmit} size='large'>
+            <Form onSubmit={this.handleSubmit} size="large">
               <Segment stacked>
                 <Form.Input
-                  autoComplete='username'
+                  autoComplete="username"
                   fluid
                   value={username}
                   onChange={this.handleChange}
-                  icon='at'
-                  iconPosition='left'
-                  placeholder='e.g. my-username'
-                  name='username'
+                  icon="at"
+                  iconPosition="left"
+                  placeholder="e.g. my-username"
+                  name="username"
                 />
                 <Form.Input
-                  autoComplete='current-password'
+                  autoComplete="current-password"
                   fluid
                   value={password}
                   onChange={this.handleChange}
-                  icon='lock'
-                  iconPosition='left'
-                  placeholder='Password'
-                  type='password'
-                  name='password'
+                  icon="lock"
+                  iconPosition="left"
+                  placeholder="Password"
+                  type="password"
+                  name="password"
                 />
 
-                <Button color='blue' fluid size='large'>
+                <Button color="blue" fluid size="large">
                   Login
                 </Button>
               </Segment>
             </Form>
             <Segment basic>
-              <Message color='blue' as={Link} to='/signup'>
-                Not got an account? Take 20 seconds to Sign Up!
+              <Message color="blue" as={Link} to="/signup">
+                Take 20 seconds to Sign Up!
               </Message>
             </Segment>
           </Grid.Column>
