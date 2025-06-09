@@ -4,7 +4,7 @@ import { signUp } from '../api/API';
 // import API from "../api/API";
 
 const PUBLIC_PATH =
-  'https://mythos-public-asset-bucket.s3.eu-west-1.amazonaws.com';
+  'https://mythos-public-asset-bucket.s3.us-east-1.amazonaws.com';
 class SignUpForm extends Component {
   state = {
     username: '',

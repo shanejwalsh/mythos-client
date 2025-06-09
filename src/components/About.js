@@ -11,7 +11,7 @@ import {
 // todo move to s3 and dont bundle with webpack
 
 const PUBLIC_PATH =
-  'https://mythos-public-asset-bucket.s3.eu-west-1.amazonaws.com';
+  'https://mythos-public-asset-bucket.s3.us-east-1.amazonaws.com';
 
 const About = () => {
   return (
