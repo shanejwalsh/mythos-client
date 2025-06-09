@@ -6,23 +6,38 @@ const ENDPOINT = `${BASE_URL}/${API_PATH}`;
 
 // console.log('API Endpoint:', ENDPOINT);
 
-const CHAR_URL = `${ENDPOINT}/characters`;
 const MY_CHARS_URL = `${ENDPOINT}/mycharacters`;
 const NEW_CHAR_URL = `${ENDPOINT}/generate/full_character`;
 const GENERATE_URL = `${ENDPOINT}/generate/`;
 const USER_URL = `${ENDPOINT}/users`;
-const CLONE_URL = `${ENDPOINT}/clone`;
 const LOGIN_URL = `${ENDPOINT}/login`;
 const VALIDATE_URL = `${ENDPOINT}/validate`;
+
+const CHAR_URL = `${ENDPOINT}/characters`;
+const CLONE_URL = `${CHAR_URL}/clone`;
 
 async function get(url) {
   const resp = await fetch(url);
   return await resp.json();
 }
 
-export async function post(url, body) {
+async function post(url, body) {
   const resp = await fetch(url, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+
+  const json = await resp.json();
+
+  return json;
+}
+
+async function put(url, body) {
+  const resp = await fetch(url, {
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -53,6 +68,10 @@ export function validate() {
   return authorizedFetch(VALIDATE_URL);
 }
 
+export function getUser(id) {
+  return authorizedFetch(`${USER_URL}/${id}`);
+}
+
 export function deleteCharacter(id) {
   return authorizedFetch(CHAR_URL + `/${id}`, { method: 'DELETE' });
 }
@@ -67,7 +86,7 @@ export const cloneCharacter = (characterId, userId) => {
 };
 
 export function updateCharacter(character) {
-  return post(`${CHAR_URL}/${character.id}`, character);
+  return put(`${CHAR_URL}/${character.id}`, character);
 }
 
 //================ OPEN API CALLS ================//

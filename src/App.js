@@ -12,10 +12,11 @@ import { validate } from './api/API';
 import { Unauthorised } from './components/Unauthorised';
 
 class App extends Component {
-  state = { user: undefined };
+  state = { user: undefined, loading: true };
 
-  setUser = (user) => {
-    localStorage.setItem('token', user.token);
+  setUser = ({ user }) => {
+    const token = user.token || localStorage.getItem('token');
+    localStorage.setItem('token', token);
     this.setState({ user });
   };
 
@@ -26,14 +27,15 @@ class App extends Component {
   };
 
   componentDidMount() {
-    validate().then(userData => {
+    validate().then((userData) => {
       if (userData.error) {
         this.logout();
       } else {
-
         this.setUser({ user: userData });
       }
     });
+
+    this.setState({ loading: false });
   }
 
   render() {
@@ -43,22 +45,19 @@ class App extends Component {
       <>
         <Navbar username={user.username} logout={this.logout} />
         <Switch>
-          <Route exact path='/' component={About} />
-          <Route exact path='/characters' component={AllCharactersContainer} />
+          <Route exact path="/" component={About} />
+          <Route exact path="/characters" component={AllCharactersContainer} />
           <Route
             exact
-            path='/characters/new'
-            component={routerProps => (
-              <CharacterCreateOrUpdate
-                user_id={user.id}
-                {...routerProps}
-              />
+            path="/characters/new"
+            component={(routerProps) => (
+              <CharacterCreateOrUpdate user_id={user.id} {...routerProps} />
             )}
           />
           <Route
             exact
-            path='/characters/:id/edit'
-            component={routerProps => (
+            path="/characters/:id/edit"
+            component={(routerProps) => (
               <CharacterCreateOrUpdate
                 edit={true}
                 user_id={user.id}
@@ -67,8 +66,8 @@ class App extends Component {
             )}
           />
           <Route
-            path='/characters/:id'
-            component={routerProps => {
+            path="/characters/:id"
+            component={(routerProps) => {
               return (
                 <CharacterDetailsContainer
                   {...routerProps}
@@ -80,28 +79,25 @@ class App extends Component {
             }}
           />
           <Route
-            path='/my-account'
-            component={routerProps => {
+            path="/my-account"
+            component={(routerProps) => {
               if (!user.username) {
                 return <Unauthorised />;
               }
               return (
-                <MyAccountContainer
-                  {...routerProps}
-                  username={user.username}
-                />
+                <MyAccountContainer {...routerProps} username={user.username} />
               );
             }}
           />
           <Route
-            path='/login'
-            component={routerProps => (
+            path="/login"
+            component={(routerProps) => (
               <LoginForm setUser={this.setUser} {...routerProps} />
             )}
           />
           <Route
-            path='/signup'
-            component={routerProps => <SignUpForm {...routerProps} />}
+            path="/signup"
+            component={(routerProps) => <SignUpForm {...routerProps} />}
           />
         </Switch>
       </>
