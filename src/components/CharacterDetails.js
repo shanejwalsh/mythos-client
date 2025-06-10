@@ -7,15 +7,13 @@ import { cloneCharacter } from '../api/API';
 
 class CharacterDetails extends Component {
   handleClick = () => {
-    cloneCharacter(this.props.character.id, this.props.user_id).then(
-      data => {
-        if (data.error) {
-          return alert('Something went wrong during cloning');
-        } else {
-          alert('Character Cloned to your library!!');
-        }
+    cloneCharacter(this.props.character.id, this.props.user_id).then((data) => {
+      if (data.error) {
+        return alert('Something went wrong during cloning');
+      } else {
+        alert('Character Cloned to your library!!');
       }
-    );
+    });
   };
 
   render() {
@@ -29,17 +27,16 @@ class CharacterDetails extends Component {
       alignment,
       age,
       status,
-      gender,
       species,
       traits_positive,
       traits_negative,
-      user
+      user,
     } = this.props.character;
 
     return (
       <Container>
         <h1>
-          {first_name} {last_name} ({gender})
+          {first_name} {last_name}
         </h1>
         <p>
           <b>Also known as:</b> {alias} <br />
@@ -60,7 +57,7 @@ class CharacterDetails extends Component {
         </p>
         {this.props.editable && (
           <Button as={Link} to={`/characters/${id}/edit`}>
-            <Icon name='edit outline' />
+            <Icon name="edit outline" />
             Edit Character
           </Button>
         )}
@@ -68,24 +65,24 @@ class CharacterDetails extends Component {
         {this.props.user_id && this.props.username !== user.username && (
           <Button
             onClick={this.handleClick}
-            content='Clone To My Account'
-            icon='copy'
+            content="Clone To My Account"
+            icon="copy"
             fluid
-            color='violet'
+            color="violet"
           />
         )}
 
         {!this.props.user_id && (
           <Button
-            content='Clone To My Account'
-            icon='copy'
+            content="Clone To My Account"
+            icon="copy"
             fluid
-            color='violet'
+            color="violet"
             label={{
               basic: true,
               color: 'red',
               pointing: 'left',
-              content: 'create an account / sign in to clone characters'
+              content: 'create an account / sign in to clone characters',
             }}
             disabled
           />
