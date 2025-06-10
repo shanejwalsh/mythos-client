@@ -23,7 +23,7 @@ class App extends Component {
   logout = () => {
     localStorage.removeItem('token');
     this.setState({ user: undefined });
-    this.props.history.push('/login');
+    // this.props.history.push('/login');
   };
 
   componentDidMount() {
