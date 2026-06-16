@@ -35,20 +35,6 @@ async function post(url, body) {
   return json;
 }
 
-async function put(url, body) {
-  const resp = await fetch(url, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
-  });
-
-  const json = await resp.json();
-
-  return json;
-}
-
 //================ AUTHORISED API CALLS ================//
 
 //Used to control access to authorised endpoint for signed up users only
@@ -86,7 +72,10 @@ export const cloneCharacter = (characterId, userId) => {
 };
 
 export function updateCharacter(character) {
-  return put(`${CHAR_URL}/${character.id}`, character);
+  return authorizedFetch(`${CHAR_URL}/${character.id}`, {
+    method: 'PUT',
+    body: JSON.stringify({ character }),
+  });
 }
 
 //================ OPEN API CALLS ================//
@@ -118,7 +107,10 @@ export function loginUser(user) {
 }
 
 export const createCharacter = (character) => {
-  return post(CHAR_URL, { character });
+  return authorizedFetch(CHAR_URL, {
+    method: 'POST',
+    body: JSON.stringify({ character }),
+  });
 };
 
 export function generateAttribute(attribute) {
