@@ -23,13 +23,14 @@ class App extends Component {
   logout = () => {
     localStorage.removeItem('token');
     this.setState({ user: undefined });
-    // this.props.history.push('/login');
+    this.props.history.push('/login');
   };
 
   componentDidMount() {
     validate().then((userData) => {
       if (userData.error) {
-        this.logout();
+        localStorage.removeItem('token');
+        this.setState({ user: undefined });
       } else {
         this.setUser({ user: userData });
       }
