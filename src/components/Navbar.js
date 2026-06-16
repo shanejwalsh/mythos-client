@@ -4,8 +4,8 @@ import { Container, Button, Menu } from 'semantic-ui-react';
 import { debounce } from 'lodash';
 import { NavbarIcon } from './NavbarIcon';
 
-const PUBLIC_PATH =
-  'https://mythos-public-asset-bucket.s3.us-east-1.amazonaws.com';
+// Assets live in the client's public/ folder (served at the app root).
+const PUBLIC_PATH = process.env.PUBLIC_URL;
 
 class Navbar extends Component {
   state = { width: window.innerWidth, expanded: false };

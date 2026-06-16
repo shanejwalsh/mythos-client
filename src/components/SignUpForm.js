@@ -3,8 +3,8 @@ import { Segment, Form, Image, Button, Container } from 'semantic-ui-react';
 import { signUp } from '../api/API';
 // import API from "../api/API";
 
-const PUBLIC_PATH =
-  'https://mythos-public-asset-bucket.s3.us-east-1.amazonaws.com';
+// Assets live in the client's public/ folder (served at the app root).
+const PUBLIC_PATH = process.env.PUBLIC_URL;
 class SignUpForm extends Component {
   state = {
     username: '',

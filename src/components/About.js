@@ -8,10 +8,8 @@ import {
   Grid,
 } from 'semantic-ui-react';
 
-// todo move to s3 and dont bundle with webpack
-
-const PUBLIC_PATH =
-  'https://mythos-public-asset-bucket.s3.us-east-1.amazonaws.com';
+// Assets live in the client's public/ folder (served at the app root).
+const PUBLIC_PATH = process.env.PUBLIC_URL;
 
 const About = () => {
   return (
