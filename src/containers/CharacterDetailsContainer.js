@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import CharacterDetails from '../components/CharacterDetails';
-// import API from '../api/API';
-import { Container, Button, Icon } from 'semantic-ui-react';
+import { Container, Button, Icon, Confirm } from 'semantic-ui-react';
 import AvatarBuilder from '../components/AvatarBuilder';
 import { generateCSS } from '../lib/helper';
 import { Link } from 'react-router-dom';
 import { GRID_SIZE } from '../config/config';
-import { getCharacterById } from '../api/API';
+import { getCharacterById, deleteCharacter } from '../api/API';
 
 class CharacterDetailsContainer extends Component {
   state = {
     character: null,
-    view: 'display' //default to display mode when viewing a Character
+    view: 'display',
+    confirmingDelete: false,
   };
 
   componentDidMount = () => {
@@ -20,6 +20,15 @@ class CharacterDetailsContainer extends Component {
       this.setState({ character });
     });
   };
+
+  handleDeleteRequest = () => this.setState({ confirmingDelete: true });
+  handleDeleteCancel = () => this.setState({ confirmingDelete: false });
+  handleDeleteConfirm = () => {
+    deleteCharacter(this.state.character.id).then(() => {
+      this.props.history.push('/characters');
+    });
+  };
+
   render() {
     const viewMode = this.state.view;
     const editable =
@@ -53,17 +62,6 @@ class CharacterDetailsContainer extends Component {
                   })}
                 />
               </div>
-              {editable && this.state.character && (
-                <Button
-                  style={{ float: 'right' }}
-                  onClick={() => this.setState({ view: 'edit-avatar' })}
-                  icon
-                  labelPosition='left'
-                >
-                  <Icon name='edit outline' />
-                  Edit Avatar
-                </Button>
-              )}
             </div>
             <div className='tweleve wide column'>
               <CharacterDetails
@@ -71,10 +69,20 @@ class CharacterDetailsContainer extends Component {
                 username={this.props.username}
                 editable={editable}
                 character={this.state.character}
+                onDeleteRequest={this.handleDeleteRequest}
               />
             </div>
           </div>
         )}
+
+        <Confirm
+          open={this.state.confirmingDelete}
+          header='Delete Character'
+          content='This cannot be undone. Are you sure you want to permanently delete this character?'
+          confirmButton='Delete Forever'
+          onCancel={this.handleDeleteCancel}
+          onConfirm={this.handleDeleteConfirm}
+        />
       </Container>
     );
   }

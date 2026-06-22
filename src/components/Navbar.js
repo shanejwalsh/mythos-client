@@ -26,11 +26,6 @@ class Navbar extends Component {
     this.setState({ width: window.innerWidth });
   };
 
-  handleLogout = () => {
-    this.props.logout();
-    alert('Goodbye!');
-  };
-
   render() {
     const isMobile = this.state.width <= 780;
     const { activeItem, expanded } = this.state;
@@ -44,7 +39,7 @@ class Navbar extends Component {
         stackable
       >
         <Container>
-          <Menu.Item>
+          <Menu.Item as={Link} to="/">
             <img
               alt="logo"
               style={{ paddingRight: '3px' }}
@@ -115,7 +110,7 @@ class Navbar extends Component {
                 </Menu.Item>
               ) : (
                 <Menu.Item position="right">
-                  <Button onClick={this.handleLogout} as={Link} to="/" inverted>
+                  <Button onClick={this.props.logout} as={Link} to="/" inverted>
                     Log Out {this.props.username}
                   </Button>
                 </Menu.Item>
