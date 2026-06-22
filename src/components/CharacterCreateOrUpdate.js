@@ -49,7 +49,11 @@ class CharacterCreateOrUpdate extends React.Component {
       'first_name', 'last_name', 'alias', 'motto', 'species', 'bio',
       'alignment', 'traits_positive', 'traits_negative', 'age', 'gender', 'status', 'feats'
     ];
-    return required.every(f => this.state[f].length > 0) && this.state.sprite_data.length > 0;
+    // Use String() so numeric fields (e.g. age) don't fail with undefined.length
+    return required.every(f => {
+      const val = this.state[f];
+      return val != null && String(val).trim().length > 0;
+    }) && this.state.sprite_data.length > 0;
   };
 
   handleSubmit = () => {
@@ -90,7 +94,6 @@ class CharacterCreateOrUpdate extends React.Component {
         .catch(() => this.setState({ loading: false, error: 'Failed to load character.' }));
     } else {
       this.setState({ edit: false });
-      // Show the torch for at least 3 seconds regardless of API speed
       const minWait = new Promise(resolve => setTimeout(resolve, 3000));
       Promise.all([minWait, generateNewCharacter()])
         .then(([, character]) => {
@@ -105,7 +108,6 @@ class CharacterCreateOrUpdate extends React.Component {
     }
   };
 
-  // Randomize updates the form inline — no loading state shown
   randomizeUnlockedAttributes = () => {
     return generateNewCharacter()
       .then(character => {
@@ -184,14 +186,6 @@ class CharacterCreateOrUpdate extends React.Component {
               you sign up (it only takes 10 seconds)
             </p>
           </Message>
-        )}
-
-        {error && (
-          <Message
-            negative
-            content={error}
-            onDismiss={() => this.setState({ error: null })}
-          />
         )}
 
         <Button
@@ -276,6 +270,15 @@ class CharacterCreateOrUpdate extends React.Component {
           </div>
 
           <hr />
+
+          {error && (
+            <Message
+              negative
+              content={error}
+              onDismiss={() => this.setState({ error: null })}
+            />
+          )}
+
           <Button type='submit' color='green' fluid loading={submitting} disabled={submitting}>
             {edit ? 'Update Character' : 'Create Character'}
           </Button>
