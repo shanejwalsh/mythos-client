@@ -93,7 +93,11 @@ class App extends Component {
                 return <Unauthorised />;
               }
               return (
-                <MyAccountContainer {...routerProps} username={user.username} />
+                <MyAccountContainer
+                  {...routerProps}
+                  username={user.username}
+                  createdAt={user.createdAt}
+                />
               );
             }}
           />

@@ -12,8 +12,13 @@ export function CharacterSection(props) {
     myCharacters,
     filterSpeciesOptions,
     filterStatusOptions,
-    username
+    username,
+    createdAt,
   } = props;
+
+  const joinedDate = createdAt
+    ? new Date(createdAt).toLocaleDateString('en-GB')
+    : '—';
 
   return (
     <div className='ui stackable two column grid'>
@@ -23,7 +28,7 @@ export function CharacterSection(props) {
             <h1 style={{ color: "#54C8FF" }}>{`${username}`}</h1>
           </Segment>
           <Segment>
-            <b>Joined </b>26/03/2019
+            <b>Joined </b>{joinedDate}
           </Segment>
           <Segment>
             <b>Created Characters </b> {myCharacters.length}

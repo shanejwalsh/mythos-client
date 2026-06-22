@@ -36,12 +36,11 @@ export class MyAccountContainer extends React.Component {
   };
 
   render() {
-    const username = this.props.username;
+    const { username, createdAt } = this.props;
 
     if (this.state.isLoading) {
       return <PlaceholderGrid />;
     }
-
 
     return (
       <Container>
@@ -52,6 +51,7 @@ export class MyAccountContainer extends React.Component {
             filterSpeciesOptions={this.state.filterSpeciesOptions}
             filterStatusOptions={this.state.filterStatusOptions}
             username={username}
+            createdAt={createdAt}
           />}
       </Container>
     );
