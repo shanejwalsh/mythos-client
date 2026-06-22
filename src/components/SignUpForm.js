@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
-import { Segment, Form, Image, Button, Container } from 'semantic-ui-react';
+import { Segment, Form, Image, Button, Container, Message } from 'semantic-ui-react';
 import { signUp } from '../api/API';
-// import API from "../api/API";
 
-// Assets live in the client's public/ folder (served at the app root).
 const PUBLIC_PATH = process.env.PUBLIC_URL;
+
 class SignUpForm extends Component {
   state = {
     username: '',
     password: '',
+    error: null,
+    loading: false,
   };
+
   handleChange = (event) =>
     this.setState({ [event.target.name]: event.target.value });
 
@@ -20,18 +22,27 @@ class SignUpForm extends Component {
       password: this.state.password,
     };
 
-    signUp(user).then((data) => {
-      if (data.error) {
-        alert('something went wrong');
-      } else {
-        alert('User added, sign in to get cracking!');
-        history.push('/login');
-      }
-    });
+    this.setState({ loading: true, error: null });
+
+    signUp(user)
+      .then((data) => {
+        if (data.error) {
+          const message = data.details ? data.details.join(', ') : data.error;
+          this.setState({ error: message, loading: false });
+        } else {
+          history.push('/login');
+        }
+      })
+      .catch(() => {
+        this.setState({
+          error: 'Unable to reach the server. Please try again.',
+          loading: false,
+        });
+      });
   };
 
   render() {
-    const { username, password } = this.state;
+    const { username, password, error, loading } = this.state;
 
     return (
       <Container>
@@ -47,6 +58,8 @@ class SignUpForm extends Component {
             Sign up to save your characters to your own profile, edit them and
             keep track of thier adventures!
           </p>
+
+          {error && <Message negative content={error} />}
 
           <Form onSubmit={this.handleSubmit} size="large">
             <Segment stacked>
@@ -72,7 +85,14 @@ class SignUpForm extends Component {
                 name="password"
               />
 
-              <Button color="black" fluid size="large">
+              <Button
+                type="submit"
+                color="black"
+                fluid
+                size="large"
+                loading={loading}
+                disabled={loading}
+              >
                 Sign Up
               </Button>
             </Segment>
