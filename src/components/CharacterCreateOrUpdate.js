@@ -8,119 +8,105 @@ import {
   Label,
   Message
 } from 'semantic-ui-react';
-// import API from '../api/API';
 import { GRID_SIZE } from '../config/config';
 import { generateCSS } from '../lib/helper';
 import { createCharacter, generateAttribute, generateNewCharacter, getCharacterById, updateCharacter } from '../api/API';
+import TorchLoader from './TorchLoader';
 
-const getInitialState = () => {
-  return {
-    first_name: '',
-    last_name: '',
-    alias: '',
-    motto: '',
-    species: '',
-    bio: '',
-    alignment: '',
-    traits_positive: '',
-    traits_negative: '',
-    age: '',
-    gender: '',
-    status: '',
-    feats: '',
-    sprite_data: [],
-    edit: false,
-    unlockedAttributes: [
-      'first_name',
-      'last_name',
-      'alias',
-      'motto',
-      'species',
-      'bio',
-      'alignment',
-      'traits_positive',
-      'traits_negative',
-      'age',
-      'status',
-      'feats',
-      'gender',
-      'sprite_data'
-    ]
-  };
-};
+const getInitialCharacterState = () => ({
+  first_name: '',
+  last_name: '',
+  alias: '',
+  motto: '',
+  species: '',
+  bio: '',
+  alignment: '',
+  traits_positive: '',
+  traits_negative: '',
+  age: '',
+  gender: '',
+  status: '',
+  feats: '',
+  sprite_data: [],
+  edit: false,
+  unlockedAttributes: [
+    'first_name', 'last_name', 'alias', 'motto', 'species', 'bio',
+    'alignment', 'traits_positive', 'traits_negative', 'age',
+    'status', 'feats', 'gender', 'sprite_data'
+  ]
+});
 
 class CharacterCreateOrUpdate extends React.Component {
-  state = getInitialState();
+  state = {
+    ...getInitialCharacterState(),
+    loading: true,
+    submitting: false,
+    error: null,
+  };
+
   validate = () => {
-    if (this.state.first_name.length === 0) return false;
-    if (this.state.last_name.length === 0) return false;
-    if (this.state.alias.length === 0) return false;
-    if (this.state.motto.length === 0) return false;
-    if (this.state.species.length === 0) return false;
-    if (this.state.bio.length === 0) return false;
-    if (this.state.alignment.length === 0) return false;
-    if (this.state.traits_positive.length === 0) return false;
-    if (this.state.traits_negative.length === 0) return false;
-    if (this.state.age.length === 0) return false;
-    if (this.state.gender.length === 0) return false;
-    if (this.state.status.length === 0) return false;
-    if (this.state.feats.length === 0) return false;
-    if (this.state.sprite_data.length === 0) return false;
-    return true;
+    const required = [
+      'first_name', 'last_name', 'alias', 'motto', 'species', 'bio',
+      'alignment', 'traits_positive', 'traits_negative', 'age', 'gender', 'status', 'feats'
+    ];
+    return required.every(f => this.state[f].length > 0) && this.state.sprite_data.length > 0;
   };
 
   handleSubmit = () => {
-    if (this.validate()) {
-      if (this.state.edit) {
-        updateCharacter(this.state).then(data => {
-          if (data.error) {
-            return alert('something went wrong, character not updated');
-          } else {
-            alert('character updated!!');
-            this.props.history.push(`/myaccount`);
-          }
-        });
-      } else {
-        createCharacter(this.state).then(data => {
-          if (data.error) {
-            return alert('Something went wrong, character not created');
-          } else {
-            alert('Character Created!!');
-            this.props.history.push(`/characters/${data.id}`);
-          }
-        });
-      }
-      this.setState(getInitialState());
-    } else {
-      alert('no fields can be left empty');
+    if (!this.validate()) {
+      this.setState({ error: 'No fields can be left empty.' });
+      return;
     }
+
+    this.setState({ submitting: true, error: null });
+
+    const action = this.state.edit
+      ? updateCharacter(this.state)
+      : createCharacter(this.state);
+
+    action
+      .then(data => {
+        if (data.error) {
+          this.setState({ error: data.error, submitting: false });
+        } else if (this.state.edit) {
+          this.props.history.push('/my-account');
+        } else {
+          this.props.history.push(`/characters/${data.id}`);
+        }
+      })
+      .catch(() => {
+        this.setState({ error: 'Something went wrong. Please try again.', submitting: false });
+      });
   };
 
   componentDidMount = () => {
     if (this.props.user_id) {
       this.setState({ user_id: this.props.user_id });
-    } else {
-      this.setState({ user_id: 1 }); // If not signed in create as guest
     }
 
     if (this.props.match.path.includes('edit')) {
-      getCharacterById(this.props.match.params.id).then(character =>
-        this.setState({ ...character, edit: true })
-      );
+      getCharacterById(this.props.match.params.id)
+        .then(character => this.setState({ ...character, edit: true, loading: false }))
+        .catch(() => this.setState({ loading: false, error: 'Failed to load character.' }));
     } else {
-      this.randomizeUnlockedAttributes();
       this.setState({ edit: false });
+      this.randomizeUnlockedAttributes();
     }
   };
 
-  randomizeUnlockedAttributes = () =>
-    generateNewCharacter().then(character =>
-      Object.keys(character).map(attribute =>
-        this.state.unlockedAttributes.includes(attribute)
-          ? this.setState({ [attribute]: character[attribute] })
-          : null
-      )
-    );
+  randomizeUnlockedAttributes = () => {
+    this.setState({ loading: true });
+    return generateNewCharacter()
+      .then(character => {
+        const { unlockedAttributes } = this.state;
+        const updates = {};
+        unlockedAttributes.forEach(attr => {
+          if (character[attr] !== undefined) updates[attr] = character[attr];
+        });
+        this.setState({ ...updates, loading: false });
+      })
+      .catch(() => this.setState({ loading: false }));
+  };
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
@@ -164,6 +150,10 @@ class CharacterCreateOrUpdate extends React.Component {
   };
 
   render() {
+    const { loading, submitting, error, edit, sprite_data } = this.state;
+
+    if (loading) return <TorchLoader />;
+
     const divStyle = {
       width: '90%',
       margin: '10px auto',
@@ -174,7 +164,7 @@ class CharacterCreateOrUpdate extends React.Component {
 
     return (
       <Container>
-        <h1>{this.state.edit ? 'Edit Character ' : 'Create Character'}</h1>
+        <h1>{edit ? 'Edit Character' : 'Create Character'}</h1>
 
         {!this.props.user_id && (
           <Message negative>
@@ -184,6 +174,14 @@ class CharacterCreateOrUpdate extends React.Component {
               you sign up (it only takes 10 seconds)
             </p>
           </Message>
+        )}
+
+        {error && (
+          <Message
+            negative
+            content={error}
+            onDismiss={() => this.setState({ error: null })}
+          />
         )}
 
         <Button
@@ -196,17 +194,15 @@ class CharacterCreateOrUpdate extends React.Component {
 
         <hr />
 
-        {this.state.sprite_data.length > 0 && (
-          <div
-            style={{
-              margin: 'auto',
-              height: GRID_SIZE * 8.5,
-              width: GRID_SIZE * 8.5
-            }}
-          >
+        {sprite_data.length > 0 && (
+          <div style={{
+            margin: 'auto',
+            height: GRID_SIZE * 8.5,
+            width: GRID_SIZE * 8.5
+          }}>
             <div
               style={generateCSS({
-                cellColors: this.state.sprite_data.split(','),
+                cellColors: sprite_data.split(','),
                 pixelSize: 8,
                 cssFormat: false
               })}
@@ -251,7 +247,6 @@ class CharacterCreateOrUpdate extends React.Component {
             />
             {this.addButtonsToInput('species')}
           </div>
-
           <div style={divStyle}>
             <Input
               label='Motto'
@@ -261,7 +256,6 @@ class CharacterCreateOrUpdate extends React.Component {
             />
             {this.addButtonsToInput('motto')}
           </div>
-
           <div style={divStyle}>
             <Input
               label='Alignment'
@@ -280,7 +274,6 @@ class CharacterCreateOrUpdate extends React.Component {
             />
             {this.addButtonsToInput('traits_positive')}
           </div>
-
           <div style={divStyle}>
             <Input
               label='Negative Traits'
@@ -290,7 +283,6 @@ class CharacterCreateOrUpdate extends React.Component {
             />
             {this.addButtonsToInput('traits_negative')}
           </div>
-
           <div style={divStyle}>
             <Input
               label='Age'
@@ -300,8 +292,6 @@ class CharacterCreateOrUpdate extends React.Component {
             />
             {this.addButtonsToInput('age')}
           </div>
-          <div style={divStyle} />
-
           <div style={divStyle}>
             <Input
               label='Status'
@@ -311,7 +301,6 @@ class CharacterCreateOrUpdate extends React.Component {
             />
             {this.addButtonsToInput('status')}
           </div>
-
           <div style={divStyle}>
             <Input
               label='Gender'
@@ -319,10 +308,8 @@ class CharacterCreateOrUpdate extends React.Component {
               name='gender'
               value={this.state.gender}
             />
-
             {this.addButtonsToInput('gender')}
           </div>
-
           <div style={divStyle}>
             <Input
               label='Feats'
@@ -332,7 +319,6 @@ class CharacterCreateOrUpdate extends React.Component {
             />
             {this.addButtonsToInput('feats')}
           </div>
-
           <div style={divStyle}>
             <Label size='large'>Bio</Label>
             <TextArea
@@ -346,12 +332,19 @@ class CharacterCreateOrUpdate extends React.Component {
           </div>
 
           <hr />
-          <Button color='green' fluid>
-            {this.state.edit ? 'Update Character' : 'Create Character'}
+          <Button
+            type='submit'
+            color='green'
+            fluid
+            loading={submitting}
+            disabled={submitting}
+          >
+            {edit ? 'Update Character' : 'Create Character'}
           </Button>
         </Form>
       </Container>
     );
   }
 }
+
 export default CharacterCreateOrUpdate;
