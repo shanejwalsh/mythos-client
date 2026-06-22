@@ -90,12 +90,23 @@ class CharacterCreateOrUpdate extends React.Component {
         .catch(() => this.setState({ loading: false, error: 'Failed to load character.' }));
     } else {
       this.setState({ edit: false });
-      this.randomizeUnlockedAttributes();
+      // Show the torch for at least 3 seconds regardless of API speed
+      const minWait = new Promise(resolve => setTimeout(resolve, 3000));
+      Promise.all([minWait, generateNewCharacter()])
+        .then(([, character]) => {
+          const { unlockedAttributes } = this.state;
+          const updates = {};
+          unlockedAttributes.forEach(attr => {
+            if (character[attr] !== undefined) updates[attr] = character[attr];
+          });
+          this.setState({ ...updates, loading: false });
+        })
+        .catch(() => this.setState({ loading: false }));
     }
   };
 
+  // Randomize updates the form inline — no loading state shown
   randomizeUnlockedAttributes = () => {
-    this.setState({ loading: true });
     return generateNewCharacter()
       .then(character => {
         const { unlockedAttributes } = this.state;
@@ -103,9 +114,8 @@ class CharacterCreateOrUpdate extends React.Component {
         unlockedAttributes.forEach(attr => {
           if (character[attr] !== undefined) updates[attr] = character[attr];
         });
-        this.setState({ ...updates, loading: false });
-      })
-      .catch(() => this.setState({ loading: false }));
+        this.setState(updates);
+      });
   };
 
   handleChange = event => {
@@ -212,133 +222,61 @@ class CharacterCreateOrUpdate extends React.Component {
 
         <Form onSubmit={this.handleSubmit}>
           <div style={divStyle}>
-            <Input
-              label='First Name'
-              onChange={this.handleChange}
-              name='first_name'
-              value={this.state.first_name}
-            />
+            <Input label='First Name' onChange={this.handleChange} name='first_name' value={this.state.first_name} />
             {this.addButtonsToInput('first_name')}
           </div>
           <div style={divStyle}>
-            <Input
-              label='Last Name'
-              onChange={this.handleChange}
-              name='last_name'
-              value={this.state.last_name}
-            />
+            <Input label='Last Name' onChange={this.handleChange} name='last_name' value={this.state.last_name} />
             {this.addButtonsToInput('last_name')}
           </div>
           <div style={divStyle}>
-            <Input
-              label='Alias'
-              onChange={this.handleChange}
-              name='alias'
-              value={this.state.alias}
-            />
+            <Input label='Alias' onChange={this.handleChange} name='alias' value={this.state.alias} />
             {this.addButtonsToInput('alias')}
           </div>
           <div style={divStyle}>
-            <Input
-              label='Species'
-              onChange={this.handleChange}
-              name='species'
-              value={this.state.species}
-            />
+            <Input label='Species' onChange={this.handleChange} name='species' value={this.state.species} />
             {this.addButtonsToInput('species')}
           </div>
           <div style={divStyle}>
-            <Input
-              label='Motto'
-              onChange={this.handleChange}
-              name='motto'
-              value={this.state.motto}
-            />
+            <Input label='Motto' onChange={this.handleChange} name='motto' value={this.state.motto} />
             {this.addButtonsToInput('motto')}
           </div>
           <div style={divStyle}>
-            <Input
-              label='Alignment'
-              onChange={this.handleChange}
-              name='alignment'
-              value={this.state.alignment}
-            />
+            <Input label='Alignment' onChange={this.handleChange} name='alignment' value={this.state.alignment} />
             {this.addButtonsToInput('alignment')}
           </div>
           <div style={divStyle}>
-            <Input
-              label='Positive Traits'
-              onChange={this.handleChange}
-              name='traits_positive'
-              value={this.state.traits_positive}
-            />
+            <Input label='Positive Traits' onChange={this.handleChange} name='traits_positive' value={this.state.traits_positive} />
             {this.addButtonsToInput('traits_positive')}
           </div>
           <div style={divStyle}>
-            <Input
-              label='Negative Traits'
-              onChange={this.handleChange}
-              name='traits_negative'
-              value={this.state.traits_negative}
-            />
+            <Input label='Negative Traits' onChange={this.handleChange} name='traits_negative' value={this.state.traits_negative} />
             {this.addButtonsToInput('traits_negative')}
           </div>
           <div style={divStyle}>
-            <Input
-              label='Age'
-              onChange={this.handleChange}
-              name='age'
-              value={this.state.age}
-            />
+            <Input label='Age' onChange={this.handleChange} name='age' value={this.state.age} />
             {this.addButtonsToInput('age')}
           </div>
           <div style={divStyle}>
-            <Input
-              label='Status'
-              onChange={this.handleChange}
-              name='status'
-              value={this.state.status}
-            />
+            <Input label='Status' onChange={this.handleChange} name='status' value={this.state.status} />
             {this.addButtonsToInput('status')}
           </div>
           <div style={divStyle}>
-            <Input
-              label='Gender'
-              onChange={this.handleChange}
-              name='gender'
-              value={this.state.gender}
-            />
+            <Input label='Gender' onChange={this.handleChange} name='gender' value={this.state.gender} />
             {this.addButtonsToInput('gender')}
           </div>
           <div style={divStyle}>
-            <Input
-              label='Feats'
-              onChange={this.handleChange}
-              name='feats'
-              value={this.state.feats}
-            />
+            <Input label='Feats' onChange={this.handleChange} name='feats' value={this.state.feats} />
             {this.addButtonsToInput('feats')}
           </div>
           <div style={divStyle}>
             <Label size='large'>Bio</Label>
-            <TextArea
-              rows='5'
-              label='Bio'
-              onChange={this.handleChange}
-              name='bio'
-              value={this.state.bio}
-            />
+            <TextArea rows='5' label='Bio' onChange={this.handleChange} name='bio' value={this.state.bio} />
             {this.addButtonsToInput('bio')}
           </div>
 
           <hr />
-          <Button
-            type='submit'
-            color='green'
-            fluid
-            loading={submitting}
-            disabled={submitting}
-          >
+          <Button type='submit' color='green' fluid loading={submitting} disabled={submitting}>
             {edit ? 'Update Character' : 'Create Character'}
           </Button>
         </Form>
