@@ -39,7 +39,7 @@ class Navbar extends Component {
         stackable
       >
         <Container>
-          <Menu.Item>
+          <Menu.Item as={Link} to="/">
             <img
               alt="logo"
               style={{ paddingRight: '3px' }}
