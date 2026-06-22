@@ -8,7 +8,8 @@ import LoginForm from './components/LoginForm';
 import { MyAccountContainer } from './containers/MyAccountContainer';
 import CharacterDetailsContainer from './containers/CharacterDetailsContainer';
 import SignUpForm from './components/SignUpForm';
-import { validate } from './api/API';
+import { validate, logoutUser } from './api/API';
+import Footer from './components/Footer';
 import { Unauthorised } from './components/Unauthorised';
 
 class App extends Component {
@@ -17,11 +18,17 @@ class App extends Component {
   setUser = ({ user }) => {
     const token = user.token || localStorage.getItem('token');
     localStorage.setItem('token', token);
+    if (user.refresh_token) {
+      localStorage.setItem('refresh_token', user.refresh_token);
+    }
     this.setState({ user });
   };
 
   logout = () => {
+    const refreshToken = localStorage.getItem('refresh_token');
+    if (refreshToken) logoutUser(refreshToken);
     localStorage.removeItem('token');
+    localStorage.removeItem('refresh_token');
     this.setState({ user: undefined });
     this.props.history.push('/login');
   };
@@ -101,6 +108,7 @@ class App extends Component {
             component={(routerProps) => <SignUpForm {...routerProps} />}
           />
         </Switch>
+        <Footer />
       </>
     );
   }
