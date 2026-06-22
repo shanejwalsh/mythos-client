@@ -9,6 +9,7 @@ import { MyAccountContainer } from './containers/MyAccountContainer';
 import CharacterDetailsContainer from './containers/CharacterDetailsContainer';
 import SignUpForm from './components/SignUpForm';
 import { validate, logoutUser } from './api/API';
+import Footer from './components/Footer';
 import { Unauthorised } from './components/Unauthorised';
 
 class App extends Component {
@@ -107,6 +108,7 @@ class App extends Component {
             component={(routerProps) => <SignUpForm {...routerProps} />}
           />
         </Switch>
+        <Footer />
       </>
     );
   }
