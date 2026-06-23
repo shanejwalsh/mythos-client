@@ -1,37 +1,61 @@
 import React, { Component } from 'react';
-import { Segment, Form, Image, Button, Container } from 'semantic-ui-react';
+import { Segment, Form, Image, Button, Container, Message } from 'semantic-ui-react';
 import { signUp } from '../api/API';
-// import API from "../api/API";
 
-// Assets live in the client's public/ folder (served at the app root).
 const PUBLIC_PATH = process.env.PUBLIC_URL;
+
 class SignUpForm extends Component {
   state = {
     username: '',
     password: '',
+    confirmPassword: '',
+    error: null,
+    loading: false,
   };
+
   handleChange = (event) =>
     this.setState({ [event.target.name]: event.target.value });
 
   handleSubmit = () => {
     const { history } = this.props;
+    const { username, password, confirmPassword } = this.state;
+
+    if (password.length < 8) {
+      this.setState({ error: 'Password must be at least 8 characters.' });
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      this.setState({ error: 'Passwords do not match.' });
+      return;
+    }
+
     const user = {
-      username: '@' + this.state.username,
-      password: this.state.password,
+      username: '@' + username,
+      password,
     };
 
-    signUp(user).then((data) => {
-      if (data.error) {
-        alert('something went wrong');
-      } else {
-        alert('User added, sign in to get cracking!');
-        history.push('/login');
-      }
-    });
+    this.setState({ loading: true, error: null });
+
+    signUp(user)
+      .then((data) => {
+        if (data.error) {
+          const message = data.details ? data.details.join(', ') : data.error;
+          this.setState({ error: message, loading: false });
+        } else {
+          history.push('/login');
+        }
+      })
+      .catch(() => {
+        this.setState({
+          error: 'Unable to reach the server. Please try again.',
+          loading: false,
+        });
+      });
   };
 
   render() {
-    const { username, password } = this.state;
+    const { username, password, confirmPassword, error, loading } = this.state;
 
     return (
       <Container>
@@ -47,6 +71,8 @@ class SignUpForm extends Component {
             Sign up to save your characters to your own profile, edit them and
             keep track of thier adventures!
           </p>
+
+          {error && <Message negative content={error} />}
 
           <Form onSubmit={this.handleSubmit} size="large">
             <Segment stacked>
@@ -71,8 +97,27 @@ class SignUpForm extends Component {
                 type="password"
                 name="password"
               />
+              <Form.Input
+                autoComplete="new-password"
+                fluid
+                value={confirmPassword}
+                onChange={this.handleChange}
+                icon="lock"
+                iconPosition="left"
+                placeholder="Confirm Password"
+                type="password"
+                name="confirmPassword"
+                error={confirmPassword.length > 0 && password !== confirmPassword}
+              />
 
-              <Button color="black" fluid size="large">
+              <Button
+                type="submit"
+                color="black"
+                fluid
+                size="large"
+                loading={loading}
+                disabled={loading}
+              >
                 Sign Up
               </Button>
             </Segment>
