@@ -84,15 +84,17 @@ class Navbar extends Component {
               >
                 Create Character
               </Menu.Item>
-              <Menu.Item
-                name="account"
-                active={activeItem === 'account'}
-                onClick={this.handleItemClick}
-                as={Link}
-                to="/my-account"
-              >
-                My Account
-              </Menu.Item>
+              {this.props.username && (
+                <Menu.Item
+                  name="account"
+                  active={activeItem === 'account'}
+                  onClick={this.handleItemClick}
+                  as={Link}
+                  to="/my-account"
+                >
+                  My Account
+                </Menu.Item>
+              )}
               {!this.props.username ? (
                 <Menu.Item position="right">
                   <Button as={Link} to="/login" inverted>
