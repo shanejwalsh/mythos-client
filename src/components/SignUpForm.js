@@ -20,6 +20,11 @@ class SignUpForm extends Component {
     const { history } = this.props;
     const { username, password, confirmPassword } = this.state;
 
+    if (password.length < 8) {
+      this.setState({ error: 'Password must be at least 8 characters.' });
+      return;
+    }
+
     if (password !== confirmPassword) {
       this.setState({ error: 'Passwords do not match.' });
       return;
