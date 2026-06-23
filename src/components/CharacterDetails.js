@@ -3,10 +3,9 @@ import { Container, Button, Icon } from 'semantic-ui-react';
 import { titleCase } from '../lib/helper';
 import { Link } from 'react-router-dom';
 import { cloneCharacter } from '../api/API';
-// import API from '../api/API';
 
 class CharacterDetails extends Component {
-  handleClick = () => {
+  handleClone = () => {
     cloneCharacter(this.props.character.id, this.props.user_id).then((data) => {
       if (data.error) {
         return alert('Something went wrong during cloning');
@@ -55,16 +54,10 @@ class CharacterDetails extends Component {
           {traits_negative}
           <br />
         </p>
-        {this.props.editable && (
-          <Button as={Link} to={`/characters/${id}/edit`}>
-            <Icon name="edit outline" />
-            Edit Character
-          </Button>
-        )}
 
         {this.props.user_id && this.props.username !== user.username && (
           <Button
-            onClick={this.handleClick}
+            onClick={this.handleClone}
             content="Clone To My Account"
             icon="copy"
             fluid
@@ -86,6 +79,24 @@ class CharacterDetails extends Component {
             }}
             disabled
           />
+        )}
+
+        {this.props.editable && (
+          <Button.Group widths={2} style={{ marginTop: '1em' }}>
+            <Button as={Link} to={`/characters/${id}/edit`} icon labelPosition='left'>
+              <Icon name='edit outline' />
+              Edit Character
+            </Button>
+            <Button
+              negative
+              icon
+              labelPosition='left'
+              onClick={this.props.onDeleteRequest}
+            >
+              <Icon name='trash alternate outline' />
+              Delete
+            </Button>
+          </Button.Group>
         )}
       </Container>
     );

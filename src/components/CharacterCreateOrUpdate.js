@@ -5,7 +5,6 @@ import {
   Input,
   Container,
   TextArea,
-  Label,
   Message
 } from 'semantic-ui-react';
 import { GRID_SIZE } from '../config/config';
@@ -264,8 +263,20 @@ class CharacterCreateOrUpdate extends React.Component {
             {this.addButtonsToInput('feats')}
           </div>
           <div style={divStyle}>
-            <Label size='large'>Bio</Label>
-            <TextArea rows='5' label='Bio' onChange={this.handleChange} name='bio' value={this.state.bio} />
+            <div className="ui labeled input" style={{ flex: 1, alignItems: 'flex-start' }}>
+              <div className="ui label" style={{ paddingTop: '10px' }}>Bio</div>
+              <TextArea
+                rows='5'
+                onChange={this.handleChange}
+                name='bio'
+                value={this.state.bio}
+                style={{
+                  borderRadius: '0 4px 4px 0',
+                  border: '1px solid rgba(34,36,38,.15)',
+                  width: '100%'
+                }}
+              />
+            </div>
             {this.addButtonsToInput('bio')}
           </div>
 
