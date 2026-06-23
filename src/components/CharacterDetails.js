@@ -82,8 +82,8 @@ class CharacterDetails extends Component {
         )}
 
         {this.props.editable && (
-          <Button.Group widths={2} style={{ marginTop: '1em' }}>
-            <Button as={Link} to={`/characters/${id}/edit`} icon labelPosition='left'>
+          <div style={{ display: 'flex', gap: '0.5em', marginTop: '1em' }}>
+            <Button as={Link} to={`/characters/${id}/edit`} icon labelPosition='left' style={{ flex: 1 }}>
               <Icon name='edit outline' />
               Edit Character
             </Button>
@@ -92,11 +92,12 @@ class CharacterDetails extends Component {
               icon
               labelPosition='left'
               onClick={this.props.onDeleteRequest}
+              style={{ flex: 1 }}
             >
               <Icon name='trash alternate outline' />
               Delete
             </Button>
-          </Button.Group>
+          </div>
         )}
       </Container>
     );

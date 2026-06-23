@@ -110,7 +110,7 @@ class CharacterDetailsContainer extends Component {
               </p>
             </div>
           }
-          confirmButton='Delete Forever'
+          confirmButton={<Button negative>Delete Forever</Button>}
           onCancel={this.handleDeleteCancel}
           onConfirm={this.handleDeleteConfirm}
         />
