@@ -10,62 +10,49 @@ import {
 import { GRID_SIZE } from '../config/config';
 import { generateCSS } from '../lib/helper';
 import { createCharacter, generateAttribute, generateNewCharacter, getCharacterById, updateCharacter } from '../api/API';
+import TorchLoader from './TorchLoader';
 
-const getInitialState = () => {
-  return {
-    first_name: '',
-    last_name: '',
-    alias: '',
-    motto: '',
-    species: '',
-    bio: '',
-    alignment: '',
-    traits_positive: '',
-    traits_negative: '',
-    age: '',
-    gender: '',
-    status: '',
-    feats: '',
-    sprite_data: [],
-    edit: false,
-    unlockedAttributes: [
-      'first_name',
-      'last_name',
-      'alias',
-      'motto',
-      'species',
-      'bio',
-      'alignment',
-      'traits_positive',
-      'traits_negative',
-      'age',
-      'status',
-      'feats',
-      'gender',
-      'sprite_data'
-    ]
-  };
-};
+const getInitialCharacterState = () => ({
+  first_name: '',
+  last_name: '',
+  alias: '',
+  motto: '',
+  species: '',
+  bio: '',
+  alignment: '',
+  traits_positive: '',
+  traits_negative: '',
+  age: '',
+  gender: '',
+  status: '',
+  feats: '',
+  sprite_data: [],
+  edit: false,
+  unlockedAttributes: [
+    'first_name', 'last_name', 'alias', 'motto', 'species', 'bio',
+    'alignment', 'traits_positive', 'traits_negative', 'age',
+    'status', 'feats', 'gender', 'sprite_data'
+  ]
+});
 
 class CharacterCreateOrUpdate extends React.Component {
   state = {
-    ...getInitialState(),
+    ...getInitialCharacterState(),
     loading: true,
     submitting: false,
     error: null,
   };
 
   validate = () => {
-    const fields = [
+    const required = [
       'first_name', 'last_name', 'alias', 'motto', 'species', 'bio',
-      'alignment', 'traits_positive', 'traits_negative', 'age',
-      'gender', 'status', 'feats'
+      'alignment', 'traits_positive', 'traits_negative', 'age', 'gender', 'status', 'feats'
     ];
-    for (const field of fields) {
-      if (String(this.state[field]).trim().length === 0) return false;
-    }
-    if (this.state.sprite_data.length === 0) return false;
-    return true;
+    // Use String() so numeric fields (e.g. age) don't fail with undefined.length
+    return required.every(f => {
+      const val = this.state[f];
+      return val != null && String(val).trim().length > 0;
+    }) && this.state.sprite_data.length > 0;
   };
 
   handleSubmit = () => {
@@ -73,68 +60,64 @@ class CharacterCreateOrUpdate extends React.Component {
       this.setState({ error: 'No fields can be left empty.' });
       return;
     }
+
     this.setState({ submitting: true, error: null });
-    if (this.state.edit) {
-      updateCharacter(this.state)
-        .then(data => {
-          this.setState({ submitting: false });
-          if (data.error) {
-            this.setState({ error: 'Something went wrong, character not updated.' });
-          } else {
-            this.props.history.push('/my-account');
-          }
-        })
-        .catch(() => this.setState({ submitting: false, error: 'Network error. Please try again.' }));
-    } else {
-      createCharacter(this.state)
-        .then(data => {
-          this.setState({ submitting: false });
-          if (data.error) {
-            this.setState({ error: 'Something went wrong, character not created.' });
-          } else {
-            this.setState(getInitialState());
-            this.props.history.push(`/characters/${data.id}`);
-          }
-        })
-        .catch(() => this.setState({ submitting: false, error: 'Network error. Please try again.' }));
-    }
+
+    const action = this.state.edit
+      ? updateCharacter(this.state)
+      : createCharacter(this.state);
+
+    action
+      .then(data => {
+        if (data.error) {
+          this.setState({ error: data.error, submitting: false });
+        } else if (this.state.edit) {
+          this.props.history.push('/my-account');
+        } else {
+          this.props.history.push(`/characters/${data.id}`);
+        }
+      })
+      .catch(() => {
+        this.setState({ error: 'Something went wrong. Please try again.', submitting: false });
+      });
   };
 
   componentDidMount = () => {
     if (this.props.user_id) {
       this.setState({ user_id: this.props.user_id });
-    } else {
-      this.setState({ user_id: 1 }); // If not signed in create as guest
     }
 
     if (this.props.match.path.includes('edit')) {
-      getCharacterById(this.props.match.params.id).then(character =>
-        this.setState({ ...character, edit: true, loading: false })
-      );
+      getCharacterById(this.props.match.params.id)
+        .then(character => this.setState({ ...character, edit: true, loading: false }))
+        .catch(() => this.setState({ loading: false, error: 'Failed to load character.' }));
     } else {
-      Promise.all([
-        new Promise(r => setTimeout(r, 3000)),
-        generateNewCharacter()
-      ]).then(([, character]) => {
-        const updates = {};
-        Object.keys(character).forEach(attribute => {
-          if (this.state.unlockedAttributes.includes(attribute)) {
-            updates[attribute] = character[attribute];
-          }
-        });
-        this.setState({ ...updates, edit: false, loading: false });
-      });
+      this.setState({ edit: false });
+      const minWait = new Promise(resolve => setTimeout(resolve, 3000));
+      Promise.all([minWait, generateNewCharacter()])
+        .then(([, character]) => {
+          const { unlockedAttributes } = this.state;
+          const updates = {};
+          unlockedAttributes.forEach(attr => {
+            if (character[attr] !== undefined) updates[attr] = character[attr];
+          });
+          this.setState({ ...updates, loading: false });
+        })
+        .catch(() => this.setState({ loading: false }));
     }
   };
 
-  randomizeUnlockedAttributes = () =>
-    generateNewCharacter().then(character =>
-      Object.keys(character).map(attribute =>
-        this.state.unlockedAttributes.includes(attribute)
-          ? this.setState({ [attribute]: character[attribute] })
-          : null
-      )
-    );
+  randomizeUnlockedAttributes = () => {
+    return generateNewCharacter()
+      .then(character => {
+        const { unlockedAttributes } = this.state;
+        const updates = {};
+        unlockedAttributes.forEach(attr => {
+          if (character[attr] !== undefined) updates[attr] = character[attr];
+        });
+        this.setState(updates);
+      });
+  };
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
@@ -178,13 +161,9 @@ class CharacterCreateOrUpdate extends React.Component {
   };
 
   render() {
-    if (this.state.loading) {
-      return (
-        <div style={{ textAlign: 'center', paddingTop: '120px' }}>
-          <p style={{ fontSize: '1.2em', color: '#888' }}>Conjuring your character...</p>
-        </div>
-      );
-    }
+    const { loading, submitting, error, edit, sprite_data } = this.state;
+
+    if (loading) return <TorchLoader />;
 
     const divStyle = {
       width: '90%',
@@ -196,7 +175,7 @@ class CharacterCreateOrUpdate extends React.Component {
 
     return (
       <Container>
-        <h1>{this.state.edit ? 'Edit Character ' : 'Create Character'}</h1>
+        <h1>{edit ? 'Edit Character' : 'Create Character'}</h1>
 
         {!this.props.user_id && (
           <Message negative>
@@ -218,17 +197,15 @@ class CharacterCreateOrUpdate extends React.Component {
 
         <hr />
 
-        {this.state.sprite_data.length > 0 && (
-          <div
-            style={{
-              margin: 'auto',
-              height: GRID_SIZE * 8.5,
-              width: GRID_SIZE * 8.5
-            }}
-          >
+        {sprite_data.length > 0 && (
+          <div style={{
+            margin: 'auto',
+            height: GRID_SIZE * 8.5,
+            width: GRID_SIZE * 8.5
+          }}>
             <div
               style={generateCSS({
-                cellColors: this.state.sprite_data.split(','),
+                cellColors: sprite_data.split(','),
                 pixelSize: 8,
                 cssFormat: false
               })}
@@ -238,122 +215,53 @@ class CharacterCreateOrUpdate extends React.Component {
 
         <Form onSubmit={this.handleSubmit}>
           <div style={divStyle}>
-            <Input
-              label='First Name'
-              onChange={this.handleChange}
-              name='first_name'
-              value={this.state.first_name}
-            />
+            <Input label='First Name' onChange={this.handleChange} name='first_name' value={this.state.first_name} />
             {this.addButtonsToInput('first_name')}
           </div>
           <div style={divStyle}>
-            <Input
-              label='Last Name'
-              onChange={this.handleChange}
-              name='last_name'
-              value={this.state.last_name}
-            />
+            <Input label='Last Name' onChange={this.handleChange} name='last_name' value={this.state.last_name} />
             {this.addButtonsToInput('last_name')}
           </div>
           <div style={divStyle}>
-            <Input
-              label='Alias'
-              onChange={this.handleChange}
-              name='alias'
-              value={this.state.alias}
-            />
+            <Input label='Alias' onChange={this.handleChange} name='alias' value={this.state.alias} />
             {this.addButtonsToInput('alias')}
           </div>
           <div style={divStyle}>
-            <Input
-              label='Species'
-              onChange={this.handleChange}
-              name='species'
-              value={this.state.species}
-            />
+            <Input label='Species' onChange={this.handleChange} name='species' value={this.state.species} />
             {this.addButtonsToInput('species')}
           </div>
-
           <div style={divStyle}>
-            <Input
-              label='Motto'
-              onChange={this.handleChange}
-              name='motto'
-              value={this.state.motto}
-            />
+            <Input label='Motto' onChange={this.handleChange} name='motto' value={this.state.motto} />
             {this.addButtonsToInput('motto')}
           </div>
-
           <div style={divStyle}>
-            <Input
-              label='Alignment'
-              onChange={this.handleChange}
-              name='alignment'
-              value={this.state.alignment}
-            />
+            <Input label='Alignment' onChange={this.handleChange} name='alignment' value={this.state.alignment} />
             {this.addButtonsToInput('alignment')}
           </div>
           <div style={divStyle}>
-            <Input
-              label='Positive Traits'
-              onChange={this.handleChange}
-              name='traits_positive'
-              value={this.state.traits_positive}
-            />
+            <Input label='Positive Traits' onChange={this.handleChange} name='traits_positive' value={this.state.traits_positive} />
             {this.addButtonsToInput('traits_positive')}
           </div>
-
           <div style={divStyle}>
-            <Input
-              label='Negative Traits'
-              onChange={this.handleChange}
-              name='traits_negative'
-              value={this.state.traits_negative}
-            />
+            <Input label='Negative Traits' onChange={this.handleChange} name='traits_negative' value={this.state.traits_negative} />
             {this.addButtonsToInput('traits_negative')}
           </div>
-
           <div style={divStyle}>
-            <Input
-              label='Age'
-              onChange={this.handleChange}
-              name='age'
-              value={this.state.age}
-            />
+            <Input label='Age' onChange={this.handleChange} name='age' value={this.state.age} />
             {this.addButtonsToInput('age')}
           </div>
-          <div style={divStyle} />
-
           <div style={divStyle}>
-            <Input
-              label='Status'
-              onChange={this.handleChange}
-              name='status'
-              value={this.state.status}
-            />
+            <Input label='Status' onChange={this.handleChange} name='status' value={this.state.status} />
             {this.addButtonsToInput('status')}
           </div>
-
           <div style={divStyle}>
-            <Input
-              label='Gender'
-              onChange={this.handleChange}
-              name='gender'
-              value={this.state.gender}
-            />
+            <Input label='Gender' onChange={this.handleChange} name='gender' value={this.state.gender} />
             {this.addButtonsToInput('gender')}
           </div>
-
           <div style={divStyle}>
-            <Input
-              label='Feats'
-              onChange={this.handleChange}
-              name='feats'
-              value={this.state.feats}
-            />
+            <Input label='Feats' onChange={this.handleChange} name='feats' value={this.state.feats} />
             {this.addButtonsToInput('feats')}
           </div>
-
           <div style={divStyle}>
             <div className="ui labeled input" style={{ flex: 1, alignItems: 'flex-start' }}>
               <div className="ui label" style={{ paddingTop: '10px' }}>Bio</div>
@@ -374,21 +282,21 @@ class CharacterCreateOrUpdate extends React.Component {
 
           <hr />
 
-          {this.state.error && (
-            <Message negative content={this.state.error} />
+          {error && (
+            <Message
+              negative
+              content={error}
+              onDismiss={() => this.setState({ error: null })}
+            />
           )}
 
-          <Button
-            color='green'
-            fluid
-            loading={this.state.submitting}
-            disabled={this.state.submitting}
-          >
-            {this.state.edit ? 'Update Character' : 'Create Character'}
+          <Button type='submit' color='green' fluid loading={submitting} disabled={submitting}>
+            {edit ? 'Update Character' : 'Create Character'}
           </Button>
         </Form>
       </Container>
     );
   }
 }
+
 export default CharacterCreateOrUpdate;
