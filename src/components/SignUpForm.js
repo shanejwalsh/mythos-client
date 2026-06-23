@@ -8,6 +8,7 @@ class SignUpForm extends Component {
   state = {
     username: '',
     password: '',
+    confirmPassword: '',
     error: null,
     loading: false,
   };
@@ -17,9 +18,16 @@ class SignUpForm extends Component {
 
   handleSubmit = () => {
     const { history } = this.props;
+    const { username, password, confirmPassword } = this.state;
+
+    if (password !== confirmPassword) {
+      this.setState({ error: 'Passwords do not match.' });
+      return;
+    }
+
     const user = {
-      username: '@' + this.state.username,
-      password: this.state.password,
+      username: '@' + username,
+      password,
     };
 
     this.setState({ loading: true, error: null });
@@ -42,7 +50,7 @@ class SignUpForm extends Component {
   };
 
   render() {
-    const { username, password, error, loading } = this.state;
+    const { username, password, confirmPassword, error, loading } = this.state;
 
     return (
       <Container>
@@ -83,6 +91,18 @@ class SignUpForm extends Component {
                 placeholder="Password"
                 type="password"
                 name="password"
+              />
+              <Form.Input
+                autoComplete="new-password"
+                fluid
+                value={confirmPassword}
+                onChange={this.handleChange}
+                icon="lock"
+                iconPosition="left"
+                placeholder="Confirm Password"
+                type="password"
+                name="confirmPassword"
+                error={confirmPassword.length > 0 && password !== confirmPassword}
               />
 
               <Button
