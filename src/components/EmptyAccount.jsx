@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
   Button,
   Divider,
@@ -7,14 +5,14 @@ import {
   Header,
   Icon,
   Segment,
-} from 'semantic-ui-react';
+} from "semantic-ui-react";
 
 import { Link } from "react-router-dom";
 
 export function EmptyAccount() {
   return (
     <>
-      <h1 style={{ textAlign: 'center' }}>
+      <h1 style={{ textAlign: "center" }}>
         Looks like you haven't created any characters yet!
       </h1>
       <Segment placeholder>
@@ -45,5 +43,4 @@ export function EmptyAccount() {
       </Segment>
     </>
   );
-  // );
 }

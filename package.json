@@ -4,19 +4,17 @@
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
   "dependencies": {
-    "react": "^16.8.6",
+    "react": "^18.3.1",
     "react-color": "^2.17.0",
-    "react-dom": "^16.8.6",
+    "react-dom": "^18.3.1",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "^2.1.8",
-    "semantic-ui-react": "^0.86.0"
+    "semantic-ui-react": "^2.1.5"
   },
-  "devDependencies": {},
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --watchAll=false",
-    "eject": "react-scripts eject"
+    "dev": "vite",
+    "build": "vite build",
+    "test": "vite test",
+    "preview": "vite preview"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -26,5 +24,9 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.3",
+    "vite": "^8.1.0"
+  }
 }

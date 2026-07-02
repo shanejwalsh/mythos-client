@@ -1,24 +1,24 @@
-import React, { Component } from 'react';
-import CharacterDetails from '../components/CharacterDetails';
-import { Container, Button, Icon, Confirm } from 'semantic-ui-react';
-import AvatarBuilder from '../components/AvatarBuilder';
-import { generateCSS } from '../lib/helper';
-import { Link } from 'react-router-dom';
-import { GRID_SIZE } from '../config/config';
-import { getCharacterById, deleteCharacter } from '../api/API';
-import PixelSkull from '../components/PixelSkull';
+import { Component } from "react";
+import { CharacterDetails } from "../components/CharacterDetails";
+import { Container, Button, Icon, Confirm } from "semantic-ui-react";
+import { AvatarBuilder } from "../components/AvatarBuilder";
+import { generateCSS } from "../lib/helper";
+import { Link } from "react-router-dom";
+import { GRID_SIZE } from "../config/config";
+import { getCharacterById, deleteCharacter } from "../api/API";
+import PixelSkull from "../components/PixelSkull";
 
-class CharacterDetailsContainer extends Component {
+export class CharacterDetailsContainer extends Component {
   state = {
     character: null,
-    view: 'display',
+    view: "display",
     confirmingDelete: false,
     copiedCSS: false,
   };
 
   componentDidMount = () => {
     if (this.state.character !== null) return;
-    getCharacterById(this.props.id).then(character => {
+    getCharacterById(this.props.id).then((character) => {
       this.setState({ character });
     });
   };
@@ -27,13 +27,13 @@ class CharacterDetailsContainer extends Component {
   handleDeleteCancel = () => this.setState({ confirmingDelete: false });
   handleDeleteConfirm = () => {
     deleteCharacter(this.state.character.id).then(() => {
-      this.props.history.push('/characters');
+      this.props.history.push("/characters");
     });
   };
 
   handleCopyCSS = () => {
     const css = generateCSS({
-      cellColors: this.state.character.sprite_data.split(','),
+      cellColors: this.state.character.sprite_data.split(","),
       cssFormat: true,
     });
     navigator.clipboard.writeText(css).then(() => {
@@ -50,44 +50,44 @@ class CharacterDetailsContainer extends Component {
 
     return (
       <Container>
-        {viewMode === 'edit-avatar' && (
+        {viewMode === "edit-avatar" && (
           <AvatarBuilder
             history={this.props.history}
             characterId={character.id}
-            cellColors={character.sprite_data.split(',')}
-            setDisplayMode={() => this.setState({ view: 'display' })}
+            cellColors={character.sprite_data.split(",")}
+            setDisplayMode={() => this.setState({ view: "display" })}
           />
         )}
 
-        {viewMode === 'display' && character && (
-          <div className='ui stackable two column grid'>
-            <div className='four wide column'>
-              <Button as={Link} to={`/characters`} icon labelPosition='left'>
-                <Icon name='arrow left' />
+        {viewMode === "display" && character && (
+          <div className="ui stackable two column grid">
+            <div className="four wide column">
+              <Button as={Link} to={`/characters`} icon labelPosition="left">
+                <Icon name="arrow left" />
                 All Characters
               </Button>
               <div style={{ height: GRID_SIZE * 13, width: GRID_SIZE * 13 }}>
                 <div
                   style={generateCSS({
-                    cellColors: character.sprite_data.split(','),
+                    cellColors: character.sprite_data.split(","),
                     pixelSize: 12,
-                    cssFormat: false
+                    cssFormat: false,
                   })}
                 />
               </div>
               <Button
                 fluid
                 icon
-                labelPosition='left'
+                labelPosition="left"
                 onClick={this.handleCopyCSS}
-                color={copiedCSS ? 'green' : undefined}
-                style={{ marginTop: '0.5em' }}
+                color={copiedCSS ? "green" : undefined}
+                style={{ marginTop: "0.5em" }}
               >
-                <Icon name={copiedCSS ? 'check' : 'code'} />
-                {copiedCSS ? 'Copied!' : 'Copy CSS'}
+                <Icon name={copiedCSS ? "check" : "code"} />
+                {copiedCSS ? "Copied!" : "Copy CSS"}
               </Button>
             </div>
-            <div className='tweleve wide column'>
+            <div className="tweleve wide column">
               <CharacterDetails
                 user_id={this.props.user_id}
                 username={this.props.username}
@@ -101,12 +101,13 @@ class CharacterDetailsContainer extends Component {
 
         <Confirm
           open={confirmingDelete}
-          header='Delete Character'
+          header="Delete Character"
           content={
-            <div style={{ textAlign: 'center', padding: '1.5em 1em 0.5em' }}>
+            <div style={{ textAlign: "center", padding: "1.5em 1em 0.5em" }}>
               <PixelSkull />
-              <p style={{ marginTop: '1em' }}>
-                This cannot be undone. Are you sure you want to permanently delete this character?
+              <p style={{ marginTop: "1em" }}>
+                This cannot be undone. Are you sure you want to permanently
+                delete this character?
               </p>
             </div>
           }
@@ -118,5 +119,3 @@ class CharacterDetailsContainer extends Component {
     );
   }
 }
-
-export default CharacterDetailsContainer;

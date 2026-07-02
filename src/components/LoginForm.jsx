@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import {
   Button,
   Form,
@@ -8,12 +8,12 @@ import {
   Segment,
   Container,
   Grid,
-} from 'semantic-ui-react';
-import { loginUser } from '../api/API';
+} from "semantic-ui-react";
+import { loginUser } from "../api/API";
 class LoginForm extends Component {
   state = {
-    username: '',
-    password: '',
+    username: "",
+    password: "",
   };
 
   handleChange = (event) =>
@@ -22,16 +22,16 @@ class LoginForm extends Component {
   handleSubmit = () => {
     const { setUser, history } = this.props;
     const user = {
-      username: '@' + this.state.username,
+      username: "@" + this.state.username,
       password: this.state.password,
     };
 
     loginUser(user).then((userData) => {
       if (userData.error) {
-        alert('something went wrong');
+        alert("something went wrong");
       } else {
         setUser({ user: userData });
-        history.push('/my-account');
+        history.push("/my-account");
       }
     });
   };
@@ -42,11 +42,11 @@ class LoginForm extends Component {
     return (
       <Container
         textAlign="center"
-        style={{ paddingTop: '20px', height: '90%' }}
+        style={{ paddingTop: "20px", height: "90%" }}
       >
         <Grid
           textAlign="center"
-          style={{ height: '100%' }}
+          style={{ height: "100%" }}
           verticalAlign="middle"
         >
           <Grid.Column style={{ maxWidth: 450 }}>

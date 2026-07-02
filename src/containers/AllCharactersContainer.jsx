@@ -1,46 +1,45 @@
-import React, { Component } from 'react';
-import { PlaceholderGrid } from '../lib/placeholder';
+import React, { Component } from "react";
+import { PlaceholderGrid } from "../components/PlaceholderGrid";
 
-import { Container } from 'semantic-ui-react';
-import { CharacterIndex } from '../components/CharactersIndex';
-import { getAllCharacters } from '../api/API';
+import { Container } from "semantic-ui-react";
+import { CharacterIndex } from "../components/CharactersIndex";
+import { getAllCharacters } from "../api/API";
 
 class AllCharactersContainer extends Component {
   state = {
     allCharacters: [],
     filterSpeciesOptions: [],
     filterStatusOptions: [],
-    loaded: false
+    loaded: false,
   };
 
   componentDidMount = () => {
-    getAllCharacters().then(allCharacters =>
+    getAllCharacters().then((allCharacters) =>
       this.setState({
         allCharacters,
         filterSpeciesOptions: [
-          ...new Set(allCharacters.map(character => character.species).flat())
+          ...new Set(
+            allCharacters.map((character) => character.species).flat(),
+          ),
         ],
         filterStatusOptions: [
-          ...new Set(allCharacters.map(character => character.status).flat())
+          ...new Set(allCharacters.map((character) => character.status).flat()),
         ],
-        loaded: true
-      })
+        loaded: true,
+      }),
     );
   };
 
   render() {
-    const {
-      allCharacters,
-      filterSpeciesOptions,
-      filterStatusOptions
-    } = this.state;
+    const { allCharacters, filterSpeciesOptions, filterStatusOptions } =
+      this.state;
     return (
       <Container>
         <h1>Published Characters</h1>
         {this.state.loaded ? (
           <CharacterIndex
-            gridSize='4'
-            footerPrimary='user'
+            gridSize="4"
+            footerPrimary="user"
             characters={allCharacters}
             filterSpeciesOptions={filterSpeciesOptions}
             filterStatusOptions={filterStatusOptions}

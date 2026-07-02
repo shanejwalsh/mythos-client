@@ -1,14 +1,23 @@
-import React, { Component } from 'react';
-import { Segment, Form, Image, Button, Container, Message } from 'semantic-ui-react';
-import { signUp } from '../api/API';
+import { Component } from "react";
+import {
+  Segment,
+  Form,
+  Image,
+  Button,
+  Container,
+  Message,
+} from "semantic-ui-react";
+import { signUp, loginUser } from "../api/API";
 
-const PUBLIC_PATH = process.env.PUBLIC_URL;
+import Icon2 from "../images/icon2.png";
 
-class SignUpForm extends Component {
+// const PUBLIC_PATH = import.meta.env.PUBLIC_URL;
+
+export class SignUpForm extends Component {
   state = {
-    username: '',
-    password: '',
-    confirmPassword: '',
+    username: "",
+    password: "",
+    confirmPassword: "",
     error: null,
     loading: false,
   };
@@ -17,21 +26,21 @@ class SignUpForm extends Component {
     this.setState({ [event.target.name]: event.target.value });
 
   handleSubmit = () => {
-    const { history } = this.props;
+    const { history, setUser } = this.props;
     const { username, password, confirmPassword } = this.state;
 
     if (password.length < 8) {
-      this.setState({ error: 'Password must be at least 8 characters.' });
+      this.setState({ error: "Password must be at least 8 characters." });
       return;
     }
 
     if (password !== confirmPassword) {
-      this.setState({ error: 'Passwords do not match.' });
+      this.setState({ error: "Passwords do not match." });
       return;
     }
 
     const user = {
-      username: '@' + username,
+      username: "@" + username,
       password,
     };
 
@@ -40,15 +49,24 @@ class SignUpForm extends Component {
     signUp(user)
       .then((data) => {
         if (data.error) {
-          const message = data.details ? data.details.join(', ') : data.error;
+          const message = data.details ? data.details.join(", ") : data.error;
           this.setState({ error: message, loading: false });
-        } else {
-          history.push('/login');
+          return;
         }
+        // Signup doesn't return a token, so log in with the same credentials
+        // to establish a session before sending the user to their account.
+        return loginUser(user).then((userData) => {
+          if (userData.error) {
+            this.setState({ error: userData.error, loading: false });
+            return;
+          }
+          setUser({ user: userData });
+          history.push("/my-account");
+        });
       })
       .catch(() => {
         this.setState({
-          error: 'Unable to reach the server. Please try again.',
+          error: "Unable to reach the server. Please try again.",
           loading: false,
         });
       });
@@ -60,12 +78,7 @@ class SignUpForm extends Component {
     return (
       <Container>
         <Segment inverted color="blue" textAlign="center" placeholder>
-          <Image
-            centered
-            size="small"
-            src={PUBLIC_PATH + '/icon2.png'}
-            alt="skeleton"
-          />
+          <Image centered size="small" src={Icon2} alt="skeleton" />
           <h1>Build Your Fantasy Universe</h1>
           <p>
             Sign up to save your characters to your own profile, edit them and
@@ -107,7 +120,9 @@ class SignUpForm extends Component {
                 placeholder="Confirm Password"
                 type="password"
                 name="confirmPassword"
-                error={confirmPassword.length > 0 && password !== confirmPassword}
+                error={
+                  confirmPassword.length > 0 && password !== confirmPassword
+                }
               />
 
               <Button
@@ -127,5 +142,3 @@ class SignUpForm extends Component {
     );
   }
 }
-
-export default SignUpForm;

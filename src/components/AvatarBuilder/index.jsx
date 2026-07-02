@@ -1,31 +1,33 @@
-import React, { Component, Fragment } from 'react';
-import AvatarCellGrid from './AvatarCellGrid';
-import AvatarBuilderControls from './AvatarBuilderControls';
-import AvatarBuilderHeader from './AvatarBuilderHeader';
-import { BASE_COLOR, GRID_SIZE } from '../../config/config';
-import { generateCSS } from '../../lib/helper';
-import { updateCharacter } from '../../api/API';
+import { Component, Fragment } from "react";
+import AvatarCellGrid from "./AvatarCellGrid";
+import AvatarBuilderControls from "./AvatarBuilderControls";
+import AvatarBuilderHeader from "./AvatarBuilderHeader";
+import { BASE_COLOR, GRID_SIZE } from "../../config/config";
+import { generateCSS } from "../../lib/helper";
+import { updateCharacter } from "../../api/API";
 
-class AvatarBuilder extends Component {
+export class AvatarBuilder extends Component {
   state = {
     cellColors: [],
-    selectedColor: '#f44336',
+    selectedColor: "#f44336",
     displayExtraPicker: false,
-    mode: 'brush',
-    avatarCSS: {}
+    mode: "brush",
+    avatarCSS: {},
   };
 
   //Updates Character Sprite Data on Server
   updateCharacterSprite = () => {
     updateCharacter({
       id: this.props.characterId,
-      sprite_data: this.state.cellColors.join(',')
-    }).then(charData => this.props.history.push(`/characters/${charData.id}`));
+      sprite_data: this.state.cellColors.join(","),
+    }).then((charData) =>
+      this.props.history.push(`/characters/${charData.id}`),
+    );
   };
 
   //Fill the grid with characters colors, if empty create blank grid
   componentDidMount = () => {
-    if (this.props.sprite_data !== []) {
+    if (this.props.sprite_data.length === 0) {
       this.setState({ cellColors: this.props.cellColors });
     } else {
       this.setState({ cellColors: this.buildGrid(BASE_COLOR) });
@@ -45,34 +47,34 @@ class AvatarBuilder extends Component {
   dropperHandler = (id) =>
     this.setState({
       selectedColor: this.state.cellColors[id],
-      mode: 'brush'
+      mode: "brush",
     });
 
   //Set the color of clicked cell to base and update array
-  eraserHandler = id => {
+  eraserHandler = (id) => {
     const newColorArray = this.state.cellColors;
     newColorArray[id] = BASE_COLOR;
     this.setState({ cellColors: newColorArray });
   };
 
   //Swap all cells of the old color with the new color
-  exchangeHandler = id => {
+  exchangeHandler = (id) => {
     let newColorArray = this.state.cellColors;
     const oldColor = newColorArray[id];
-    newColorArray = newColorArray.map(color =>
-      color === oldColor ? this.state.selectedColor : color
+    newColorArray = newColorArray.map((color) =>
+      color === oldColor ? this.state.selectedColor : color,
     );
-    this.setState({ cellColors: newColorArray, mode: 'brush' });
+    this.setState({ cellColors: newColorArray, mode: "brush" });
   };
 
   //Handle cell click depending on current mode
-  clickCellHandler = id => {
+  clickCellHandler = (id) => {
     //handle dropper mode
-    if (this.state.mode === 'dropper') return this.dropperHandler(id);
+    if (this.state.mode === "dropper") return this.dropperHandler(id);
     //handle eraser mode
-    if (this.state.mode === 'eraser') return this.eraserHandler(id);
+    if (this.state.mode === "eraser") return this.eraserHandler(id);
     //handle exchange mode
-    if (this.state.mode === 'exchange') return this.exchangeHandler(id);
+    if (this.state.mode === "exchange") return this.exchangeHandler(id);
     //handle normal fill action
     const newColorArray = this.state.cellColors;
     newColorArray[id] = this.state.selectedColor;
@@ -84,10 +86,10 @@ class AvatarBuilder extends Component {
       <Fragment>
         <AvatarBuilderHeader handleClick={this.props.setDisplayMode} />
         <div
-          style={{ paddingTop: '1em' }}
-          className='ui stackable two column grid'
+          style={{ paddingTop: "1em" }}
+          className="ui stackable two column grid"
         >
-          <div className='five wide column'>
+          <div className="five wide column">
             <AvatarBuilderControls
               saveAvatar={this.updateCharacterSprite}
               handlePreview={() =>
@@ -95,8 +97,8 @@ class AvatarBuilder extends Component {
                   avatarCSS: generateCSS({
                     cellColors: this.state.cellColors,
                     pixelSize: 15,
-                    cssFormat: false
-                  })
+                    cssFormat: false,
+                  }),
                 })
               }
               cellColors={this.state.cellColors}
@@ -104,30 +106,28 @@ class AvatarBuilder extends Component {
               fillGrid={this.fillGrid}
               displayExtraPicker={this.state.displayExtraPicker}
               mode={this.state.mode}
-              setMode={mode => this.setState({ mode })}
+              setMode={(mode) => this.setState({ mode })}
               toggleExtraPicker={() =>
                 this.setState({
-                  displayExtraPicker: !this.state.displayExtraPicker
+                  displayExtraPicker: !this.state.displayExtraPicker,
                 })
               }
               selectedColor={this.state.selectedColor}
-              handleColorChange={color =>
+              handleColorChange={(color) =>
                 this.setState({ selectedColor: color.hex })
               }
             />
           </div>
-          <div className='one wide column' />
-          <div className='nine wide column'>
+          <div className="one wide column" />
+          <div className="nine wide column">
             <AvatarCellGrid
               handleCellClick={this.clickCellHandler}
               cells={this.state.cellColors}
             />
           </div>
-          <div className='one wide column' />
+          <div className="one wide column" />
         </div>
       </Fragment>
     );
   }
 }
-
-export default AvatarBuilder;

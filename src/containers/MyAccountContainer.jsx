@@ -1,9 +1,7 @@
 import React from "react";
-import {
-  Container
-} from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 
-import { PlaceholderGrid } from "../lib/placeholder";
+import { PlaceholderGrid } from "../components/PlaceholderGrid";
 import { getMyCharacters } from "../api/API";
 import { EmptyAccount } from "../components/EmptyAccount";
 import { CharacterSection } from "../components/CharacterSection";
@@ -13,26 +11,27 @@ export class MyAccountContainer extends React.Component {
     myCharacters: [],
     filterSpeciesOptions: [],
     filterStatusOptions: [],
-    isLoading: false
+    isLoading: false,
   };
   componentDidMount = () => {
-    this.setState({ isLoading: true });
+    if (this.props.username === "") return;
 
-    if (this.props.username !== "") {
-      getMyCharacters().then(myCharacters => {
-        if (myCharacters === {}) return;
+    this.setState({ isLoading: true });
+    getMyCharacters()
+      .then((myCharacters) => {
+        const characters = Array.isArray(myCharacters) ? myCharacters : [];
         this.setState({
-          myCharacters,
+          myCharacters: characters,
           filterSpeciesOptions: [
-            ...new Set(myCharacters.map(character => character.species).flat())
+            ...new Set(characters.map((character) => character.species)),
           ],
           filterStatusOptions: [
-            ...new Set(myCharacters.map(character => character.status).flat())
+            ...new Set(characters.map((character) => character.status)),
           ],
-          isLoading: false
+          isLoading: false,
         });
-      });
-    }
+      })
+      .catch(() => this.setState({ isLoading: false }));
   };
 
   render() {
@@ -44,15 +43,17 @@ export class MyAccountContainer extends React.Component {
 
     return (
       <Container>
-        {!this.state.myCharacters.length
-          ? <EmptyAccount />
-          : <CharacterSection
+        {!this.state.myCharacters.length ? (
+          <EmptyAccount />
+        ) : (
+          <CharacterSection
             myCharacters={this.state.myCharacters}
             filterSpeciesOptions={this.state.filterSpeciesOptions}
             filterStatusOptions={this.state.filterStatusOptions}
             username={username}
             createdAt={createdAt}
-          />}
+          />
+        )}
       </Container>
     );
   }

@@ -1,6 +1,6 @@
-const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const API_PATH = 'api/v1';
+const API_PATH = "api/v1";
 
 const ENDPOINT = `${BASE_URL}/${API_PATH}`;
 
@@ -23,8 +23,8 @@ async function get(url) {
 
 async function post(url, body) {
   const resp = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
   return resp.json();
@@ -32,24 +32,44 @@ async function post(url, body) {
 
 //================ AUTHORISED API CALLS ================//
 
-async function refreshAccessToken() {
-  const refreshToken = localStorage.getItem('refresh_token');
+// The server rotates refresh tokens: each /refresh destroys the old token and
+// returns a new one. Concurrent refreshes would race that rotation (e.g. two
+// requests hitting 401 at once, or StrictMode double-mounting in dev), so all
+// callers share a single in-flight refresh.
+let refreshPromise = null;
+
+function refreshAccessToken() {
+  if (!refreshPromise) {
+    refreshPromise = performRefresh().finally(() => {
+      refreshPromise = null;
+    });
+  }
+  return refreshPromise;
+}
+
+async function performRefresh() {
+  const refreshToken = localStorage.getItem("refresh_token");
   if (!refreshToken) return null;
 
   const resp = await fetch(REFRESH_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ refresh_token: refreshToken }),
   });
 
   if (resp.ok) {
     const data = await resp.json();
-    localStorage.setItem('token', data.token);
+    localStorage.setItem("token", data.token);
+    // Persist the rotated refresh token, or the next refresh sends a token the
+    // server has already destroyed and logs the user out.
+    if (data.refresh_token) {
+      localStorage.setItem("refresh_token", data.refresh_token);
+    }
     return data.token;
   }
 
-  localStorage.removeItem('token');
-  localStorage.removeItem('refresh_token');
+  localStorage.removeItem("token");
+  localStorage.removeItem("refresh_token");
   return null;
 }
 
@@ -58,12 +78,12 @@ async function authorizedFetch(url, options = {}) {
     fetch(url, {
       ...options,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: token,
       },
     });
 
-  let resp = await makeRequest(localStorage.getItem('token'));
+  let resp = await makeRequest(localStorage.getItem("token"));
 
   if (resp.status === 401) {
     const newToken = await refreshAccessToken();
@@ -82,20 +102,20 @@ export function getUser(id) {
 }
 
 export function deleteCharacter(id) {
-  return authorizedFetch(CHAR_URL + `/${id}`, { method: 'DELETE' });
+  return authorizedFetch(CHAR_URL + `/${id}`, { method: "DELETE" });
 }
 
 export const getMyCharacters = () => authorizedFetch(MY_CHARS_URL);
 
 export const cloneCharacter = (characterId) =>
   authorizedFetch(CLONE_URL, {
-    method: 'POST',
+    method: "POST",
     body: JSON.stringify({ id: characterId }),
   });
 
 export function updateCharacter(character) {
   return authorizedFetch(`${CHAR_URL}/${character.id}`, {
-    method: 'PUT',
+    method: "PUT",
     body: JSON.stringify({ character }),
   });
 }
@@ -120,15 +140,15 @@ export function loginUser(user) {
 
 export function logoutUser(refreshToken) {
   return fetch(LOGOUT_URL, {
-    method: 'DELETE',
-    headers: { 'Content-Type': 'application/json' },
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ refresh_token: refreshToken }),
   });
 }
 
 export const createCharacter = (character) =>
   authorizedFetch(CHAR_URL, {
-    method: 'POST',
+    method: "POST",
     body: JSON.stringify({ character }),
   });
 
@@ -136,4 +156,6 @@ export function generateAttribute(attribute) {
   return get(`${GENERATE_URL}/${attribute}`);
 }
 
-export const signUp = (user) => post(USER_URL, { user });
+export function signUp(user) {
+  return post(USER_URL, { user });
+}

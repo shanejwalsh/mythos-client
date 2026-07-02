@@ -1,25 +1,25 @@
-import React, { Fragment } from 'react'
-import { Menu, Input, Dropdown } from 'semantic-ui-react'
-import { titleCase } from '../../lib/helper'
+import React, { Fragment } from "react";
+import { Menu, Input, Dropdown } from "semantic-ui-react";
+import { titleCase } from "../../lib/helper";
 
-const generateMenuFromOptions = options =>
+const generateMenuFromOptions = (options) =>
   options.map((option, i) => ({
     key: i,
     text: titleCase(option),
-    value: option.toLowerCase()
-  }))
+    value: option.toLowerCase(),
+  }));
 
-const CharactersMenuBar = props => {
+const CharactersMenuBar = (props) => {
   return (
     <Fragment>
       <Menu stackable>
         <Menu.Menu style={{ flex: 1, minWidth: 0 }}>
-          <Menu.Item style={{ flex: 1, minWidth: 0, padding: '4px 8px' }}>
+          <Menu.Item style={{ flex: 1, minWidth: 0, padding: "4px 8px" }}>
             <Dropdown
               fluid
               style={{ border: 0 }}
               closeOnBlur
-              placeholder='All Species'
+              placeholder="All Species"
               multiple
               search
               selection
@@ -27,12 +27,12 @@ const CharactersMenuBar = props => {
               options={generateMenuFromOptions(props.speciesOptions)}
             />
           </Menu.Item>
-          <Menu.Item style={{ flex: 1, minWidth: 0, padding: '4px 8px' }}>
+          <Menu.Item style={{ flex: 1, minWidth: 0, padding: "4px 8px" }}>
             <Dropdown
               fluid
               style={{ border: 0 }}
               closeOnBlur
-              placeholder='All Status'
+              placeholder="All Status"
               multiple
               search
               selection
@@ -41,30 +41,30 @@ const CharactersMenuBar = props => {
             />
           </Menu.Item>
         </Menu.Menu>
-        <Menu.Menu position='right'>
-          <span style={{ float: 'right', margin: 'auto' }}>
+        <Menu.Menu position="right">
+          <span style={{ float: "right", margin: "auto" }}>
             sort by: &nbsp;
             <Dropdown
               inline
               onChange={props.handleSortChange}
-              options={generateMenuFromOptions(['date created', 'name'])}
+              options={generateMenuFromOptions(["date created", "name"])}
               defaultValue={
-                generateMenuFromOptions(['date created', 'name'])[0].value
+                generateMenuFromOptions(["date created", "name"])[0].value
               }
             />
           </span>
-          <Menu.Item style={{ marginLeft: '5px' }}>
+          <Menu.Item style={{ marginLeft: "5px" }}>
             <Input
               onChange={props.handleSearch}
               value={props.searchTerm}
-              icon='search'
-              placeholder='Search...'
+              icon="search"
+              placeholder="Search..."
             />
           </Menu.Item>
         </Menu.Menu>
       </Menu>
     </Fragment>
-  )
-}
+  );
+};
 
-export default CharactersMenuBar
+export default CharactersMenuBar;
