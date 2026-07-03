@@ -1,6 +1,6 @@
 # Build stage: compile the CRA app to static assets.
 # Node 16 is required — react-scripts 2.x / webpack 4 breaks on newer OpenSSL.
-FROM node:16-alpine AS build
+FROM node:22-alpine AS build
 WORKDIR /app
 
 COPY package.json ./
